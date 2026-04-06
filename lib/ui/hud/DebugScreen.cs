@@ -22,10 +22,9 @@ public class DebugScreen : IHudElement
             $"Resolution:{Game1.NativeResolution.Width * Game1.Config.Scale}"
             + $"x{Game1.NativeResolution.Height * Game1.Config.Scale}";
         string mousePositionText =
-            $"Cursor=({MouseManager.GetInGameMousePosition().X}, {MouseManager.GetInGameMousePosition().Y})";
+            $"Cursor=({MouseManager.ScreenMousePosition.X}, {MouseManager.ScreenMousePosition.Y})";
 
-        Vector2 inGameMousePosition = MouseManager.GetInGameMousePosition();
-        Vector2 cursorCoordinate = Camera.CameraOrigin + inGameMousePosition;
+        Vector2 cursorCoordinate = MouseManager.WorldMousePosition;
         string cursorCoordinateText =
             $"CursorCoordinate=({cursorCoordinate.X}, {cursorCoordinate.Y})";
         // string framerateText = $"FPS:{(int)FramerateCounter.Framerate}";

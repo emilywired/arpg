@@ -10,7 +10,6 @@ public class PlayerInputComponent
     private bool _isHoldingLeftClick;
     private Vector2 _destination;
     private double _destinationAngle = 0d;
-    private Vector2 _playerAimCoordinate;
     private double _playerAimAngle = 0d;
     private ISkill? _heldSkill = null;
 
@@ -67,13 +66,12 @@ public class PlayerInputComponent
             return;
 
         // TODO: prevent clicks outside of window
-        _playerAimCoordinate = Camera.CameraOrigin + MouseManager.GetInGameMousePosition();
-        _playerAimAngle = CalculateAngle(_player.Position, _playerAimCoordinate);
+        _playerAimAngle = CalculateAngle(_player.Position, MouseManager.WorldMousePosition);
 
         _heldSkill?.Cast(_playerAimAngle);
 
         if (_isHoldingLeftClick)
-            StartMove();
+            StartMove(MouseManager.WorldMousePosition);
 
         if (!_isMoving)
             return;
@@ -105,7 +103,7 @@ public class PlayerInputComponent
 
         _isHoldingLeftClick = true;
 
-        _destination = _playerAimCoordinate;
+        _destination = MouseManager.WorldMousePosition;
         _destinationAngle = _playerAimAngle;
         _isMoving = true;
 
@@ -122,16 +120,13 @@ public class PlayerInputComponent
         return true;
     }
 
-    public void StartMove(Vector2? aimCoordinate = null)
+    public void StartMove(Vector2 aimCoordinate)
     {
         // TODO: refactor
 
         _isMoving = true;
-        _destination = aimCoordinate ?? _playerAimCoordinate;
-        _destinationAngle =
-            aimCoordinate != null
-                ? CalculateAngle(_player.Position, aimCoordinate.Value)
-                : _playerAimAngle;
+        _destination = aimCoordinate;
+        _destinationAngle = CalculateAngle(_player.Position, aimCoordinate);
 
         double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
         bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;

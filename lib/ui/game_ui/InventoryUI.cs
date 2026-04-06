@@ -48,7 +48,7 @@ public class InventoryUI
 
     public void Update(GameTime gameTime)
     {
-        Vector2 mousePosition = MouseManager.GetInGameMousePosition();
+        Vector2 mousePosition = MouseManager.ScreenMousePosition;
         FindHoveredItem(mousePosition);
     }
 

@@ -1,12 +1,16 @@
 using System.Numerics;
 using arpg;
 using Microsoft.Xna.Framework;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 public static class Camera
 {
     public static Matrix Transform { get; private set; }
-    public static Microsoft.Xna.Framework.Vector2 CameraOrigin { get; private set; }
-    public static Microsoft.Xna.Framework.Vector2 CameraOffset { get; private set; }
+    public static Vector2 Origin { get; private set; }
+    public static Vector2 Offset { get; private set; }
+
+    public static Vector2 ScreenToWorld(Vector2 screen)
+        => Origin + screen;
 
     public static void Follow(IActor actor)
     {
@@ -23,9 +27,9 @@ public static class Camera
         );
         Transform = position * offset;
 
-        CameraOffset = new(-Game1.NativeResolution.Width / 2, -Game1.NativeResolution.Height / 2);
+        Offset = new(-Game1.NativeResolution.Width / 2, -Game1.NativeResolution.Height / 2);
 
-        CameraOrigin = new(
+        Origin = new(
             actor.Position.X - Game1.NativeResolution.Width / 2,
             actor.Position.Y - Game1.NativeResolution.Height / 2
         );
