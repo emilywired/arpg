@@ -16,7 +16,7 @@ public class InventoryUI
     private const int EQUIPMENT_BORDER_SIZE = 3;
     private List<Rectangle> _inventorySquaresBounds = [];
     private List<Rectangle> _equipmentBounds = [];
-    private List<EquippableItem> _equipmentItems => new()
+    private List<EquippableItem?> _equipmentItems => new()
     {
         _player.Equipment.MainHand,
         _player.Equipment.Gloves,

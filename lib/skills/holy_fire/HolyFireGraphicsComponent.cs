@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class HolyFireGraphicsComponent
 {
-    private Texture2D _texture;
+    private Texture2D _texture = null!;
 
     public HolyFireGraphicsComponent(HolyFireEntity holyFire)
     {

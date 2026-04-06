@@ -13,8 +13,8 @@ public enum MouseButtons
 
 public class MouseInputManager
 {
-    public event Action<MouseButtons> KeyPressed;
-    public event Action<MouseButtons> KeyReleased;
+    public event Action<MouseButtons>? KeyPressed;
+    public event Action<MouseButtons>? KeyReleased;
     private MouseState _mouseState;
     private MouseState _previousMouseState;
 

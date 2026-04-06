@@ -150,7 +150,7 @@ public class PlayerInputComponent
 
     public class MovementTrack
     {
-        public event Action OnComplete;
+        public event Action? OnComplete;
         internal void InvokeOnComplete() => OnComplete?.Invoke();
     }
 }

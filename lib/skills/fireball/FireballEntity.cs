@@ -12,13 +12,8 @@ public class FireballEntity : IEntity
     public double Angle = 0d;
     public float Damage = 10f;
     public readonly float MaxDuration = 2f;
-    public IHitbox Hitbox
-    {
-        get => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
-        set => _hitbox = value;
-    }
+    public IHitbox Hitbox => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
 
-    private IHitbox _hitbox;
     private FireballGraphicsComponent _fireballGraphicsComponent = new();
     private FireballBehaviorComponent _fireballBehaviorComponent = new();
 

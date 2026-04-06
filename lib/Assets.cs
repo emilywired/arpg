@@ -25,7 +25,7 @@ public class Asset
 
 public static class Assets
 {
-    public static Texture2D RectangleTexture;
+    public static Texture2D RectangleTexture = null!;
 
     public static class Fonts
     {

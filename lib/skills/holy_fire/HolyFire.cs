@@ -4,7 +4,7 @@ public class HolyFire(IActor owner) : ISkill
     public Cooldown Cooldown { get; } = new(1f);
     private IActor _owner = owner;
     private bool isActive = false;
-    private HolyFireEntity _entity;
+    private HolyFireEntity? _entity;
 
     public void Cast(double angle)
     {
@@ -24,7 +24,7 @@ public class HolyFire(IActor owner) : ISkill
         }
         else
         {
-            _entity.Destroy();
+            _entity!.Destroy();
             isActive = false;
         }
 

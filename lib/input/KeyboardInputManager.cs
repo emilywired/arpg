@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework.Input;
 
 public class KeyboardInputManager
 {
-    public event Action<Keys> KeyPressed;
-    public event Action<Keys> KeyReleased;
+    public event Action<Keys>? KeyPressed;
+    public event Action<Keys>? KeyReleased;
 
     private KeyboardState _keyboardState;
     private KeyboardState _previousKeyboardState;

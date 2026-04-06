@@ -8,7 +8,7 @@ public class Gold : Item
     public int Amount { get; }
 
     public Gold(int amount)
-        : base($"{amount} Gold", Rarity.Normal, width: 0, height: 0, asset: null)
+        : base($"{amount} Gold", Rarity.Normal, width: 0, height: 0, asset: null!)
     {
         Amount = amount;
     }

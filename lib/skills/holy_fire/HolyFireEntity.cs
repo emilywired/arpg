@@ -8,16 +8,11 @@ public class HolyFireEntity : IEntity
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public IActor Owner;
     public Vector2 Position { get; set; }
-    public IHitbox Hitbox
-    {
-        get => new CircleHitbox(Position, Radius);
-        set => _hitbox = value;
-    }
+    public IHitbox Hitbox => new CircleHitbox(Position, Radius);
     public double Radius = 100d;
     public double Damage = 100d;
     public double SelfDamage = 2d;
 
-    private IHitbox _hitbox;
     private HolyFireGraphicsComponent _holyFireGraphicsComponent;
     private HolyFireBehaviorComponent _holyFireBehaviorComponent;
 

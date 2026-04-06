@@ -28,12 +28,12 @@ public class InputMapper
 
     private Dictionary<MouseButtons, FixedGameAction> _fixedMouseKeybinds = [];
     private Dictionary<Keys, FixedGameAction> _fixedKeyboardKeybinds = [];
-    private Dictionary<FixedGameAction, Action> _fixedPressActionHandlers = [];
-    private Dictionary<FixedGameAction, Action> _fixedReleaseActionHandlers = [];
+    private Dictionary<FixedGameAction, Action?> _fixedPressActionHandlers = [];
+    private Dictionary<FixedGameAction, Action?> _fixedReleaseActionHandlers = [];
     private Dictionary<MouseButtons, RemappableGameAction> _remappableMouseKeybinds = [];
     private Dictionary<Keys, RemappableGameAction> _remappableKeyboardKeybinds = [];
-    private Dictionary<RemappableGameAction, Action> _remappablePressActionHandlers = [];
-    private Dictionary<RemappableGameAction, Action> _remappableReleaseActionHandlers = [];
+    private Dictionary<RemappableGameAction, Action?> _remappablePressActionHandlers = [];
+    private Dictionary<RemappableGameAction, Action?> _remappableReleaseActionHandlers = [];
 
     public InputMapper(
         KeyboardInputManager keyboardInputManager,

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 public class ItemTooltip
 {
     public static ItemTooltip Instance { get; } = new ItemTooltip();
-    public static Item Item { get; private set; }
+    public static Item? Item { get; private set; }
 
     private static SpriteFont _font = Assets.Fonts.MonogramExtened;
     private static int _PADDING = 5;
@@ -219,6 +219,7 @@ public class ItemTooltip
 
         public TooltipElement(Color? color = null)
         {
+            Text = string.Empty;
             Color = color ?? Color.Gray;
             Height = 1;
             IsLine = true;

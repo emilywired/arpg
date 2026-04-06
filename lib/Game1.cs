@@ -5,7 +5,7 @@ namespace arpg;
 
 public class Game1 : Game
 {
-    public static Config Config { get; private set; }
+    public static Config Config { get; private set; } = null!;
 
     public struct NativeResolution
     {
@@ -13,20 +13,20 @@ public class Game1 : Game
         public const int Height = 360;
     }
 
-    public static World World;
-    public static LootSystem LootSystem;
-    public static new GraphicsDevice GraphicsDevice;
-    public static InputManager InputManager;
+    public static World World = null!;
+    public static LootSystem LootSystem = null!;
+    public static new GraphicsDevice GraphicsDevice = null!;
+    public static InputManager InputManager = null!;
 
     private GraphicsDeviceManager _graphics;
-    private RenderTarget2D _renderTarget;
-    private SpriteBatch _spriteBatch;
-    private Background _background;
-    private LootUI _lootUI;
-    private PauseMenu _pauseMenu;
-    private Hud _hud;
-    private GameUI _gameUI;
-    private GameInputController _gameInputController;
+    private RenderTarget2D _renderTarget = null!;
+    private SpriteBatch _spriteBatch = null!;
+    private Background _background = null!;
+    private LootUI _lootUI = null!;
+    private PauseMenu _pauseMenu = null!;
+    private Hud _hud = null!;
+    private GameUI _gameUI = null!;
+    private GameInputController _gameInputController = null!;
 
     public Game1()
     {

@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 
 public class GridItem<T>
 {
-    public T Value;
+    public required T Value;
     public bool IsOriginSquare = false;
-    public int OriginX;
-    public int OriginY;
-    public int Width;
-    public int Height;
+    public required int OriginX;
+    public required int OriginY;
+    public required int Width;
+    public required int Height;
 }
 
 public class Grid<T>
@@ -59,7 +59,7 @@ public class Grid<T>
         {
             for (int y = originY; y < originY + height; y++)
             {
-                Squares[y, x] = new GridItem<T?>
+                Squares[y, x] = new()
                 {
                     Value = item,
                     OriginX = originX,
@@ -70,7 +70,7 @@ public class Grid<T>
             }
         }
 
-        Squares[originY, originX].IsOriginSquare = true;
+        Squares[originY, originX]!.IsOriginSquare = true;
 
         return true;
     }

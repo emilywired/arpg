@@ -6,7 +6,7 @@ public class TransformList(IEnumerable<ITransform> transforms) : ITransform
 {
     public bool IsFinished { get; protected set; } = false;
     public bool IsReady { get; protected set; } = false;
-    public event Action OnFinish;
+    public event Action? OnFinish;
     private List<ITransform> transforms = new(transforms);
 
     public void Reset()

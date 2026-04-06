@@ -18,7 +18,7 @@ public class TransformFloat: ITransform
     public double Progress => _time / _length;
     public bool IsFinished { get; protected set; }
     public bool IsReady { get; protected set; }
-    public event Action OnFinish;
+    public event Action? OnFinish;
 
     public TransformFloat(object obj, string propertyName, float to, double length)
     {
@@ -27,12 +27,12 @@ public class TransformFloat: ITransform
         _length = length;
 
         Type type = obj.GetType();
-        _property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        _property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)!;
     }
 
     public void Reset()
     {
-        _from = (float)_property.GetValue(_obj);
+        _from = (float)_property.GetValue(_obj)!;
         _time = 0;
         IsReady = true;
     }
