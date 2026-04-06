@@ -26,6 +26,7 @@ public class InputManager
         BindKey(Keys.R, RemappableGameAction.CastBarThree);
         BindKey(Keys.F1, RemappableGameAction.DebugMenu);
         BindKey(Keys.OemTilde, RemappableGameAction.OpenInventory);
+        BindKey(Keys.I, RemappableGameAction.OpenInventory);
         BindKey(Keys.F10, RemappableGameAction.CycleResolution);
         BindKey(Keys.F11, RemappableGameAction.ToggleFullscreen);
         // BindKey([Keys.LeftAlt, Keys.Enter], RemappableGameAction.ToggleFullscreen);
