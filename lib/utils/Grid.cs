@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-public class GridItem<T>(T value, int originX, int originY)
+public class GridItem<T>
 {
-    public T Value = value;
+    public T Value;
     public bool IsOriginSquare = false;
-    public int OriginX = originX;
-    public int OriginY = originY;
+    public int OriginX;
+    public int OriginY;
+    public int Width;
+    public int Height;
 }
 
 public class Grid<T>
@@ -16,19 +18,19 @@ public class Grid<T>
     public int Width;
     public int Height;
 
-    private GridItem<T?>[,] Squares;
+    private GridItem<T>?[,] Squares;
 
     public Grid(int width, int height)
     {
         Width = width;
         Height = height;
-        Squares = new GridItem<T?>[Height, Width];
+        Squares = new GridItem<T>?[Height, Width];
 
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Height; y++)
             {
-                Squares[y, x] = new(null, default, default);
+                Squares[y, x] = null;
             }
         }
     }
@@ -57,10 +59,14 @@ public class Grid<T>
         {
             for (int y = originY; y < originY + height; y++)
             {
-                GridItem<T?> square = Squares[y, x];
-                square.Value = item;
-                square.OriginX = originX;
-                square.OriginY = originY;
+                Squares[y, x] = new GridItem<T?>
+                {
+                    Value = item,
+                    OriginX = originX,
+                    OriginY = originY,
+                    Width = width,
+                    Height = height,
+                };
             }
         }
 
@@ -69,17 +75,11 @@ public class Grid<T>
         return true;
     }
 
-    public GridItem<T?> GetGridItem(int x, int y)
-    {
-        GridItem<T?> gridItem = Squares[y, x];
-        return gridItem;
-    }
+    public GridItem<T>? GetGridItem(int x, int y)
+        => Squares[y, x];
 
     public T? GetItem(int x, int y)
-    {
-        GridItem<T?> gridItem = Squares[y, x];
-        return gridItem.Value;
-    }
+        => Squares[y, x]?.Value;
 
     public IEnumerable<T> Items()
     {
@@ -87,8 +87,8 @@ public class Grid<T>
         {
             for (int y = 0; y < Height; y++)
             {
-                GridItem<T?> item = Squares[y, x];
-                if (item.Value != null)
+                GridItem<T>? item = Squares[y, x];
+                if (item != null)
                     yield return item.Value;
             }
         }
@@ -100,10 +100,10 @@ public class Grid<T>
         {
             for (int y = 0; y < Height; y++)
             {
-                GridItem<T?> gridItem = Squares[y, x];
-                if (gridItem.Value == item)
+                GridItem<T>? gridItem = Squares[y, x];
+                if (gridItem?.Value == item)
                 {
-                    gridItem.Value = null;
+                    RemoveGridItem(gridItem);
                     return true;
                 }
             }
@@ -112,9 +112,20 @@ public class Grid<T>
         return false;
     }
 
+    public void RemoveGridItem(GridItem<T> gridItem)
+    {
+        for (int dx = 0; dx < gridItem.Width; dx++)
+        {
+            for (int dy = 0; dy < gridItem.Height; dy++)
+            {
+                Squares[gridItem.OriginY + dy, gridItem.OriginX + dx] = null;
+            }
+        }
+    }
+
     public bool SquareIsOriginSquare(int x, int y)
     {
-        return Squares[y, x].IsOriginSquare;
+        return Squares[y, x]?.IsOriginSquare ?? false;
     }
 
     public bool SquareExists(int x, int y)
@@ -124,7 +135,7 @@ public class Grid<T>
 
     public bool SquareIsTaken(int x, int y)
     {
-        return Squares[y, x].Value != null;
+        return Squares[y, x] != null;
     }
 
     public bool ItemFits(int originX, int originY, int width, int height)

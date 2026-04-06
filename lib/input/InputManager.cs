@@ -19,6 +19,7 @@ public class InputManager
         // hardcoded keybinds
         BindKey(Keys.Escape, FixedGameAction.Close);
         BindKey(MouseButtons.LeftButton, FixedGameAction.LeftClick);
+        BindKey(MouseButtons.RightButton, FixedGameAction.RightClick);
 
         // remappable keybinds
         BindKey(Keys.Q, RemappableGameAction.CastBarOne);
