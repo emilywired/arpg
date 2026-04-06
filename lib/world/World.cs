@@ -64,26 +64,31 @@ public class World
 
     public bool OnLeftClick()
     {
-        const double itemPickupRadius = 40;
+        const float itemPickupRadius = 40;
 
-        foreach (DroppedItem item in Items.Where(item => item.IsHovered))
+        var hoveredItems = Items.Where(item => item.IsHovered).ToList();
+
+        if (hoveredItems.Count != 0)
         {
-            if (Vector2.Distance(Player.Position, item.Position) > itemPickupRadius)
+            var itemInRange = hoveredItems.Find(item => Player.Position.DistanceTo(item.Position) <= itemPickupRadius);
+            if (itemInRange != null)
             {
-                double angle = Math.Atan2(
-                    Player.Position.Y - item.Position.Y,
-                    Player.Position.X - item.Position.X
-                );
-                Vector2 pickupPoint = new(
-                    (float)((itemPickupRadius - 1) * Math.Cos(angle) + item.Position.X),
-                    (float)((itemPickupRadius - 1) * Math.Sin(angle) + item.Position.Y)
-                );
-                Player.InputComponent.StartMove(pickupPoint);
-                // TODO: pick up the item once reached the radius (unless player moved elsewhere)
+                itemInRange.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
             }
             else
             {
-                item.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
+                var targetItem = hoveredItems.First();
+
+                Vector2 pickupPoint = MathUtils.ClosestEdgeOfCircle(targetItem.Position, itemPickupRadius - 1, Player.Position);
+
+                var track = Player.InputComponent.StartMove(pickupPoint);
+                track.OnComplete += () =>
+                {
+                    if (Items.Contains(targetItem) && Player.Position.DistanceTo(targetItem.Position) <= itemPickupRadius)
+                    {
+                        targetItem.GetPickedUp(Player);
+                    }
+                };
             }
 
             return true;

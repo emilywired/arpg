@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using arpg;
 using Microsoft.Xna.Framework;
 
@@ -12,6 +13,7 @@ public class PlayerInputComponent
     private double _destinationAngle = 0d;
     private double _playerAimAngle = 0d;
     private ISkill? _heldSkill = null;
+    private MovementTrack? _movementTrack = null;
 
     public PlayerInputComponent(Player player)
     {
@@ -65,6 +67,12 @@ public class PlayerInputComponent
         if (!GameState.IsRunning)
             return;
 
+        // foreach (var transform in _transforms)
+        // {
+        //     transform.Update(gameTime);
+        // }
+        // _transforms.RemoveAll(t => t.IsFinished);
+
         // TODO: prevent clicks outside of window
         _playerAimAngle = CalculateAngle(_player.Position, MouseManager.WorldMousePosition);
 
@@ -92,6 +100,8 @@ public class PlayerInputComponent
         {
             _player.Position = _destination;
             _isMoving = false;
+            _movementTrack?.InvokeOnComplete();
+            _movementTrack = null;
             _player.TransitionState(ActorState.Idling);
         }
     }
@@ -102,15 +112,8 @@ public class PlayerInputComponent
             return false;
 
         _isHoldingLeftClick = true;
+        StartMove(MouseManager.WorldMousePosition);
 
-        _destination = MouseManager.WorldMousePosition;
-        _destinationAngle = _playerAimAngle;
-        _isMoving = true;
-
-        double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
-        bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;
-        _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
-        _player.TransitionState(ActorState.Walking);
         return true;
     }
 
@@ -120,7 +123,7 @@ public class PlayerInputComponent
         return true;
     }
 
-    public void StartMove(Vector2 aimCoordinate)
+    public MovementTrack StartMove(Vector2 aimCoordinate)
     {
         // TODO: refactor
 
@@ -132,6 +135,10 @@ public class PlayerInputComponent
         bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;
         _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
         _player.TransitionState(ActorState.Walking);
+
+        _movementTrack = new();
+
+        return _movementTrack;
     }
 
     private double CalculateAngle(Vector2 a, Vector2 b)
@@ -139,5 +146,11 @@ public class PlayerInputComponent
         float deltaX = b.X - a.X;
         float deltaY = b.Y - a.Y;
         return Math.Atan2(deltaY, deltaX);
+    }
+
+    public class MovementTrack
+    {
+        public event Action OnComplete;
+        internal void InvokeOnComplete() => OnComplete?.Invoke();
     }
 }
