@@ -24,6 +24,7 @@ public class Player : IActor
     public ActorBaseStats Stats { get; }
     public Inventory Inventory;
     public Equipment Equipment;
+    public int Gold;
 
     public PlayerInputComponent InputComponent;
     private PlayerGraphicsComponent _graphicsComponent;
@@ -41,6 +42,7 @@ public class Player : IActor
         );
         Inventory = new(this);
         Equipment = new(this);
+        Gold = 0;
 
         Equipment.Equip(new Sandals().ToMagic());
         Equipment.Equip(new Hood().ToRare());
@@ -77,7 +79,7 @@ public class Player : IActor
         Stats.OffsetHealth(-amount);
     }
 
-    public void OnKill(IMonsterActor monster)
+    public void OnKill(IMonster monster)
     {
         PlayerStats playerStats = (PlayerStats)Stats;
         playerStats.Level.GrantXP(monster.XP);

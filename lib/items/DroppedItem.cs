@@ -129,6 +129,11 @@ public class DroppedItem
 
     public bool GetPickedUp(Player player)
     {
+        if (this.Item is Gold gold)
+        {
+            player.Gold += gold.Amount;
+        }
+
         bool added = player.Inventory.AddItem(this.Item);
         if (added)
             Game1.World.Items.Remove(this);

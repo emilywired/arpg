@@ -1,3 +1,5 @@
+// TODO: enum and divide
+
 public static class Layer
 {
     public const float ItemTooltipContent = 0.84f;

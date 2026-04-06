@@ -3,7 +3,7 @@ using arpg;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class Skeleton : IMonsterActor
+public class Skeleton : IMonster
 {
     public string Id { get; } = Guid.NewGuid().ToString();
     public ActorKind Kind { get; } = ActorKind.Monster;
@@ -18,13 +18,15 @@ public class Skeleton : IMonsterActor
     {
         get => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
     }
-    int IMonster.XP { get; } = 10;
+    public int Level { get; }
+    public int XP { get; } = 10;
 
     private SkeletonGraphicsComponent _graphicsComponent = new();
     private SkeletonBehaviorComponent _behaviorComponent = new();
 
-    public Skeleton()
+    public Skeleton(int level)
     {
+        Level = level;
         Stats = new(this, speed: 90, health: 40);
     }
 

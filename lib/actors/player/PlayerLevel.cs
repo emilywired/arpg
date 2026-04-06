@@ -7,8 +7,8 @@ public class PlayerLevel
     public int RequiredXP { get; private set; }
 
     private const int LEVEL_CAP = 100;
-    private const int BASE_INCREMENT = 10;
-    private const float GROWTH_RATE = 1.5f;
+    private const int BASE_INCREMENT = 50;
+    private const float GROWTH_RATE = 2f;
 
     public PlayerLevel()
     {
