@@ -15,7 +15,8 @@ public class LootSystem
 
     public LootSystem()
     {
-        AddEntry(() => new AugmentingCore(), 30000);
+        AddEntry(() => new OrbOfCorruption(), 1000);
+        AddEntry(() => new AugmentingCore(), 100);
         AddEntry(() => new Hood(), 10000);
         AddEntry(() => new Sandals(), 10000);
         AddEntry(() => new RubyRing(), 2000);
@@ -88,5 +89,8 @@ public class LootSystem
         return 0;
     }
 
-    // TODO: roll rarity
+    private void RollRarity()
+    {
+        
+    }
 }

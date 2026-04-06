@@ -10,6 +10,6 @@ public class AugmentingCore : MaterialItem
             height: 1,
             asset: Assets.Items.None_1x1,
             description: "Use to attempt to upgrade an \nexisting modifier on a Magic or\nRare item by one Tier.",
-            maxStackQuantity: 10
+            maxStackQuantity: 20
         ) { }
 }
