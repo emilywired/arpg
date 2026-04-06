@@ -214,16 +214,13 @@ public class InventoryUI
         }
 
         string goldAmountText = $"Gold: {_player.Gold}";
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+
+        Game1.DrawText(
+            spriteBatch,
             goldAmountText,
             new Vector2(WindowBounds.Left + 4, 240),
-            Color.Yellow,
-            0.0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.UIWindowElementText
+            Layer.UIWindowElementText,
+            Color.Yellow
         );
     }
 

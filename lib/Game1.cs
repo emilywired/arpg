@@ -155,4 +155,35 @@ public class Game1 : Game
 
         base.Draw(gameTime);
     }
+
+    // STYLE: move somewhere else?
+    public static void DrawText(
+        SpriteBatch spriteBatch,
+        string text,
+        Vector2 position,
+        float layer,
+        Color color,
+        bool center = false
+    )
+    {
+        Vector2 _position = new(position.X, position.Y);
+
+        if (center)
+        {
+            int textWidth = (int)Assets.Fonts.MonogramExtened.MeasureString(text).X;
+            _position.X -= textWidth / 2;
+        }
+
+        spriteBatch.DrawString(
+            Assets.Fonts.MonogramExtened,
+            text,
+            _position,
+            color,
+            0.0f,
+            Vector2.Zero,
+            1f,
+            SpriteEffects.None,
+            layer
+        );
+    }
 }

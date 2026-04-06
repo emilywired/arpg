@@ -131,7 +131,13 @@ public class ItemTooltip
             if (element.IsLine)
                 DrawHorizontalLine(spriteBatch, position, element.Color);
             else
-                DrawString(spriteBatch, element.Text, position, element.Color);
+                Game1.DrawText(
+                    spriteBatch,
+                    element.Text,
+                    position,
+                    Layer.ItemTooltipContent,
+                    element.Color
+                );
 
             position.Y += element.Height + _ELEMENT_SPACING;
         }
@@ -179,21 +185,6 @@ public class ItemTooltip
             Vector2.Zero,
             SpriteEffects.None,
             Layer.ItemTooltipBackground
-        );
-    }
-
-    private void DrawString(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
-    {
-        spriteBatch.DrawString(
-            _font,
-            text,
-            position,
-            color,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.ItemTooltipContent
         );
     }
 

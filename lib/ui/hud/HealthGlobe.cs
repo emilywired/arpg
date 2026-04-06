@@ -37,17 +37,12 @@ public class HealthGlobe : IHudElement
             Layer.HUD
         );
 
-        string healthGlobeValuesText = $"{Health}/{MaxHealth}";
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
-            healthGlobeValuesText,
+        Game1.DrawText(
+            spriteBatch,
+            $"{Health}/{MaxHealth}",
             new Vector2(Position.X, Position.Y - 12),
-            Color.White,
-            0.0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
+            Layer.Text,
+            Color.White
         );
     }
 };
