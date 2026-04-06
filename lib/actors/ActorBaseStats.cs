@@ -14,6 +14,11 @@ public class ActorBaseStats
     public double ManaDegen { get; set; }
     public double Evasion { get; set; }
     public double Armor { get; set; }
+    public double Strength { get; set; }
+    public double Agility { get; set; }
+    public double Intelligence { get; set; }
+    public double Vitality { get; set; }
+    public double Spirit { get; set; }
 
     private IActor _actor;
     private const double TICK_TIME = 0.1d;
@@ -27,7 +32,12 @@ public class ActorBaseStats
         double healthRegen = 0,
         double manaRegen = 0,
         double evasion = 0,
-        double armor = 0
+        double armor = 0,
+        double strength = 10,
+        double agility = 10,
+        double intelligence = 10,
+        double vitality = 10,
+        double spirit = 10
     )
     {
         _actor = actor;
@@ -40,6 +50,11 @@ public class ActorBaseStats
         ManaDegen = 0;
         Evasion = evasion;
         Armor = armor;
+        Strength = strength;
+        Agility = agility;
+        Intelligence = intelligence;
+        Vitality = vitality;
+        Spirit = spirit;
     }
 
     public void Update(GameTime gameTime)

@@ -1,28 +1,40 @@
 using System;
 using System.Collections.Generic;
-
-public class LootPoolEntry(Func<Item> createItem, int weight)
-{
-    public Func<Item> CreateItem = createItem;
-    public int Weight = weight;
-}
+using System.Linq;
 
 public class LootSystem
 {
-    private readonly List<LootPoolEntry> _pool = [];
-    private int _totalWeight = 0;
-    private Random _random = new();
-
-    public LootSystem()
+    private Dictionary<Func<Item>, int> lootPool = new()
     {
-        AddEntry(() => new OrbOfCorruption(), 1000);
-        AddEntry(() => new AugmentingCore(), 100);
-        AddEntry(() => new Hood(), 10000);
-        AddEntry(() => new Sandals(), 10000);
-        AddEntry(() => new RubyRing(), 2000);
-        AddEntry(() => new SapphireRing(), 2000);
-        AddEntry(() => new TheOneRubyRing(), 10);
-    }
+        { () => new OrbOfCorruption(), 1000 },
+        { () => new AugmentingCore(), 100 },
+        { () => new Hood(), 5000 },
+        { () => new Sandals(), 5000 },
+        { () => new RubyRing(), 1000 },
+        { () => new SapphireRing(), 1000 },
+    };
+    private int _totalLootPoolWeights => lootPool.Values.Sum();
+
+    private Dictionary<int, int> _dropCountWeights = new()
+    {
+        { 0, 9000 },
+        { 1, 1000 },
+        { 2, 150 },
+        { 3, 50 },
+    };
+    private int _totalDropCountWeights => _dropCountWeights.Values.Sum();
+
+    private Dictionary<Rarity, int> _rarityWeights = new()
+    {
+        { Rarity.Unique, 0 },
+        { Rarity.Set, 0 },
+        { Rarity.Magic, 10000 },
+        { Rarity.Rare, 3000 },
+        { Rarity.Normal, 1000 },
+    };
+    private int _totalRarityWeights => _rarityWeights.Values.Sum();
+
+    private Random _random = new();
 
     public List<Item> GenerateLoot(IMonster monster, Player player)
     {
@@ -41,14 +53,24 @@ public class LootSystem
         int dropCount = RollDropCount();
         for (int i = 0; i < dropCount; i++)
         {
-            int roll = _random.Next(0, _totalWeight);
+            int roll = _random.Next(0, _totalDropCountWeights);
             int cumulative = 0;
-            foreach (var entry in _pool)
+            foreach (var (createItem, weight) in lootPool)
             {
-                cumulative += entry.Weight;
+                cumulative += weight;
                 if (roll < cumulative)
                 {
-                    drops.Add(entry.CreateItem());
+                    Item item = createItem();
+
+                    if (
+                        item.Rarity != Rarity.Unique
+                        && item.Rarity != Rarity.Set
+                        && item is EquippableItem equippableItem
+                    )
+                    {
+                        RollRarity(equippableItem);
+                    }
+                    drops.Add(item);
                     break;
                 }
             }
@@ -57,29 +79,11 @@ public class LootSystem
         return drops;
     }
 
-    public void AddEntry(Func<Item> createItem, int weight)
-    {
-        _pool.Add(new LootPoolEntry(createItem, weight));
-        _totalWeight += weight;
-    }
-
     private int RollDropCount()
     {
-        var weights = new Dictionary<int, int>
-        {
-            { 0, 9000 },
-            { 1, 1000 },
-            { 2, 60 },
-            { 3, 5 },
-        };
-
-        int total = 0;
-        foreach (var w in weights.Values)
-            total += w;
-
-        int roll = _random.Next(0, total);
+        int roll = _random.Next(0, _totalDropCountWeights);
         int cumulative = 0;
-        foreach (var weight in weights)
+        foreach (var weight in _dropCountWeights)
         {
             cumulative += weight.Value;
             if (roll < cumulative)
@@ -89,8 +93,26 @@ public class LootSystem
         return 0;
     }
 
-    private void RollRarity()
+    private void RollRarity(EquippableItem item)
     {
-        
+        int roll = _random.Next(0, _totalRarityWeights);
+        int cumulative = 0;
+        foreach (var weight in _rarityWeights)
+        {
+            cumulative += weight.Value;
+            if (roll < cumulative)
+            {
+                Rarity rarity = weight.Key;
+                switch (rarity)
+                {
+                    case Rarity.Magic:
+                        item.ToMagic();
+                        break;
+                    case Rarity.Rare:
+                        item.ToRare();
+                        break;
+                }
+            }
+        }
     }
 }
