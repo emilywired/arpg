@@ -109,6 +109,22 @@ public class EquippableItem : Item, IEquippable
         return this;
     }
 
+    public EquippableItem Corrupt()
+    {
+        var rng = new Random();
+        int roll = rng.Next(0, 3);
+        if (roll == 0)
+        {
+            ToRare();
+        }
+        else if (roll == 1 || roll == 2)
+        {
+            // TODO: affix from pool, specific for each gear type
+            BaseAffixes = [new MovementSpeedAffix(10)];
+        }
+        return this;
+    }
+
     private void RollAffixes()
     {
         // TODO: amount of prefixes and suffixes as arguments
