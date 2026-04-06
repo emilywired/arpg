@@ -14,9 +14,28 @@ public class PlayerStats : ActorBaseStats
         int healthOnKill = 0,
         int manaOnKill = 0,
         double evasion = 0,
-        double armor = 0
+        double armor = 0,
+        double strength = 10,
+        double agility = 10,
+        double intelligence = 10,
+        double vitality = 10,
+        double spirit = 10
     )
-        : base(actor, speed, health, mana, healthRegen, manaRegen, evasion, armor)
+        : base(
+            actor,
+            speed,
+            health,
+            mana,
+            healthRegen,
+            manaRegen,
+            evasion,
+            armor,
+            strength,
+            agility,
+            intelligence,
+            vitality,
+            spirit
+        )
     {
         Level = new();
         HealthOnKill = healthOnKill;
