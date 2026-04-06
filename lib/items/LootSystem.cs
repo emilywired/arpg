@@ -15,17 +15,27 @@ public class LootSystem
 
     public LootSystem()
     {
-        AddEntry(() => new AugmentingCore(), 3000);
-        AddEntry(() => new Hood(), 1000);
-        AddEntry(() => new Sandals(), 1000);
-        AddEntry(() => new RubyRing(), 200);
-        AddEntry(() => new SapphireRing(), 200);
+        AddEntry(() => new AugmentingCore(), 30000);
+        AddEntry(() => new Hood(), 10000);
+        AddEntry(() => new Sandals(), 10000);
+        AddEntry(() => new RubyRing(), 2000);
+        AddEntry(() => new SapphireRing(), 2000);
         AddEntry(() => new TheOneRubyRing(), 10);
     }
 
     public List<Item> GenerateLoot(IMonster monster, Player player)
     {
         List<Item> drops = [];
+
+        int goldRoll = _random.Next(0, 20);
+        if (goldRoll == 0)
+        {
+            int goldAmount = _random.Next(
+                monster.Level * 10,
+                monster.Level * 10 + monster.Level * 2
+            );
+            drops.Add(new Gold(goldAmount));
+        }
 
         int dropCount = RollDropCount();
         for (int i = 0; i < dropCount; i++)

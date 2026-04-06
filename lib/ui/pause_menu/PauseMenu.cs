@@ -14,13 +14,14 @@ public class PauseMenu
             return;
 
         string text = "Game Paused";
-        int textWidth = (int)Assets.Fonts.MonogramExtened.MeasureString(text).X;
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+        arpg.Game1.DrawText(
+            spriteBatch,
             text,
-            new((Game1.NativeResolution.Width - textWidth) / 2, Game1.NativeResolution.Height / 2),
-            Color.White
+            new(Game1.NativeResolution.Width / 2, Game1.NativeResolution.Height / 2),
+            Layer.Text,
+            Color.White,
+            center: true
         );
     }
 

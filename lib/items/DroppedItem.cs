@@ -113,22 +113,28 @@ public class DroppedItem
             Layer.DroppedItem
         );
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+        Color textColor = Item.Rarity.GetColor();
+        if (Item.Rarity == Rarity.Normal && this.IsHovered)
+        {
+            textColor = Color.Black;
+        }
+
+        arpg.Game1.DrawText(
+            spriteBatch,
             Item.Name,
             new((int)_bounds.X + (_bounds.Width - _stringOrigin.X) / 2, (int)_bounds.Y),
-            Item.Rarity.GetColor(),
-            // IsHovered ? Color.Black : Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.DroppedItemText
+            Layer.DroppedItemText,
+            textColor
         );
     }
 
     public bool GetPickedUp(Player player)
     {
+        if (this.Item is Gold gold)
+        {
+            player.Gold += gold.Amount;
+        }
+
         bool added = player.Inventory.AddItem(this.Item);
         if (added)
             Game1.World.Items.Remove(this);

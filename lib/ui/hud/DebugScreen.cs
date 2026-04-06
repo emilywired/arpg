@@ -29,64 +29,33 @@ public class DebugScreen : IHudElement
             $"CursorCoordinate=({cursorCoordinate.X}, {cursorCoordinate.Y})";
         // string framerateText = $"FPS:{(int)FramerateCounter.Framerate}";
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+
+        Game1.DrawText(
+            spriteBatch,
             playerPositionXText,
             new Vector2(0, 0),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
+            Layer.Text,
+            Color.White
         );
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+        Game1.DrawText(
+            spriteBatch,
             playerPositionYText,
             new Vector2(0, 10),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
+            Layer.Text,
+            Color.White
         );
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
-            resolutionText,
-            new Vector2(0, 20),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
-        );
+        Game1.DrawText(spriteBatch, resolutionText, new Vector2(0, 20), Layer.Text, Color.White);
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
-            mousePositionText,
-            new Vector2(0, 30),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
-        );
+        Game1.DrawText(spriteBatch, mousePositionText, new Vector2(0, 30), Layer.Text, Color.White);
 
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
+        Game1.DrawText(
+            spriteBatch,
             cursorCoordinateText,
             new Vector2(0, 40),
-            Color.White,
-            0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
+            Layer.Text,
+            Color.White
         );
     }
 }

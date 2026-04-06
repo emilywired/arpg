@@ -40,17 +40,13 @@ public class ManaGlobe : IHudElement
             Layer.HUD
         );
 
-        string manaGlobeValuesText = $"{Mana}/{MaxMana}";
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
-            manaGlobeValuesText,
+
+        Game1.DrawText(
+            spriteBatch,
+            $"{Mana}/{MaxMana}",
             new Vector2(Position.X, Position.Y - 12),
-            Color.White,
-            0.0f,
-            Vector2.Zero,
-            1f,
-            SpriteEffects.None,
-            Layer.Text
+            Layer.Text,
+            Color.White
         );
     }
 };

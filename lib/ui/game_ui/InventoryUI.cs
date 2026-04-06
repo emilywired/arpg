@@ -212,6 +212,16 @@ public class InventoryUI
             DrawSquare(spriteBatch, bounds);
             _equipmentItems[i]?.Draw(spriteBatch, bounds.X, bounds.Y);
         }
+
+        string goldAmountText = $"Gold: {_player.Gold}";
+
+        Game1.DrawText(
+            spriteBatch,
+            goldAmountText,
+            new Vector2(WindowBounds.Left + 4, 240),
+            Layer.UIWindowElementText,
+            Color.Yellow
+        );
     }
 
     private void InitInventory()
