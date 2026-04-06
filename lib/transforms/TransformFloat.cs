@@ -4,14 +4,14 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
-public class TransformVector2 : ITransform
+public class TransformFloat: ITransform
 {
     private object _obj;
 
     private PropertyInfo _property;
 
-    private Vector2? _from;
-    private Vector2 _to;
+    private float _from;
+    private float _to;
     private double _time;
     private double _length;
 
@@ -20,7 +20,7 @@ public class TransformVector2 : ITransform
     public bool IsReady { get; protected set; }
     public event Action OnFinish;
 
-    public TransformVector2(object obj, string propertyName, Vector2 to, double length)
+    public TransformFloat(object obj, string propertyName, float to, double length)
     {
         _obj = obj;
         _to = to;
@@ -32,7 +32,7 @@ public class TransformVector2 : ITransform
 
     public void Reset()
     {
-        _from = (Vector2)_property.GetValue(_obj);
+        _from = (float)_property.GetValue(_obj);
         _time = 0;
         IsReady = true;
     }
