@@ -33,6 +33,9 @@ public class Inventory
         return Grid.GetItem(x, y);
     }
 
+    public (int, int)? FindItemPosition(Item item)
+        => Grid.FindItemPosition(item);
+
     public bool RemoveItem(Item item)
     {
         return Grid.RemoveItem(item);

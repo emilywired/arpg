@@ -1,4 +1,4 @@
 public interface IUsableOnItem
 {
-    void UseOn(Item item) { }
+    void UseOn(Item item);
 }

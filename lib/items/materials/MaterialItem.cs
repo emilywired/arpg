@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class MaterialItem : Item, IMaterial
 {
-    public int StackQuantity { get; }
+    public int StackQuantity { get; set; }
     public int MaxStackQuantity { get; }
     public string Description { get; }
 

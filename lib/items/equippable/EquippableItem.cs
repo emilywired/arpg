@@ -4,7 +4,7 @@ using System.Linq;
 using arpg;
 using Microsoft.Xna.Framework.Graphics;
 
-public class EquippableItem : Item, IEquippable
+public class EquippableItem : Item, IEquippable, ICorruptable
 {
     public int Level { get; private set; }
     public int LevelRequirement { get; private set; }
@@ -84,10 +84,10 @@ public class EquippableItem : Item, IEquippable
         return this;
     }
 
-    public EquippableItem Corrupt()
+    public void Corrupt()
     {
         if (IsCorrupted)
-            return this;
+            return;
         IsCorrupted = true;
 
         var rng = new Random();
@@ -101,7 +101,7 @@ public class EquippableItem : Item, IEquippable
             // TODO: affix from pool, specific for each gear type
             BaseAffixes = [new MovementSpeedAffix(69)];
         }
-        return this;
+        return;
     }
 
     private EquippableItem RollAffixes()

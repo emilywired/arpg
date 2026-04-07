@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using arpg;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 public class InventoryUI
 {
@@ -31,6 +33,8 @@ public class InventoryUI
     };
 
     private Dictionary<Rectangle, (int i, int j)> _inventorySquaresToGridPositions = [];
+
+    private IUsableOnItem? activeUsable = null;
 
     public InventoryUI(Player player)
     {
@@ -99,6 +103,25 @@ public class InventoryUI
         DrawEquipment(spriteBatch);
         DrawInventory(spriteBatch);
         DrawTooltip(spriteBatch);
+
+        if (activeUsable != null)
+        {
+            var mousePosition = MouseManager.ScreenMousePosition;
+            var itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
+            var itemGridRect = _inventorySquaresToGridPositions.First(tuple => tuple.Value == itemLocation).Key;
+            var itemGridPosition = itemGridRect.Center.ToVector2();
+
+            spriteBatch.Draw(
+                Assets.RectangleTexture,
+                new Rectangle((int)itemGridPosition.X, (int)itemGridPosition.Y, 2, (int)itemGridPosition.DistanceTo(mousePosition)),
+                null,
+                Color.CornflowerBlue,
+                itemGridPosition.AngleTo(mousePosition) - MathF.PI / 2,
+                Vector2.Zero,
+                SpriteEffects.None,
+                Layer.ItemTooltipBackground
+            );
+        }
     }
 
     public bool OnLeftClick(Vector2 mousePosition)
@@ -106,14 +129,16 @@ public class InventoryUI
         if (!IsOpen)
             return false;
 
-        bool cursorWithin_windowBounds =
-            mousePosition.X > WindowBounds.Left
-            && mousePosition.X < WindowBounds.Right
-            && mousePosition.Y > WindowBounds.Top
-            && mousePosition.Y < WindowBounds.Bottom;
-
-        if (!cursorWithin_windowBounds)
+        if (!WindowBounds.Contains(mousePosition))
             return false;
+
+        if (activeUsable != null)
+        {
+            if (HoveredItem != null)
+                activeUsable.UseOn(HoveredItem);
+
+            activeUsable = null;
+        }
 
         return true;
     }
@@ -123,20 +148,34 @@ public class InventoryUI
         if (!IsOpen)
             return false;
 
-        if (HoveredItem is not null && HoveredItem is EquippableItem equippable)
+        if (activeUsable != null)
         {
-            // TODO: flowchart and implementation of all scenarios
-
-            if (equippable.IsEquipped)
-            {
-                _player.Equipment.Unequip(equippable);
-            }
-            else
-            {
-                _player.Equipment.Equip(equippable);
-                _player.Inventory.RemoveItem(equippable);
-            }
+            activeUsable = null;
             return true;
+        }
+
+        switch (HoveredItem)
+        {
+            case EquippableItem equippable:
+                // TODO: flowchart and implementation of all scenarios
+
+                if (equippable.IsEquipped)
+                {
+                    _player.Equipment.Unequip(equippable);
+                }
+                else
+                {
+                    _player.Equipment.Equip(equippable);
+                    _player.Inventory.RemoveItem(equippable);
+                }
+                return true;
+            case IUsableOnItem itemUsable:
+                activeUsable = itemUsable;
+
+                var itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
+                var itemPosition = _inventorySquaresToGridPositions.First(tuple => tuple.Value == itemLocation).Key.Location.ToVector2();
+                
+                return true;
         }
 
         return false;

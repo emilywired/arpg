@@ -154,6 +154,21 @@ public class Grid<T>
         return true;
     }
 
+    public (int, int)? FindItemPosition(T item)
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                GridItem<T>? gridItem = Squares[y, x];
+                if (gridItem?.Value == item)
+                    return (gridItem.OriginX, gridItem.OriginY);
+            }
+        }
+
+        return null;
+    }
+
     // public bool ItemFitsWithinGrid(int width, int height)
     // {
     //     // TODO: optimize
