@@ -19,6 +19,9 @@ public class ActorBaseStats
     public double Intelligence { get; set; }
     public double Vitality { get; set; }
     public double Spirit { get; set; }
+    public double FireResistance { get; set; }
+    public double ColdResistance { get; set; }
+    public double LightningResistance { get; set; }
 
     private IActor _actor;
     private const double TICK_TIME = 0.1d;

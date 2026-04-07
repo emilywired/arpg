@@ -53,6 +53,11 @@ public class ItemTooltip
         {
             AddHorizontalRule();
 
+            if (equippable.IsCorrupted)
+            {
+                AddText($"Corrupted", Color.DarkRed);
+            }
+
             if (equippable.LevelRequirement > 1)
             {
                 AddText($"Requires Level {equippable.LevelRequirement}", Color.Gray);
@@ -65,7 +70,7 @@ public class ItemTooltip
                 AddHorizontalRule();
                 foreach (Affix baseAffix in equippable.BaseAffixes)
                 {
-                    AddText(baseAffix.ToStringBase(), ItemColors.Normal);
+                    AddText(baseAffix.ToStringBase(), ItemColors.Magic);
                 }
             }
 

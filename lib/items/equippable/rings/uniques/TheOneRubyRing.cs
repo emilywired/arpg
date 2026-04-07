@@ -11,11 +11,11 @@ public class TheOneRubyRing : RubyRing, IUnique
 
     public List<Affix> UniqueAffixes { get; } =
         [
-            new StrengthAffix(3, 5).RollValue(),
-            new AgilityAffix(3, 5).RollValue(),
-            new IntelligenceAffix(3, 5).RollValue(),
-            new VitalityAffix(3, 5).RollValue(),
-            new SpiritAffix(3, 5).RollValue(),
+            new StrengthAffix(5, 8).RollValue(),
+            new AgilityAffix(5, 8).RollValue(),
+            new IntelligenceAffix(5, 8).RollValue(),
+            new VitalityAffix(5, 8).RollValue(),
+            new SpiritAffix(5, 8).RollValue(),
         ];
 
     public TheOneRubyRing()
