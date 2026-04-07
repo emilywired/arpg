@@ -10,14 +10,14 @@ public class LootSystem
         { () => new AugmentingCore(), 100 },
         { () => new Hood(), 5000 },
         { () => new Sandals(), 5000 },
-        { () => new RubyRing(), 1000 },
-        { () => new SapphireRing(), 1000 },
+        { () => new RubyRing(), 100000 },
+        { () => new SapphireRing(), 100000 },
     };
     private int _totalLootPoolWeights => lootPool.Values.Sum();
 
     private Dictionary<int, int> _dropCountWeights = new()
     {
-        { 0, 9000 },
+        { 0, 2000 },
         { 1, 1000 },
         { 2, 150 },
         { 3, 50 },
@@ -69,6 +69,7 @@ public class LootSystem
                     )
                     {
                         RollRarity(equippableItem);
+                        equippableItem.Corrupt();
                     }
                     drops.Add(item);
                     break;

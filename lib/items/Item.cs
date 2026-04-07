@@ -7,7 +7,7 @@ public class Item
     public bool IsHovered { get; set; } = false;
     public string Name { get; private set; }
     public Rarity Rarity { get; protected set; }
-    public bool IsCorrupted { get; private set; } = false;
+    public bool IsCorrupted { get; protected set; } = false;
     public int Width { get; private set; }
     public int Height { get; private set; }
     public Asset Asset;

@@ -125,18 +125,23 @@ public class EquippableItem : Item, IEquippable
         return this;
     }
 
-    private void RollAffixes()
+    private EquippableItem RollAffixes()
     {
-        // TODO: amount of prefixes and suffixes as arguments
-        Random rng = new();
-        // TODO: actual prefix/suffix pools based on slot, ilvl
-        List<Affix> prefixPool = [new LifeAffix(3, 6), new ManaAffix(3, 6)];
-        List<Affix> suffixPool = [new LifeOnKillAffix(1, 2), new ManaOnKillAffix(1, 2)];
+        if (IsCorrupted)
+            return this;
+        IsCorrupted = true;
 
-        Affix prefix = prefixPool[rng.Next(0, prefixPool.Count)].RollValue();
-        Prefixes.Add(prefix);
-
-        Affix suffix = suffixPool[rng.Next(0, suffixPool.Count)].RollValue();
-        Suffixes.Add(suffix);
+        var rng = new Random();
+        int roll = rng.Next(0, 3);
+        if (roll == 0)
+        {
+            ToRare();
+        }
+        else if (roll == 1 || roll == 2)
+        {
+            // TODO: affix from pool, specific for each gear type
+            ImplicitAffixes = [new MovementSpeedAffix(11)];
+        }
+        return this;
     }
 }
