@@ -120,6 +120,54 @@ public class ManaOnKillAffix : Affix
     }
 }
 
+public class FireResistanceAffix : Affix
+{
+    public FireResistanceAffix(int minRange, int? maxRange = null)
+        : base(minRange, maxRange) { }
+
+    public override void Apply(Player player, int value)
+    {
+        ((PlayerStats)player.Stats).FireResistance += value;
+    }
+
+    public override string ToString()
+    {
+        return $"+{RolledValue}% To Fire Resistance";
+    }
+}
+
+public class ColdResistanceAffix : Affix
+{
+    public ColdResistanceAffix(int minRange, int? maxRange = null)
+        : base(minRange, maxRange) { }
+
+    public override void Apply(Player player, int value)
+    {
+        ((PlayerStats)player.Stats).ColdResistance += value;
+    }
+
+    public override string ToString()
+    {
+        return $"+{RolledValue}% To Cold Resistance";
+    }
+}
+
+public class LightningResistanceAffix : Affix
+{
+    public LightningResistanceAffix(int minRange, int? maxRange = null)
+        : base(minRange, maxRange) { }
+
+    public override void Apply(Player player, int value)
+    {
+        ((PlayerStats)player.Stats).LightningResistance += value;
+    }
+
+    public override string ToString()
+    {
+        return $"+{RolledValue}% To Lightning Resistance";
+    }
+}
+
 public class StrengthAffix : Affix
 {
     public StrengthAffix(int minRange, int? maxRange = null)

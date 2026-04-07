@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using arpg;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -36,22 +37,9 @@ public class EquippableItem : Item, IEquippable
         if (IsEquipped)
             throw new SystemException("Item already equipped");
 
-        foreach (Affix affix in BaseAffixes)
-        {
-            affix.Apply(player, affix.RolledValue);
-        }
+        List<Affix> affixes = [.. BaseAffixes, .. ImplicitAffixes, .. Prefixes, .. Suffixes];
 
-        foreach (Affix affix in ImplicitAffixes)
-        {
-            affix.Apply(player, affix.RolledValue);
-        }
-
-        foreach (Affix affix in Prefixes)
-        {
-            affix.Apply(player, affix.RolledValue);
-        }
-
-        foreach (Affix affix in Suffixes)
+        foreach (Affix affix in affixes)
         {
             affix.Apply(player, affix.RolledValue);
         }
@@ -64,22 +52,9 @@ public class EquippableItem : Item, IEquippable
         if (!IsEquipped)
             throw new SystemException("Item already unequipped");
 
-        foreach (Affix affix in BaseAffixes)
-        {
-            affix.Apply(player, -(affix.RolledValue));
-        }
+        List<Affix> affixes = [.. BaseAffixes, .. ImplicitAffixes, .. Prefixes, .. Suffixes];
 
-        foreach (Affix affix in ImplicitAffixes)
-        {
-            affix.Apply(player, -(affix.RolledValue));
-        }
-
-        foreach (Affix affix in Prefixes)
-        {
-            affix.Apply(player, -(affix.RolledValue));
-        }
-
-        foreach (Affix affix in Suffixes)
+        foreach (Affix affix in affixes)
         {
             affix.Apply(player, -(affix.RolledValue));
         }
@@ -111,22 +86,6 @@ public class EquippableItem : Item, IEquippable
 
     public EquippableItem Corrupt()
     {
-        var rng = new Random();
-        int roll = rng.Next(0, 3);
-        if (roll == 0)
-        {
-            ToRare();
-        }
-        else if (roll == 1 || roll == 2)
-        {
-            // TODO: affix from pool, specific for each gear type
-            BaseAffixes = [new MovementSpeedAffix(10)];
-        }
-        return this;
-    }
-
-    private EquippableItem RollAffixes()
-    {
         if (IsCorrupted)
             return this;
         IsCorrupted = true;
@@ -140,8 +99,24 @@ public class EquippableItem : Item, IEquippable
         else if (roll == 1 || roll == 2)
         {
             // TODO: affix from pool, specific for each gear type
-            ImplicitAffixes = [new MovementSpeedAffix(11)];
+            BaseAffixes = [new MovementSpeedAffix(69)];
         }
+        return this;
+    }
+
+    private EquippableItem RollAffixes()
+    {
+        Random rng = new();
+
+        // filter valid affixes and their tiers based on ilvl
+        var prefixPool = GlobalAffixes.Prefixes[Slot];
+        var suffixPool = GlobalAffixes.Suffixes[Slot];
+
+        // decide n amount of prefixes, same for suffixes
+        // select n affix families
+        // roll tier
+
+
         return this;
     }
 }
