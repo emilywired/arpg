@@ -45,10 +45,10 @@ public class LootSystem
             drops.Add(new Gold(goldAmount));
         }
 
-        int dropCount = RollDropCount();
+        int dropCount = RandomUtils.WeightedChoice(_dropCountWeights);
         for (int i = 0; i < dropCount; i++)
         {
-            Item item = RandomUtils.WeightedChoice(_lootPool.Keys, _lootPool.Values)();
+            Item item = RandomUtils.WeightedChoice(_lootPool).Invoke();
 
             if (
                 item is EquippableItem equippableItem
@@ -63,14 +63,9 @@ public class LootSystem
         return drops;
     }
 
-    private int RollDropCount()
-    {
-        return RandomUtils.WeightedChoice(_dropCountWeights.Keys, _dropCountWeights.Values);
-    }
-
     private void RollRarity(EquippableItem item)
     {
-        Rarity rarity = RandomUtils.WeightedChoice(_rarityWeights.Keys, _rarityWeights.Values);
+        Rarity rarity = RandomUtils.WeightedChoice(_rarityWeights);
         switch (rarity)
         {
             case Rarity.Magic:

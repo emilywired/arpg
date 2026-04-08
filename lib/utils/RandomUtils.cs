@@ -4,24 +4,24 @@ using System.Linq;
 
 public class RandomUtils
 {
-    public static int WeightedIndex(IEnumerable<int> weights)
+    public static K WeightedChoice<K>(IEnumerable<KeyValuePair<K, int>> weights)
     {
         var weightsList = weights.ToList();
-        int weightsTotal = weightsList.Sum();
+        int weightsTotal = weightsList.Sum(p => p.Value);
 
         int roll = Random.Shared.Next(weightsTotal);
         int cumulative = 0;
 
-        for (int i = 0; i < weights.Count(); i++)
+        foreach (var (key, weight) in weights)
         {
-            cumulative += weightsList[i];
+            cumulative += weight;
             if (roll < cumulative)
             {
-                return i;
+                return key;
             }
         }
 
-        return weights.Count() - 1;
+        return weights.First().Key;
     }
 
     public static T WeightedChoice<T>(IEnumerable<T> values, IEnumerable<int> weights)
@@ -29,7 +29,9 @@ public class RandomUtils
         if (weights.Count() != values.Count())
             throw new Exception("Values and weights must be of same length.");
 
-        int i = RandomUtils.WeightedIndex(weights);
-        return values.ElementAt(i);
+        return WeightedChoice(values.Zip(weights).Select(tuple => KeyValuePair.Create(tuple.First, tuple.Second)));
     }
+
+    public static T WeightedChoice<T>(IEnumerable<T> values, Func<T, int> selector)
+        => WeightedChoice(values, values.Select(selector));
 }

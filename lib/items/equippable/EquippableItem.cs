@@ -91,12 +91,12 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         }
         else if (roll == 1 || roll == 2)
         {
-            var affixPool = GlobalAffixes
+            var affix = GlobalAffixes
                 .CorruptedImplicits[Slot]
-                .Where(affixData => affixData.RequiredItemLevel <= Level);
+                .Where(affixData => affixData.RequiredItemLevel <= Level)
+                .WeightedChoice(affixData => affixData.Weight)
+                .CreateAffix();
 
-            var weights = affixPool.Select(affixData => affixData.Weight);
-            var affix = RandomUtils.WeightedChoice(affixPool, weights).CreateAffix();
             ImplicitAffixes = [affix];
         }
 
@@ -126,15 +126,8 @@ public class EquippableItem : Item, IEquippable, ICorruptable
                 break;
             }
 
-            var rolledFamily = RandomUtils.WeightedChoice(
-                affixFamilyPool,
-                affixFamilyPool.Select(affixFamily => affixFamily.TotalWeight)
-            );
-
-            var rolledAffix = RandomUtils.WeightedChoice(
-                rolledFamily.Tiers,
-                rolledFamily.Tiers.Select(tier => tier.Weight)
-            );
+            var rolledFamily = affixFamilyPool.WeightedChoice(affixFamily => affixFamily.TotalWeight);
+            var rolledAffix = rolledFamily.Tiers.WeightedChoice(tier => tier.Weight);
 
             Prefixes.Add(rolledAffix.CreateAffix());
 
