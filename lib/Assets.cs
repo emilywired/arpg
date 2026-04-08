@@ -6,14 +6,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace arpg;
 
-public class Asset
+public record class TextureAsset
 {
-    public readonly Texture2D Texture;
-    public readonly List<Rectangle> Frames = [];
+    public Texture2D Texture { get; }
+    public List<Rectangle> Frames { get; }
 
-    public Asset(Texture2D texture, int frameAmount)
+    public bool Looping { get; init; } = true;
+
+    public TextureAsset(Texture2D texture, int frameAmount)
     {
         Texture = texture;
+        Frames = new List<Rectangle>(frameAmount);
 
         int frameWidth = Texture.Width / frameAmount;
         for (int i = 0; i < frameAmount; i++)
@@ -34,46 +37,46 @@ public static class Assets
 
     public static class Environment
     {
-        public static Asset Cobblestone => GetTexture("environment/cobblestone_3");
+        public static TextureAsset Cobblestone => GetTexture("environment/cobblestone_3");
     }
 
     public static class Player
     {
-        public static Asset Idle => GetTexture("player/player_idle");
-        public static Asset Walk => GetTexture("player/player_walk");
+        public static TextureAsset Idle => GetTexture("player/player_idle");
+        public static TextureAsset Walk => GetTexture("player/player_walk");
     }
 
     public static class Spells
     {
-        public static Asset Fireball => GetTexture("spells/fireball");
-        public static Asset Spark => GetTexture("spells/spark");
-        public static Asset FrozenOrb => GetTexture("spells/frozen_orb");
-        public static Asset FrozenOrbSecondary => GetTexture("spells/frozen_orb_secondary");
+        public static TextureAsset Fireball => GetTexture("spells/fireball");
+        public static TextureAsset Spark => GetTexture("spells/spark");
+        public static TextureAsset FrozenOrb => GetTexture("spells/frozen_orb");
+        public static TextureAsset FrozenOrbSecondary => GetTexture("spells/frozen_orb_secondary");
     }
 
     public static class Monsters
     {
         public static class Skeleton
         {
-            public static Asset Idle => GetTexture("monsters/skeleton_ready");
-            public static Asset Walk => GetTexture("monsters/skeleton_walk");
-            public static Asset Attack => GetTexture("monsters/skeleton_attack");
-            public static Asset Death => GetTexture("monsters/skeleton_dead_near");
-            public static Asset Corpse => GetTexture("monsters/skeleton_corpse");
+            public static TextureAsset Idle => GetTexture("monsters/skeleton_ready");
+            public static TextureAsset Walk => GetTexture("monsters/skeleton_walk");
+            public static TextureAsset Attack => GetTexture("monsters/skeleton_attack");
+            public static TextureAsset Death => GetTexture("monsters/skeleton_dead_near") with { Looping = false };
+            public static TextureAsset Corpse => GetTexture("monsters/skeleton_corpse");
         }
     }
 
     public static class Items
     {
-        public static Asset None_1x1 => GetTexture("items/item_none_1x1");
-        public static Asset None_2x1 => GetTexture("items/item_none_2x1");
-        public static Asset None_2x2 => GetTexture("items/item_none_2x2");
-        public static Asset None_2x3 => GetTexture("items/item_none_2x3");
-        public static Asset None_2x4 => GetTexture("items/item_none_2x4");
+        public static TextureAsset None_1x1 => GetTexture("items/item_none_1x1");
+        public static TextureAsset None_2x1 => GetTexture("items/item_none_2x1");
+        public static TextureAsset None_2x2 => GetTexture("items/item_none_2x2");
+        public static TextureAsset None_2x3 => GetTexture("items/item_none_2x3");
+        public static TextureAsset None_2x4 => GetTexture("items/item_none_2x4");
     }
 
     private static Dictionary<string, SpriteFont> _fonts = [];
-    private static Dictionary<string, Asset> _textures = [];
+    private static Dictionary<string, TextureAsset> _textures = [];
 
     public static void Load(ContentManager contentManager, GraphicsDevice graphicsDevice)
     {
@@ -157,10 +160,10 @@ public static class Assets
     private static void AddTexture(ContentManager contentManager, string path, int frameAmount)
     {
         Texture2D texture = contentManager.Load<Texture2D>(path);
-        _textures.Add(path, new Asset(texture, frameAmount));
+        _textures.Add(path, new TextureAsset(texture, frameAmount));
     }
 
-    private static Asset GetTexture(string path)
+    private static TextureAsset GetTexture(string path)
     {
         try
         {

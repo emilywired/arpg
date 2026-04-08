@@ -14,7 +14,7 @@ public class MaterialItem : Item, IMaterial
         Rarity rarity,
         int width,
         int height,
-        Asset asset,
+        TextureAsset asset,
         string description,
         int maxStackQuantity,
         int stackQuantity = 1

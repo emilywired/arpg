@@ -52,7 +52,7 @@ public class SkeletonBehaviorComponent
 
         if (!monster.IsLeashed)
         {
-            monster.TransitionState(ActorState.Idling);
+            monster.State = ActorState.Idling;
             return;
         }
 
@@ -68,8 +68,8 @@ public class SkeletonBehaviorComponent
 
         if (withinAttackTriggerDistance && !_isAttacking)
         {
-            monster.TransitionState(ActorState.Idling);
-            monster.TransitionState(ActorActionState.Swinging);
+            monster.State = ActorState.Idling;
+            monster.ActionState = ActorActionState.Swinging;
             _isAttacking = true;
         }
 
@@ -98,8 +98,8 @@ public class SkeletonBehaviorComponent
         else
         {
             monster.Position = new((float)x, (float)y);
-            monster.TransitionState(ActorState.Walking);
-            monster.TransitionState(ActorActionState.None);
+            monster.State = ActorState.Walking;
+            monster.ActionState = ActorActionState.None;
         }
     }
 }

@@ -24,7 +24,7 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         EquippableSlot slot,
         int width,
         int height,
-        Asset asset
+        TextureAsset asset
     )
         : base(name, rarity, width, height, asset)
     {

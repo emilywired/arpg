@@ -102,7 +102,7 @@ public class PlayerInputComponent
             IsMoving = false;
             _movementTrack?.InvokeOnComplete();
             _movementTrack = null;
-            _player.TransitionState(ActorState.Idling);
+            _player.State = ActorState.Idling;
         }
     }
 
@@ -134,11 +134,9 @@ public class PlayerInputComponent
         double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
         bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;
         _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
-        _player.TransitionState(ActorState.Walking);
+        _player.State = ActorState.Walking;
 
-        _movementTrack = new();
-
-        return _movementTrack;
+        return _movementTrack = new();
     }
 
     private double CalculateAngle(Vector2 a, Vector2 b)

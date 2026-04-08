@@ -10,11 +10,11 @@ public class Item
     public bool IsCorrupted { get; protected set; } = false;
     public int Width { get; private set; }
     public int Height { get; private set; }
-    public Asset Asset;
+    public TextureAsset Asset;
 
     private const int ITEM_1x1_SIZE = 20;
 
-    public Item(string name, Rarity rarity, int width, int height, Asset asset)
+    public Item(string name, Rarity rarity, int width, int height, TextureAsset asset)
     {
         Name = name;
         Rarity = rarity;

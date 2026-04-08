@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class FireballGraphicsComponent
 {
-    private Asset _asset = Assets.Spells.Fireball;
+    private TextureAsset _asset = Assets.Spells.Fireball;
     private int _currentFrame = 0;
 
     public void Update(GameTime gameTime)

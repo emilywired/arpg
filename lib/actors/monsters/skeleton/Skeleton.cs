@@ -7,8 +7,31 @@ public class Skeleton : IMonster
 {
     public string Id { get; } = Guid.NewGuid().ToString();
     public ActorKind Kind { get; } = ActorKind.Monster;
-    public ActorState State { get; set; } = ActorState.Idling;
-    public ActorActionState ActionState { get; set; } = ActorActionState.None;
+
+    public ActorState State { 
+        get => field; 
+        set
+        {
+            var changed = field != value;
+            field = value;
+            if (changed)
+                OnStateChanged?.Invoke();
+        }
+    } = ActorState.Idling;
+    public event Action? OnStateChanged;
+
+    public ActorActionState ActionState { 
+        get => field; 
+        set
+        {
+            var changed = field != value;
+            field = value;
+            if (changed)
+                OnActionStateChanged?.Invoke();
+        }
+    } = ActorActionState.None;
+    public event Action? OnActionStateChanged;
+
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public ActorBaseStats Stats { get; }
@@ -21,13 +44,15 @@ public class Skeleton : IMonster
     public int Level { get; }
     public int XP { get; } = 10;
 
-    private SkeletonGraphicsComponent _graphicsComponent = new();
+    private SkeletonSprite sprite;
     private SkeletonBehaviorComponent _behaviorComponent = new();
 
     public Skeleton(int level)
     {
         Level = level;
         Stats = new(this, speed: 150, health: 40);
+
+        sprite = new(this);
     }
 
     public void Update(GameTime gameTime)
@@ -35,17 +60,16 @@ public class Skeleton : IMonster
         Stats.Update(gameTime);
 
         if (!IsAlive)
-        {
-            TransitionState(ActorState.Dead);
-        }
+            State = ActorState.Dead;
 
-        _graphicsComponent.Update(this, gameTime);
+        sprite.Position = Position;
+        sprite.Update(gameTime);
         _behaviorComponent.Update(this, gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _graphicsComponent.Draw(this, spriteBatch);
+        sprite.Draw(spriteBatch);
     }
 
     public void TakeDamage(double amount)
@@ -60,25 +84,5 @@ public class Skeleton : IMonster
         }
 
         IsLeashed = true;
-    }
-
-    public void TransitionState(ActorState newState)
-    {
-        bool stateChanged = State != newState;
-        if (stateChanged)
-        {
-            State = newState;
-            _graphicsComponent.ResetFrames();
-        }
-    }
-
-    public void TransitionState(ActorActionState newState)
-    {
-        bool stateChanged = ActionState != newState;
-        if (stateChanged)
-        {
-            ActionState = newState;
-            _graphicsComponent.ResetFrames();
-        }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class FrozenOrbSecondaryGraphicsComponent
 {
-    private Asset _asset = Assets.Spells.FrozenOrbSecondary;
+    private TextureAsset _asset = Assets.Spells.FrozenOrbSecondary;
 
     public void Draw(FrozenOrbSecondaryEntity frozenOrbSecondary, SpriteBatch spriteBatch)
     {
