@@ -109,12 +109,19 @@ public class InventoryUI
         {
             var mousePosition = MouseManager.ScreenMousePosition;
             var itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
-            var itemGridRect = _inventorySquaresToGridPositions.First(tuple => tuple.Value == itemLocation).Key;
+            var itemGridRect = _inventorySquaresToGridPositions
+                .First(tuple => tuple.Value == itemLocation)
+                .Key;
             var itemGridPosition = itemGridRect.Center.ToVector2();
 
             spriteBatch.Draw(
                 Assets.RectangleTexture,
-                new Rectangle((int)itemGridPosition.X, (int)itemGridPosition.Y, 2, (int)itemGridPosition.DistanceTo(mousePosition)),
+                new Rectangle(
+                    (int)itemGridPosition.X,
+                    (int)itemGridPosition.Y,
+                    2,
+                    (int)itemGridPosition.DistanceTo(mousePosition)
+                ),
                 null,
                 Color.CornflowerBlue,
                 itemGridPosition.AngleTo(mousePosition) - MathF.PI / 2,
@@ -151,14 +158,6 @@ public class InventoryUI
 
         if (activeUsable != null)
         {
-            if (equippable.IsEquipped)
-            {
-                _player.Equipment.Unequip(equippable);
-            }
-            else
-            {
-                _player.Equipment.Equip(equippable);
-            }
             activeUsable = null;
             return true;
         }
@@ -175,15 +174,16 @@ public class InventoryUI
                 else
                 {
                     _player.Equipment.Equip(equippable);
-                    _player.Inventory.RemoveItem(equippable);
                 }
                 return true;
             case IUsableOnItem itemUsable:
                 activeUsable = itemUsable;
 
                 var itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
-                var itemPosition = _inventorySquaresToGridPositions.First(tuple => tuple.Value == itemLocation).Key.Location.ToVector2();
-                
+                var itemPosition = _inventorySquaresToGridPositions
+                    .First(tuple => tuple.Value == itemLocation)
+                    .Key.Location.ToVector2();
+
                 return true;
         }
 

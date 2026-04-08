@@ -68,7 +68,6 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(1, 3));
         RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(1, 3));
         Rarity = Rarity.Magic;
-
         return this;
     }
 
@@ -77,14 +76,13 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(2, 4));
         RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(2, 4));
         Rarity = Rarity.Rare;
-
         return this;
     }
 
     public void Corrupt()
     {
         if (IsCorrupted)
-            return this;
+            return;
 
         int roll = Random.Shared.Next(0, 3);
         if (roll == 0)
@@ -103,7 +101,6 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         }
 
         IsCorrupted = true;
-        return this;
     }
 
     private void RollAffixGroup(IEnumerable<AffixFamily> sourcePool, int amount)
