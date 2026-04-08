@@ -130,6 +130,7 @@ public class DroppedItem
 
     public bool GetPickedUp(Player player)
     {
+        // TODO: item.GetPickedUp
         if (this.Item is Gold gold)
         {
             player.Gold += gold.Amount;

@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Player : IActor
 {
+    public static readonly float ItemPickupRadius = 40;
+    public static readonly float GoldPickupRadius = 60;
+
     public string Id { get; } = Guid.NewGuid().ToString();
     public ActorKind Kind { get; } = ActorKind.Player;
     public ActorState State { get; set; } = ActorState.Idling;
@@ -64,6 +67,17 @@ public class Player : IActor
     public void Update(GameTime gameTime)
     {
         Stats.Update(gameTime);
+
+        var goldWithinRange = Game1
+            .World.Items.Where(droppedItem => droppedItem.Item is Gold)
+            .Where(item => item.Position.DistanceTo(Position) <= GoldPickupRadius)
+            .ToList();
+
+        foreach (var gold in goldWithinRange)
+        {
+            gold.GetPickedUp(this);
+        }
+
         InputComponent.Update(gameTime);
         _graphicsComponent.Update(gameTime);
     }

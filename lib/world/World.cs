@@ -64,13 +64,13 @@ public class World
 
     public bool OnLeftClick()
     {
-        const float itemPickupRadius = 40;
-
         var hoveredItems = Items.Where(item => item.IsHovered).ToList();
 
         if (hoveredItems.Count != 0)
         {
-            var itemInRange = hoveredItems.Find(item => Player.Position.DistanceTo(item.Position) <= itemPickupRadius);
+            var itemInRange = hoveredItems.Find(item =>
+                Player.Position.DistanceTo(item.Position) <= Player.ItemPickupRadius
+            );
             if (itemInRange != null)
             {
                 itemInRange.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
@@ -79,12 +79,20 @@ public class World
             {
                 var targetItem = hoveredItems.First();
 
-                Vector2 pickupPoint = MathUtils.ClosestEdgeOfCircle(targetItem.Position, itemPickupRadius - 1, Player.Position);
+                Vector2 pickupPoint = MathUtils.ClosestEdgeOfCircle(
+                    targetItem.Position,
+                    Player.ItemPickupRadius - 1,
+                    Player.Position
+                );
 
                 var track = Player.InputComponent.StartMove(pickupPoint);
                 track.OnComplete += () =>
                 {
-                    if (Items.Contains(targetItem) && Player.Position.DistanceTo(targetItem.Position) <= itemPickupRadius)
+                    if (
+                        Items.Contains(targetItem)
+                        && Player.Position.DistanceTo(targetItem.Position)
+                            <= Player.ItemPickupRadius
+                    )
                     {
                         targetItem.GetPickedUp(Player);
                     }

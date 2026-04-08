@@ -35,7 +35,7 @@ public class LootSystem
     {
         List<Item> drops = [];
 
-        int goldRoll = Random.Shared.Next(0, 20);
+        int goldRoll = Random.Shared.Next(0, 1);
         if (goldRoll == 0)
         {
             int goldAmount = Random.Shared.Next(

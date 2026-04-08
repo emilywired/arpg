@@ -7,7 +7,7 @@ public class PlayerInputComponent
 {
     private Player _player;
 
-    private bool _isMoving = false;
+    public bool IsMoving { get; private set; } = false;
     private bool _isHoldingLeftClick;
     private Vector2 _destination;
     private double _destinationAngle = 0d;
@@ -81,7 +81,7 @@ public class PlayerInputComponent
         if (_isHoldingLeftClick)
             StartMove(MouseManager.WorldMousePosition);
 
-        if (!_isMoving)
+        if (!IsMoving)
             return;
 
         float distanceToDestination = Vector2.Distance(_player.Position, _destination);
@@ -99,7 +99,7 @@ public class PlayerInputComponent
         else
         {
             _player.Position = _destination;
-            _isMoving = false;
+            IsMoving = false;
             _movementTrack?.InvokeOnComplete();
             _movementTrack = null;
             _player.TransitionState(ActorState.Idling);
@@ -127,7 +127,7 @@ public class PlayerInputComponent
     {
         // TODO: refactor
 
-        _isMoving = true;
+        IsMoving = true;
         _destination = aimCoordinate;
         _destinationAngle = CalculateAngle(_player.Position, aimCoordinate);
 
@@ -151,6 +151,7 @@ public class PlayerInputComponent
     public class MovementTrack
     {
         public event Action? OnComplete;
+
         internal void InvokeOnComplete() => OnComplete?.Invoke();
     }
 }

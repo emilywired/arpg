@@ -27,7 +27,7 @@ public class Skeleton : IMonster
     public Skeleton(int level)
     {
         Level = level;
-        Stats = new(this, speed: 90, health: 40);
+        Stats = new(this, speed: 150, health: 40);
     }
 
     public void Update(GameTime gameTime)
