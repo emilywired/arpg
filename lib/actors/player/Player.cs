@@ -48,7 +48,11 @@ public class Player : IActor
 
         Equipment.Equip(new Sandals().ToMagic());
         Equipment.Equip(new Hood().ToRare());
-        Equipment.Equip(new TheOneRubyRing());
+        Equipment.Equip(new SapphireRing());
+        Equipment.Equip(new RubyRing());
+
+        Inventory.AddItem(new TheOneRubyRing());
+        Inventory.AddItem(new OrbOfCorruption(10));
 
         InputComponent = new(this);
         _graphicsComponent = new(this);

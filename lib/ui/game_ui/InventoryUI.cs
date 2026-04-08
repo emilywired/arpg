@@ -18,19 +18,20 @@ public class InventoryUI
     private const int EQUIPMENT_BORDER_SIZE = 3;
     private List<Rectangle> _inventorySquaresBounds = [];
     private List<Rectangle> _equipmentBounds = [];
-    private List<EquippableItem?> _equipmentItems => new()
-    {
-        _player.Equipment.MainHand,
-        _player.Equipment.Gloves,
-        _player.Equipment.LeftRing,
-        _player.Equipment.Belt,
-        _player.Equipment.Chest,
-        _player.Equipment.Head,
-        _player.Equipment.RightRing,
-        _player.Equipment.Amulet,
-        _player.Equipment.Boots,
-        _player.Equipment.OffHand,
-    };
+    private List<EquippableItem?> _equipmentItems =>
+        new()
+        {
+            _player.Equipment.MainHand,
+            _player.Equipment.Gloves,
+            _player.Equipment.LeftRing,
+            _player.Equipment.Belt,
+            _player.Equipment.Chest,
+            _player.Equipment.Head,
+            _player.Equipment.RightRing,
+            _player.Equipment.Amulet,
+            _player.Equipment.Boots,
+            _player.Equipment.OffHand,
+        };
 
     private Dictionary<Rectangle, (int i, int j)> _inventorySquaresToGridPositions = [];
 
@@ -150,6 +151,14 @@ public class InventoryUI
 
         if (activeUsable != null)
         {
+            if (equippable.IsEquipped)
+            {
+                _player.Equipment.Unequip(equippable);
+            }
+            else
+            {
+                _player.Equipment.Equip(equippable);
+            }
             activeUsable = null;
             return true;
         }

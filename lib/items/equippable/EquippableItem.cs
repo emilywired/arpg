@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using arpg;
 using Microsoft.Xna.Framework.Graphics;
@@ -64,10 +65,8 @@ public class EquippableItem : Item, IEquippable, ICorruptable
 
     public EquippableItem ToMagic()
     {
-        if (Rarity != Rarity.Normal)
-            return this;
-
-        RollAffixes();
+        RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(1, 3));
+        RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(1, 3));
         Rarity = Rarity.Magic;
 
         return this;
@@ -75,10 +74,8 @@ public class EquippableItem : Item, IEquippable, ICorruptable
 
     public EquippableItem ToRare()
     {
-        if (Rarity != Rarity.Normal)
-            return this;
-
-        RollAffixes();
+        RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(2, 4));
+        RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(2, 4));
         Rarity = Rarity.Rare;
 
         return this;
@@ -87,36 +84,64 @@ public class EquippableItem : Item, IEquippable, ICorruptable
     public void Corrupt()
     {
         if (IsCorrupted)
-            return;
-        IsCorrupted = true;
+            return this;
 
-        var rng = new Random();
-        int roll = rng.Next(0, 3);
+        int roll = Random.Shared.Next(0, 3);
         if (roll == 0)
         {
             ToRare();
         }
         else if (roll == 1 || roll == 2)
         {
-            // TODO: affix from pool, specific for each gear type
-            BaseAffixes = [new MovementSpeedAffix(69)];
+            var affixPool = GlobalAffixes
+                .CorruptedImplicits[Slot]
+                .Where(affixData => affixData.RequiredItemLevel <= Level);
+
+            var weights = affixPool.Select(affixData => affixData.Weight);
+            var affix = RandomUtils.WeightedChoice(affixPool, weights).CreateAffix();
+            ImplicitAffixes = [affix];
         }
-        return;
+
+        IsCorrupted = true;
+        return this;
     }
 
-    private EquippableItem RollAffixes()
+    private void RollAffixGroup(IEnumerable<AffixFamily> sourcePool, int amount)
     {
-        Random rng = new();
+        var affixFamilyPool = sourcePool
+            .Select(family =>
+                family with
+                {
+                    Tiers = family
+                        .Tiers.Where(tier => tier.RequiredItemLevel <= Level)
+                        .ToImmutableArray(),
+                }
+            )
+            .Where(family => family.Tiers.Count() > 0)
+            .ToList();
 
-        // filter valid affixes and their tiers based on ilvl
-        var prefixPool = GlobalAffixes.Prefixes[Slot];
-        var suffixPool = GlobalAffixes.Suffixes[Slot];
+        int totalPrefixWeight = affixFamilyPool.Sum(AffixFamily => AffixFamily.TotalWeight);
 
-        // decide n amount of prefixes, same for suffixes
-        // select n affix families
-        // roll tier
+        for (int i = 0; i < amount; i++)
+        {
+            if (affixFamilyPool.Count() == 0)
+            {
+                break;
+            }
 
+            var rolledFamily = RandomUtils.WeightedChoice(
+                affixFamilyPool,
+                affixFamilyPool.Select(affixFamily => affixFamily.TotalWeight)
+            );
 
-        return this;
+            var rolledAffix = RandomUtils.WeightedChoice(
+                rolledFamily.Tiers,
+                rolledFamily.Tiers.Select(tier => tier.Weight)
+            );
+
+            Prefixes.Add(rolledAffix.CreateAffix());
+
+            affixFamilyPool.Remove(rolledFamily);
+        }
     }
 }
