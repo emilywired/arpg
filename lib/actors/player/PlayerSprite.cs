@@ -14,13 +14,21 @@ public class PlayerSprite : AnimatedSprite
         this.player = player;
         SetTextureAsset(idleAsset);
 
-        this.player.OnStateChanged += () => {
-            SetTextureAsset(this.player.State switch {
-                ActorState.Idling => idleAsset,
-                ActorState.Walking => walkAsset,
-                _ => throw new SystemException("Unhandled ActorState"),
-            });
-        };
+        this.player.OnStateChanged += onPlayerStateChanged;
+    }
+
+    ~PlayerSprite()
+    {
+        player.OnStateChanged -= onPlayerStateChanged;
+    }
+
+    private void onPlayerStateChanged()
+    {
+        SetTextureAsset(this.player.State switch {
+            ActorState.Idling => idleAsset,
+            ActorState.Walking => walkAsset,
+            _ => throw new SystemException("Unhandled ActorState"),
+        });
     }
 
     public override void Draw(SpriteBatch spriteBatch)

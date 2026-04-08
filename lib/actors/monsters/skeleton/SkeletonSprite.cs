@@ -22,6 +22,12 @@ public class SkeletonSprite : AnimatedSprite
         this.skeleton.OnActionStateChanged += onSkeletonStateChanged;
     }
 
+    ~SkeletonSprite()
+    {
+        skeleton.OnStateChanged -= onSkeletonStateChanged;
+        skeleton.OnActionStateChanged -= onSkeletonStateChanged;
+    }
+
     private void onSkeletonStateChanged()
     {
         SetTextureAsset((skeleton.State, skeleton.ActionState) switch
