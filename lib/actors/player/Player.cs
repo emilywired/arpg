@@ -41,6 +41,8 @@ public class Player : IActor
             manaRegen: 0
         );
         Inventory = new(this);
+        Inventory.AddItem(new OrbOfCorruption());
+        Inventory.AddItem(new SapphireRing());
         Equipment = new(this);
         Gold = 0;
 

@@ -1,6 +1,7 @@
 using arpg;
+using Microsoft.Xna.Framework;
 
-public class OrbOfCorruption : MaterialItem
+public class OrbOfCorruption : MaterialItem, IUsableOnItem
 {
     public OrbOfCorruption(int quantity = 1)
         : base(
@@ -13,4 +14,16 @@ public class OrbOfCorruption : MaterialItem
             maxStackQuantity: 50,
             stackQuantity: quantity
         ) { }
+
+    public void UseOn(Item item)
+    {
+        if (item is not ICorruptable corruptable)
+            return;
+
+        corruptable.Corrupt();
+
+        StackQuantity -= 1;
+        if (StackQuantity == 0)
+            Game1.World.Player.Inventory.RemoveItem(this);
+    }
 }
