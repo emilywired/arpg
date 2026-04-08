@@ -22,8 +22,8 @@ public class Player : IActor
 
     public SkillCollection Skills;
     public ActorBaseStats Stats { get; }
-    public Inventory Inventory;
     public Equipment Equipment;
+    public Inventory Inventory;
     public int Gold;
 
     public PlayerInputComponent InputComponent;
@@ -40,19 +40,22 @@ public class Player : IActor
             healthRegen: 0,
             manaRegen: 0
         );
-        Inventory = new(this);
-        Inventory.AddItem(new OrbOfCorruption());
-        Inventory.AddItem(new SapphireRing());
         Equipment = new(this);
+        Inventory = new(this);
         Gold = 0;
 
-        Equipment.Equip(new Sandals().ToMagic());
+        Equipment.Equip(new Sandals().ToMagic().Corrupted());
         Equipment.Equip(new Hood().ToRare());
         Equipment.Equip(new SapphireRing());
         Equipment.Equip(new RubyRing());
 
         Inventory.AddItem(new TheOneRubyRing());
         Inventory.AddItem(new OrbOfCorruption(10));
+        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
 
         InputComponent = new(this);
         _graphicsComponent = new(this);

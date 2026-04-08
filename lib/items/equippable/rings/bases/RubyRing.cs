@@ -14,6 +14,6 @@ public class RubyRing : EquippableItem
             asset: Assets.Items.None_1x1
         )
     {
-        BaseAffixes.Add(new LifeAffix(8, 10));
+        ImplicitAffixes.Add(new LifeAffix(8, 10));
     }
 }

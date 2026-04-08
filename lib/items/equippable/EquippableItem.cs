@@ -65,16 +65,16 @@ public class EquippableItem : Item, IEquippable, ICorruptable
 
     public EquippableItem ToMagic()
     {
-        RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(1, 3));
-        RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(1, 3));
+        Prefixes = RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(1, 3));
+        Suffixes = RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(1, 3));
         Rarity = Rarity.Magic;
         return this;
     }
 
     public EquippableItem ToRare()
     {
-        RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(2, 4));
-        RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(2, 4));
+        Prefixes = RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(2, 4));
+        Suffixes = RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(2, 4));
         Rarity = Rarity.Rare;
         return this;
     }
@@ -84,12 +84,12 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         if (IsCorrupted)
             return;
 
-        int roll = Random.Shared.Next(0, 3);
+        int roll = Random.Shared.Next(0, 2);
         if (roll == 0)
         {
             ToRare();
         }
-        else if (roll == 1 || roll == 2)
+        else if (roll == 1)
         {
             var affix = GlobalAffixes
                 .CorruptedImplicits[Slot]
@@ -103,7 +103,7 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         IsCorrupted = true;
     }
 
-    private void RollAffixGroup(IEnumerable<AffixFamily> sourcePool, int amount)
+    private List<Affix> RollAffixGroup(IEnumerable<AffixFamily> sourcePool, int amount)
     {
         var affixFamilyPool = sourcePool
             .Select(family =>
@@ -119,6 +119,7 @@ public class EquippableItem : Item, IEquippable, ICorruptable
 
         int totalPrefixWeight = affixFamilyPool.Sum(AffixFamily => AffixFamily.TotalWeight);
 
+        List<Affix> affixes = [];
         for (int i = 0; i < amount; i++)
         {
             if (affixFamilyPool.Count() == 0)
@@ -126,12 +127,16 @@ public class EquippableItem : Item, IEquippable, ICorruptable
                 break;
             }
 
-            var rolledFamily = affixFamilyPool.WeightedChoice(affixFamily => affixFamily.TotalWeight);
+            var rolledFamily = affixFamilyPool.WeightedChoice(affixFamily =>
+                affixFamily.TotalWeight
+            );
             var rolledAffix = rolledFamily.Tiers.WeightedChoice(tier => tier.Weight);
 
-            Prefixes.Add(rolledAffix.CreateAffix());
+            affixes.Add(rolledAffix.CreateAffix());
 
             affixFamilyPool.Remove(rolledFamily);
         }
+
+        return affixes;
     }
 }
