@@ -2,7 +2,7 @@ using arpg;
 
 public class AugmentingCore : MaterialItem
 {
-    public AugmentingCore()
+    public AugmentingCore(int quantity = 1)
         : base(
             name: "Augmenting Core",
             rarity: Rarity.Magic,
@@ -10,6 +10,7 @@ public class AugmentingCore : MaterialItem
             height: 1,
             asset: Assets.Items.None_1x1,
             description: "Use to attempt to upgrade an \nexisting affix on a Magic or\nRare item by one Tier.",
-            maxStackQuantity: 20
+            maxStackQuantity: 20,
+            stackQuantity: quantity
         ) { }
 }

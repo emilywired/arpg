@@ -67,7 +67,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
                 y = rng.Next(rngMin, rngMax);
             }
 
-            Skeleton skeleton = new(new Random().Next(1, 3)) { Position = new(x, y) };
+            Skeleton skeleton = new(Random.Shared.Next(1, 3)) { Position = new(x, y) };
             Game1.World.Actors.Add(skeleton);
 
             _timer -= Frequency;

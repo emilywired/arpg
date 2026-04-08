@@ -2,7 +2,7 @@ using arpg;
 
 public class OrbOfCorruption : MaterialItem
 {
-    public OrbOfCorruption()
+    public OrbOfCorruption(int quantity = 1)
         : base(
             name: "Orb of Corruption",
             rarity: Rarity.Magic,
@@ -10,6 +10,7 @@ public class OrbOfCorruption : MaterialItem
             height: 1,
             asset: Assets.Items.None_1x1,
             description: "Unpredictably modifies an item.",
-            maxStackQuantity: 50
+            maxStackQuantity: 50,
+            stackQuantity: quantity
         ) { }
 }

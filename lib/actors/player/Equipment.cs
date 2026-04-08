@@ -31,9 +31,6 @@ public class Equipment(Player player)
 
     public void Equip(EquippableItem item)
     {
-        // TODO: if other item is equipped, unequip it
-        // TODO: handle rings
-
         switch (item.Slot)
         {
             case EquippableSlot.MainHand:
@@ -61,31 +58,44 @@ public class Equipment(Player player)
                 Amulet = item;
                 break;
             case EquippableSlot.Ring:
-                if (LeftRing != null)
+                if (LeftRing == null)
                 {
                     LeftRing = item;
+                    break;
                 }
-                else
+
+                if (RightRing == null)
                 {
                     RightRing = item;
+                    break;
                 }
+
+                bool unequipped = Unequip(LeftRing);
+                if (!unequipped)
+                    throw new Exception(
+                        "Failed to unequip equipped item during equipping another."
+                    );
+
+                LeftRing = item;
+
                 break;
             default:
                 throw new NotImplementedException("Unhandled EquippableSlot");
         }
 
+        _player.Inventory.RemoveItem(item);
         item.Equip(_player);
     }
 
-    public void Unequip(EquippableItem item)
+    public bool Unequip(EquippableItem item)
     {
         if (!ItemIsEquipped(item))
-            return;
+            throw new Exception("Cannot unequip unequipped item.");
 
         bool movedToInventory = _player.Inventory.AddItem(item);
 
         if (!movedToInventory)
-            return;
+            return false;
 
         switch (item.Slot)
         {
@@ -114,20 +124,26 @@ public class Equipment(Player player)
                 Amulet = null;
                 break;
             case EquippableSlot.Ring:
-                if (LeftRing != null)
+                if (LeftRing == item)
                 {
                     LeftRing = null;
                 }
-                else
+                else if (RightRing == item)
                 {
                     RightRing = null;
                 }
+                else
+                {
+                    throw new Exception("Ring fucky wucky.");
+                }
+
                 break;
             default:
                 throw new NotImplementedException("Unhandled EquippableSlot");
         }
 
         item.Unequip(_player);
+        return true;
     }
 
     private bool ItemIsEquipped(EquippableItem item)
