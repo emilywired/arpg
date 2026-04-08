@@ -16,7 +16,7 @@ public class SkeletonBehaviorComponent
     {
         double elapsedTime = time.ElapsedGameTime.TotalSeconds;
 
-        if (monster.State == ActorState.Dead)
+        if (monster.State.Value == ActorState.Dead)
         {
             _timeSinceDeath += (float)elapsedTime;
 
@@ -25,7 +25,7 @@ public class SkeletonBehaviorComponent
                 Game1.World.RemoveActor(monster);
             }
 
-            monster.ActionState = ActorActionState.None;
+            monster.ActionState.Value = ActorActionState.None;
             return;
         }
 
@@ -52,7 +52,7 @@ public class SkeletonBehaviorComponent
 
         if (!monster.IsLeashed)
         {
-            monster.State = ActorState.Idling;
+            monster.State.Value = ActorState.Idling;
             return;
         }
 
@@ -68,8 +68,8 @@ public class SkeletonBehaviorComponent
 
         if (withinAttackTriggerDistance && !_isAttacking)
         {
-            monster.State = ActorState.Idling;
-            monster.ActionState = ActorActionState.Swinging;
+            monster.State.Value = ActorState.Idling;
+            monster.ActionState.Value = ActorActionState.Swinging;
             _isAttacking = true;
         }
 
@@ -98,8 +98,8 @@ public class SkeletonBehaviorComponent
         else
         {
             monster.Position = new((float)x, (float)y);
-            monster.State = ActorState.Walking;
-            monster.ActionState = ActorActionState.None;
+            monster.State.Value = ActorState.Walking;
+            monster.ActionState.Value = ActorActionState.None;
         }
     }
 }

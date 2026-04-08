@@ -102,7 +102,7 @@ public class PlayerInputComponent
             IsMoving = false;
             _movementTrack?.InvokeOnComplete();
             _movementTrack = null;
-            _player.State = ActorState.Idling;
+            _player.State.Value = ActorState.Idling;
         }
     }
 
@@ -134,7 +134,7 @@ public class PlayerInputComponent
         double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
         bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;
         _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
-        _player.State = ActorState.Walking;
+        _player.State.Value = ActorState.Walking;
 
         return _movementTrack = new();
     }

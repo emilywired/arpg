@@ -14,23 +14,17 @@ public class SkeletonSprite : AnimatedSprite
     private Skeleton skeleton;
 
     public SkeletonSprite(Skeleton skeleton)
-    {
+    { 
         this.skeleton = skeleton;
         SetTextureAsset(idleAsset);
         
-        this.skeleton.OnStateChanged += onSkeletonStateChanged;
-        this.skeleton.OnActionStateChanged += onSkeletonStateChanged;
-    }
-
-    ~SkeletonSprite()
-    {
-        skeleton.OnStateChanged -= onSkeletonStateChanged;
-        skeleton.OnActionStateChanged -= onSkeletonStateChanged;
+        this.skeleton.State.Connect(onSkeletonStateChanged);
+        this.skeleton.ActionState.Connect(onSkeletonStateChanged);
     }
 
     private void onSkeletonStateChanged()
     {
-        SetTextureAsset((skeleton.State, skeleton.ActionState) switch
+        SetTextureAsset((skeleton.State.Value, skeleton.ActionState.Value) switch
         {
             // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
             (_, ActorActionState.Swinging) => attackAsset,

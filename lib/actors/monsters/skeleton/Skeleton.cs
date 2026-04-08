@@ -8,29 +8,11 @@ public class Skeleton : IMonster
     public string Id { get; } = Guid.NewGuid().ToString();
     public ActorKind Kind { get; } = ActorKind.Monster;
 
-    public ActorState State { 
-        get => field; 
-        set
-        {
-            var changed = field != value;
-            field = value;
-            if (changed)
-                OnStateChanged?.Invoke();
-        }
-    } = ActorState.Idling;
-    public event Action? OnStateChanged;
+    public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
+    ActorState IActor.State => State.Value;
 
-    public ActorActionState ActionState { 
-        get => field; 
-        set
-        {
-            var changed = field != value;
-            field = value;
-            if (changed)
-                OnActionStateChanged?.Invoke();
-        }
-    } = ActorActionState.None;
-    public event Action? OnActionStateChanged;
+    public ReactiveProperty<ActorActionState> ActionState = new(ActorActionState.None);
+    ActorActionState IActor.ActionState => ActionState.Value;
 
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
     public Vector2 Position { get; set; } = Vector2.Zero;
@@ -60,7 +42,7 @@ public class Skeleton : IMonster
         Stats.Update(gameTime);
 
         if (!IsAlive)
-            State = ActorState.Dead;
+            State.Value = ActorState.Dead;
 
         sprite.Position = Position;
         sprite.Update(gameTime);

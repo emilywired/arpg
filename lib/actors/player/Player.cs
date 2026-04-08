@@ -13,16 +13,8 @@ public class Player : IActor
     public string Id { get; } = Guid.NewGuid().ToString();
     public ActorKind Kind { get; } = ActorKind.Player;
 
-    public ActorState State { 
-        get => field; 
-        set { 
-            var changed = field != value;
-            field = value; 
-            if (changed)
-                OnStateChanged?.Invoke(); 
-        } 
-    } = ActorState.Idling;
-    public event Action? OnStateChanged;
+    public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
+    ActorState IActor.State => State.Value;
 
     public ActorActionState ActionState { get; set; } = ActorActionState.None;
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
