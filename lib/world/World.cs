@@ -8,6 +8,8 @@ public class World
     public readonly List<DroppedItem> Items = [];
     public readonly List<IEntity> Entities = [];
     public readonly List<IActor> Actors = [];
+    public readonly Stash Stash = new(new(30, 30));
+
     private MonsterSpawner _monsterSpawner;
 
     public World(Player player)
@@ -15,16 +17,13 @@ public class World
         Player = player;
         _monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
         Actors.Add(Player);
-
-        for (int i = 0; i < 20; i++)
-        {
-            Items.Add(new DroppedItem(new OrbOfCorruption(i + 1), new Vector2(0, i * 20)));
-        }
     }
 
     public void Update(GameTime gameTime)
     {
         _monsterSpawner.Update(gameTime);
+
+        Stash.Update(gameTime);
 
         for (int i = Actors.Count - 1; i >= 0; i--)
         {

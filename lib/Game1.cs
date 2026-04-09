@@ -63,6 +63,7 @@ public class Game1 : Game
 
         _gameInputController.RegisterOnLeftClick(_pauseMenu.OnLeftClick);
         _gameInputController.RegisterOnLeftClick(_gameUI.OnLeftClick);
+        _gameInputController.RegisterOnLeftClick(World.Stash.OnLeftClick);
         _gameInputController.RegisterOnLeftClick(World.OnLeftClick);
         _gameInputController.RegisterOnLeftClick(World.Player.InputComponent.OnLeftClick);
 
@@ -128,6 +129,8 @@ public class Game1 : Game
         {
             entity.Draw(_spriteBatch);
         }
+
+        World.Stash.Draw(_spriteBatch);
 
         _lootUI.Draw(_spriteBatch);
 

@@ -36,6 +36,7 @@ public static class Assets
     public static class Environment
     {
         public static TextureAsset Cobblestone => GetTexture("environment/cobblestone_3");
+        public static TextureAsset Chest => GetTexture("environment/chest");
     }
 
     public static class Player
@@ -59,7 +60,11 @@ public static class Assets
             public static TextureAsset Idle => GetTexture("monsters/skeleton_ready");
             public static TextureAsset Walk => GetTexture("monsters/skeleton_walk");
             public static TextureAsset Attack => GetTexture("monsters/skeleton_attack");
-            public static TextureAsset Death => GetTexture("monsters/skeleton_dead_near") with { Looping = false };
+            public static TextureAsset Death =>
+                GetTexture("monsters/skeleton_dead_near") with
+                {
+                    Looping = false,
+                };
             public static TextureAsset Corpse => GetTexture("monsters/skeleton_corpse");
         }
     }
@@ -84,6 +89,7 @@ public static class Assets
         AddFont(contentManager, "fonts/monogram_extended");
 
         AddTexture(contentManager, "environment/cobblestone_3", 1);
+        AddTexture(contentManager, "environment/chest", 2);
 
         AddTexture(contentManager, "player/player_idle", 10);
         AddTexture(contentManager, "player/player_walk", 8);
