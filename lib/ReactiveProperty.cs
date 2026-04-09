@@ -15,49 +15,46 @@ public class ReactiveProperty<T>
         }
     }
 
-    private HashSet<WeakReference<Action<T>>> subscribers = [];
-
-    public event Action<T> OnChange { 
-        add => subscribers.Add(new(value));
-        remove => subscribers.RemoveWhere(r =>
-        {
-            if (!r.TryGetTarget(out var handler))
-                return true;
-                
-            return handler == value;
-        });
-    }
+    private HashSet<Subscription> subscriptions = [];
 
     public ReactiveProperty(T initial)
     {
         _value = initial;
     }
 
-    public void Connect(Action<T> handler, bool triggerNow = true)
+    public void Connect(object owner, Action<T> handler, bool triggerNow = true)
     {
-        OnChange += handler;
+        var subscription = new Subscription(owner, handler);
+        subscriptions.Add(subscription);
+
         if (triggerNow)
             handler.Invoke(_value);
     }
 
-    public void Connect(Action handler, bool triggerNow = true)
-        => Connect(_ => handler(), triggerNow);
+    public void Connect(object owner, Action handler, bool triggerNow = true)
+        => Connect(owner, _ => handler(), triggerNow);
 
     private void onChangeTrigger()
     {
-        HashSet<WeakReference<Action<T>>> invalidSubscribers = [];
-        foreach (var subscriber in subscribers)
+        HashSet<Subscription> invalidSubscribers = [];
+        foreach (var sub in subscriptions)
         {
-            if (!subscriber.TryGetTarget(out var handler))
+            if (!sub.Owner.IsAlive)
             {
-                invalidSubscribers.Add(subscriber);
+                invalidSubscribers.Add(sub);
                 continue;
             }
 
-            handler.Invoke(_value);
+            sub.Handler.Invoke(_value);
         }
 
         foreach (var invalidSubscriber in invalidSubscribers)
-            subscribers.Remove(invalidSubscriber);
+            subscriptions.Remove(invalidSubscriber);
+    }
+
+    class Subscription(object owner, Action<T> handler)
+    {
+        public WeakReference Owner = new(owner);
+        public Action<T> Handler = handler;
     }
 }

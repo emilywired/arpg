@@ -26,21 +26,22 @@ public class SkeletonGraphicsComponent : AnimatedSprite
             Size = new(32, 4),
         };
 
-        skeleton.Stats.Health.Connect(value => healthBar.Value = value);
+        skeleton.Stats.Health.Connect(this, value => healthBar.Value = value);
         
-        this.skeleton.State.Connect(onSkeletonStateChanged);
-        this.skeleton.ActionState.Connect(onSkeletonStateChanged);
+        this.skeleton.State.Connect(this, onSkeletonStateChanged);
+        this.skeleton.ActionState.Connect(this, onSkeletonStateChanged);
     }
 
     private void onSkeletonStateChanged()
     {
+        Console.WriteLine($"{skeleton.State.Value} / {skeleton.ActionState.Value}");
         SetTextureAsset((skeleton.State.Value, skeleton.ActionState.Value) switch
         {
             // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
+            (ActorState.Dead, _) => deathAsset,
             (_, ActorActionState.Swinging) => attackAsset,
             (ActorState.Idling, _) => idleAsset,
             (ActorState.Walking, _) => walkAsset,
-            (ActorState.Dead, _) => deathAsset,
             _ => throw new SystemException("Unhandled ActorState"),
         });
     }

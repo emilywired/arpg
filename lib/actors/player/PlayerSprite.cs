@@ -14,7 +14,7 @@ public class PlayerSprite : AnimatedSprite
         this.player = player;
         SetTextureAsset(idleAsset);
 
-        this.player.State.Connect(onPlayerStateChanged);
+        this.player.State.Connect(this, onPlayerStateChanged);
     }
 
     private void onPlayerStateChanged()
