@@ -11,7 +11,7 @@ public class OrbOfCorruption : MaterialItem, IUsableOnItem
             height: 1,
             asset: Assets.Items.None_1x1,
             description: "Unpredictably modifies an item.",
-            maxStackQuantity: 50,
+            maxStackQuantity: 20,
             stackQuantity: quantity
         ) { }
 

@@ -30,7 +30,7 @@ public class Player : IActor
     public ActorBaseStats Stats { get; }
     public Equipment Equipment;
     public Inventory Inventory;
-    public int Gold;
+    public PlayerGold Gold;
 
     public PlayerInputComponent InputComponent;
     private PlayerSprite sprite;
@@ -48,20 +48,23 @@ public class Player : IActor
         );
         Equipment = new(this);
         Inventory = new(this);
-        Gold = 0;
+        Gold = new();
 
         Equipment.Equip(new Sandals().ToMagic().Corrupted());
         Equipment.Equip(new Hood().ToRare());
         Equipment.Equip(new SapphireRing());
         Equipment.Equip(new RubyRing());
 
-        Inventory.AddItem(new TheOneRubyRing());
-        Inventory.AddItem(new OrbOfCorruption(10));
-        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        for (int i = 0; i < 5; i++)
+        {
+            Inventory.AddItem(new OrbOfCorruption((i + 1) * 3));
+        }
+
+        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
+        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
 
         InputComponent = new(this);
         sprite = new(this);

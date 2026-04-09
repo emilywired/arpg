@@ -16,15 +16,13 @@ public class World
     public World(Player player)
     {
         Player = player;
-        _monsterSpawner = new MonsterSpawner(Player, 0.5d, offscreenDistance: 100);
-
-        // Items.Add(new DroppedItem(new AugmentingCore(), new(0, 0)));
-        // Items.Add(new DroppedItem(new Hood(), new(50, 0)));
-        // Items.Add(new DroppedItem(new Sandals(), new(0, 50)));
-        // Items.Add(new DroppedItem(new SapphireRing().ToRare(), new(0, 100)));
-        // Items.Add(new DroppedItem(new RubyRing(), new(0, 200)));
-
+        _monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
         Actors.Add(Player);
+
+        for (int i = 0; i < 20; i++)
+        {
+            Items.Add(new DroppedItem(new OrbOfCorruption(i + 1), new Vector2(0, i * 20)));
+        }
     }
 
     public void Update(GameTime gameTime)

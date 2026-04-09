@@ -12,4 +12,10 @@ public class Gold : Item
     {
         Amount = amount;
     }
+
+    public override bool GetPickedUp(Player player)
+    {
+        player.Gold.Add(Amount);
+        return true;
+    }
 }

@@ -42,4 +42,10 @@ public class Item
         ItemTooltip.Instance.SetItem(this);
         ItemTooltip.Instance.Draw(spriteBatch);
     }
+
+    public virtual bool GetPickedUp(Player player)
+    {
+        bool added = player.Inventory.AddItem(this);
+        return added;
+    }
 }
