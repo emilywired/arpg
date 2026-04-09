@@ -56,7 +56,7 @@ public class Game1 : Game
         _hud = new Hud();
         _gameUI = new GameUI(player);
         _pauseMenu = new PauseMenu();
-        
+
         World.Entities.Add(new TestAnimation());
 
         _gameInputController = new GameInputController();

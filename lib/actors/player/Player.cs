@@ -55,17 +55,6 @@ public class Player : IActor
         Equipment.Equip(new SapphireRing());
         Equipment.Equip(new RubyRing());
 
-        for (int i = 0; i < 5; i++)
-        {
-            Inventory.AddItem(new OrbOfCorruption((i + 1) * 3));
-        }
-
-        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-        // Inventory.AddItem(new Sandals().ToMagic().Corrupted());
-
         InputComponent = new(this);
         sprite = new(this);
     }
