@@ -88,7 +88,7 @@ public class Player : IActor
         Stats.OffsetHealth(-amount);
     }
 
-    public void OnKill(IMonster monster)
+    public void OnKill(Monster monster)
     {
         PlayerStats playerStats = (PlayerStats)Stats;
         playerStats.Level.GrantXP(monster.XP);

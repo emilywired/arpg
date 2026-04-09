@@ -31,7 +31,7 @@ public class LootSystem
         { Rarity.Normal, 3000 },
     };
 
-    public List<Item> GenerateLoot(IMonster monster, Player player)
+    public List<Item> GenerateLoot(Monster monster, Player player)
     {
         List<Item> drops = [];
 

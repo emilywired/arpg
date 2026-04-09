@@ -43,14 +43,3 @@ public interface IActor
     void Draw(SpriteBatch spriteBatch);
     void TakeDamage(double amount);
 }
-
-public interface IMonster: IActor
-{
-    public int XP { get; }
-    public int Level { get; }
-    // public int GoldMultiplier { get; }
-    // public int RarityMultiplier { get; }
-    // public int ItemCount { get; }
-}
-
-// public interface IMonsterActor : IActor, IMonster;
