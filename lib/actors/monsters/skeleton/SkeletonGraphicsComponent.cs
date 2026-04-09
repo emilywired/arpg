@@ -3,20 +3,30 @@ using arpg;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class SkeletonSprite : AnimatedSprite
+public class SkeletonGraphicsComponent : AnimatedSprite
 {
     private TextureAsset idleAsset = Assets.Monsters.Skeleton.Idle;
     private TextureAsset attackAsset = Assets.Monsters.Skeleton.Attack;
     private TextureAsset walkAsset = Assets.Monsters.Skeleton.Walk;
     private TextureAsset deathAsset = Assets.Monsters.Skeleton.Death; // TODO: add one of the two corpse frames
-    protected override float FrameTime => 0.15f;
+
+    private ProgressBar healthBar;
 
     private Skeleton skeleton;
 
-    public SkeletonSprite(Skeleton skeleton)
+    public SkeletonGraphicsComponent(Skeleton skeleton)
     { 
         this.skeleton = skeleton;
         SetTextureAsset(idleAsset);
+        FrameTime = 0.15f;
+
+        healthBar = new ProgressBar()
+        {
+            MaxValue = skeleton.Stats.MaxHealth,
+            Size = new(32, 4),
+        };
+
+        skeleton.Stats.Health.Connect(value => healthBar.Value = value);
         
         this.skeleton.State.Connect(onSkeletonStateChanged);
         this.skeleton.ActionState.Connect(onSkeletonStateChanged);
@@ -33,6 +43,13 @@ public class SkeletonSprite : AnimatedSprite
             (ActorState.Dead, _) => deathAsset,
             _ => throw new SystemException("Unhandled ActorState"),
         });
+    }
+
+    public override void Update(GameTime gameTime)
+    {
+        healthBar.Position = Position - new Vector2(0, 20);
+
+        base.Update(gameTime);
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -64,19 +81,7 @@ public class SkeletonSprite : AnimatedSprite
 
         base.Draw(spriteBatch);
 
-        string monsterHealth = $"{Math.Floor(skeleton.Stats.Health)}";
-        Vector2 monsterHealthOrigin = Assets.Fonts.MonogramExtened.MeasureString(monsterHealth);
-
-        spriteBatch.DrawString(
-            Assets.Fonts.MonogramExtened,
-            monsterHealth,
-            new((int)skeleton.Position.X, (int)skeleton.Position.Y + 30),
-            Color.White,
-            0f,
-            new((int)(monsterHealthOrigin.X / 2), (int)(monsterHealthOrigin.Y / 2)),
-            1f,
-            SpriteEffects.None,
-            Layer.Text
-        );
+        if (skeleton.IsAlive)
+            healthBar.Draw(spriteBatch);
     }
 }

@@ -20,7 +20,7 @@ public class HealthGlobe : IHudElement
 
     public void Update(GameTime gameTime)
     {
-        Health = Math.Floor(Game1.World.Player.Stats.Health);
+        Health = Math.Floor(Game1.World.Player.Stats.Health.Value);
         MaxHealth = Game1.World.Player.Stats.MaxHealth;
     }
 

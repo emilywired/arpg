@@ -17,7 +17,7 @@ public class Skeleton : IMonster
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
     public Vector2 Position { get; set; } = Vector2.Zero;
     public ActorBaseStats Stats { get; }
-    public bool IsAlive => Stats.Health > 0;
+    public bool IsAlive => Stats.Health.Value > 0;
     public bool IsLeashed = true;
     public IHitbox Hitbox
     {
@@ -26,7 +26,7 @@ public class Skeleton : IMonster
     public int Level { get; }
     public int XP { get; } = 10;
 
-    private SkeletonSprite sprite;
+    private SkeletonGraphicsComponent graphicsComponent;
     private SkeletonBehaviorComponent _behaviorComponent = new();
 
     public Skeleton(int level)
@@ -34,7 +34,7 @@ public class Skeleton : IMonster
         Level = level;
         Stats = new(this, speed: 150, health: 40);
 
-        sprite = new(this);
+        graphicsComponent = new(this);
     }
 
     public void Update(GameTime gameTime)
@@ -44,23 +44,23 @@ public class Skeleton : IMonster
         if (!IsAlive)
             State.Value = ActorState.Dead;
 
-        sprite.Position = Position;
-        sprite.Update(gameTime);
+        graphicsComponent.Position = Position;
+        graphicsComponent.Update(gameTime);
         _behaviorComponent.Update(this, gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch);
+        graphicsComponent.Draw(spriteBatch);
     }
 
     public void TakeDamage(double amount)
     {
-        if (Stats.Health <= 0)
+        if (Stats.Health.Value <= 0)
             return;
 
         Stats.OffsetHealth(-amount);
-        if (Stats.Health <= 0)
+        if (Stats.Health.Value <= 0)
         {
             Game1.World.Player.OnKill(this);
         }

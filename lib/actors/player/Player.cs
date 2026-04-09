@@ -19,7 +19,7 @@ public class Player : IActor
     public ActorActionState ActionState { get; set; } = ActorActionState.None;
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
     public Vector2 Position { get; set; } = Vector2.Zero;
-    public bool IsAlive => Stats.Health > 0;
+    public bool IsAlive => Stats.Health.Value > 0;
     public IHitbox Hitbox
     {
         get => new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);

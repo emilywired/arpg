@@ -15,9 +15,9 @@ public class ReactiveProperty<T>
         }
     }
 
-    private HashSet<WeakReference<Action>> subscribers = [];
+    private HashSet<WeakReference<Action<T>>> subscribers = [];
 
-    public event Action OnChange { 
+    public event Action<T> OnChange { 
         add => subscribers.Add(new(value));
         remove => subscribers.RemoveWhere(r =>
         {
@@ -33,16 +33,19 @@ public class ReactiveProperty<T>
         _value = initial;
     }
 
-    public void Connect(Action handler, bool triggerNow = true)
+    public void Connect(Action<T> handler, bool triggerNow = true)
     {
         OnChange += handler;
         if (triggerNow)
-            handler.Invoke();
+            handler.Invoke(_value);
     }
+
+    public void Connect(Action handler, bool triggerNow = true)
+        => Connect(_ => handler(), triggerNow);
 
     private void onChangeTrigger()
     {
-        HashSet<WeakReference<Action>> invalidSubscribers = new();
+        HashSet<WeakReference<Action<T>>> invalidSubscribers = [];
         foreach (var subscriber in subscribers)
         {
             if (!subscriber.TryGetTarget(out var handler))
@@ -51,7 +54,7 @@ public class ReactiveProperty<T>
                 continue;
             }
 
-            handler.Invoke();
+            handler.Invoke(_value);
         }
 
         foreach (var invalidSubscriber in invalidSubscribers)

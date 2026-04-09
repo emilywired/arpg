@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 public class ActorBaseStats
 {
     public double Speed { get; set; }
-    public double Health { get; set; }
+    public ReactiveProperty<double> Health { get; set; } = new(default);
     public double MaxHealth { get; set; }
     public double HealthRegen { get; set; }
     public double HealthDegen { get; set; }
@@ -45,7 +45,7 @@ public class ActorBaseStats
     {
         _actor = actor;
         Speed = speed;
-        Health = MaxHealth = health;
+        Health.Value = MaxHealth = health;
         Mana = MaxMana = mana;
         HealthRegen = healthRegen;
         ManaRegen = manaRegen;
@@ -85,7 +85,7 @@ public class ActorBaseStats
 
     public void OffsetHealth(double amount)
     {
-        Health = Math.Clamp(Health + amount, 0, MaxHealth);
+        Health.Value = Math.Clamp(Health.Value + amount, 0, MaxHealth);
     }
 
     public void OffsetMana(double amount)

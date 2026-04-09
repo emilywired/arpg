@@ -17,14 +17,9 @@ public class PlayerSprite : AnimatedSprite
         this.player.State.Connect(onPlayerStateChanged);
     }
 
-    ~PlayerSprite()
-    {
-        player.State.OnChange -= onPlayerStateChanged;
-    }
-
     private void onPlayerStateChanged()
     {
-        SetTextureAsset(this.player.State.Value switch {
+        SetTextureAsset(player.State.Value switch {
             ActorState.Idling => idleAsset,
             ActorState.Walking => walkAsset,
             _ => throw new SystemException("Unhandled ActorState"),

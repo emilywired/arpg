@@ -7,10 +7,10 @@ public class AnimatedSprite
 {
     private int currentFrame = 0;
     private float elapsedTime = 0f;
-    protected virtual float FrameTime => 0.1f;
+    protected float FrameTime { get; set; } = 0.1f;
 
     private TextureAsset asset = null!;
-    public virtual TextureAsset Asset { get => asset; }
+    public TextureAsset Asset => asset;
 
     public SpriteEffects SpriteEffects { get; set; }
     public Vector2 Position { get; set; }
