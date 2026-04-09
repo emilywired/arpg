@@ -1,2 +1,2 @@
-﻿using var game = new arpg.Game1();
+﻿using var game = new Game1();
 game.Run();

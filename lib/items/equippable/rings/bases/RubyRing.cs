@@ -1,4 +1,3 @@
-using arpg;
 
 public class RubyRing : EquippableItem
 {

@@ -1,4 +1,3 @@
-using arpg;
 using Microsoft.Xna.Framework.Graphics;
 
 public class LootUI

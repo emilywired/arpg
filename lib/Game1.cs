@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace arpg;
-
 public class Game1 : Game
 {
     public static Config Config { get; private set; } = null!;

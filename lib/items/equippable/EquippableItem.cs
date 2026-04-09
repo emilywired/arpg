@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using arpg;
-using Microsoft.Xna.Framework.Graphics;
 
 public class EquippableItem : Item, IEquippable, ICorruptable
 {

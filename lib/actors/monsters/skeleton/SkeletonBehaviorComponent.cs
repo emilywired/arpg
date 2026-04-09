@@ -1,5 +1,4 @@
 using System;
-using arpg;
 using Microsoft.Xna.Framework;
 
 public class SkeletonBehaviorComponent

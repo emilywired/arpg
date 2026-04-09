@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using arpg;
 using Microsoft.Xna.Framework;
 
 public class MonsterSpawner(Player player, double frequency, int offscreenDistance)

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using arpg;
+
 using Microsoft.Xna.Framework.Graphics;
 
 public class Gold : Item

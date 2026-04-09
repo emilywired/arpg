@@ -1,4 +1,3 @@
-using arpg;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,7 +14,7 @@ public class PauseMenu
 
         string text = "Game Paused";
 
-        arpg.Game1.DrawText(
+        Game1.DrawText(
             spriteBatch,
             text,
             new(Game1.NativeResolution.Width / 2, Game1.NativeResolution.Height / 2),

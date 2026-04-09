@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using arpg;
 using Microsoft.Xna.Framework;
 
 public class HolyFireBehaviorComponent

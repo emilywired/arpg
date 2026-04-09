@@ -1,4 +1,4 @@
-using arpg;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -127,7 +127,7 @@ public class DroppedItem
             textColor = Color.Black;
         }
 
-        arpg.Game1.DrawText(
+        Game1.DrawText(
             spriteBatch,
             DisplayText,
             new((int)_bounds.X + (_bounds.Width - _stringOrigin.X) / 2, (int)_bounds.Y),

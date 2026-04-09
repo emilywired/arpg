@@ -1,5 +1,4 @@
 using System;
-using arpg;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -34,7 +33,6 @@ public class SkeletonGraphicsComponent : AnimatedSprite
 
     private void onSkeletonStateChanged()
     {
-        Console.WriteLine($"{skeleton.State.Value} / {skeleton.ActionState.Value}");
         SetTextureAsset((skeleton.State.Value, skeleton.ActionState.Value) switch
         {
             // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
