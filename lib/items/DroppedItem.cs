@@ -6,15 +6,29 @@ public class DroppedItem
 {
     public Item Item;
     public Vector2 Position;
+    public string DisplayText => GetDisplayName();
     public bool IsHovered = false;
     private Vector2 _stringOrigin;
     private Rectangle _bounds;
+
+    private string GetDisplayName()
+    {
+        string displayText = $"{Item.Name}";
+        if (Item is MaterialItem materialItem && materialItem.StackQuantity > 0)
+        {
+            displayText += $" x{materialItem.StackQuantity}";
+        }
+        return displayText;
+    }
 
     public DroppedItem(Item item, Vector2 position)
     {
         Item = item;
         Position = position;
-        _stringOrigin = Assets.Fonts.MonogramExtened.MeasureString(Item.Name);
+
+        _stringOrigin = Assets.Fonts.MonogramExtened.MeasureString(DisplayText);
+
+        // TODO: add some padding, decrease if needed to make materials with different stack sizes have same width
 
         const int HEIGHT = 16;
         int WIDTH = (int)_stringOrigin.X + 16;
@@ -28,14 +42,8 @@ public class DroppedItem
 
     public void Update(GameTime gameTime)
     {
-        // TODO: avoid calculating if not needed
         Vector2 playerAimCoordinate = MouseManager.WorldMousePosition;
-        bool cursorWithinBounds =
-            playerAimCoordinate.X > _bounds.Left
-            && playerAimCoordinate.X < _bounds.Right
-            && playerAimCoordinate.Y > _bounds.Top
-            && playerAimCoordinate.Y < _bounds.Bottom;
-        IsHovered = cursorWithinBounds;
+        IsHovered = _bounds.Contains(MouseManager.WorldMousePosition);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -121,22 +129,16 @@ public class DroppedItem
 
         arpg.Game1.DrawText(
             spriteBatch,
-            Item.Name,
+            DisplayText,
             new((int)_bounds.X + (_bounds.Width - _stringOrigin.X) / 2, (int)_bounds.Y),
             Layer.DroppedItemText,
             textColor
         );
     }
 
-    public bool GetPickedUp(Player player)
+    public virtual bool GetPickedUp(Player player)
     {
-        // TODO: item.GetPickedUp
-        if (this.Item is Gold gold)
-        {
-            player.Gold += gold.Amount;
-        }
-
-        bool added = player.Inventory.AddItem(this.Item);
+        bool added = Item.GetPickedUp(player);
         if (added)
             Game1.World.Items.Remove(this);
 

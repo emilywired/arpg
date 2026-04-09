@@ -265,7 +265,7 @@ public class InventoryUI
             _equipmentItems[i]?.Draw(spriteBatch, bounds.X, bounds.Y);
         }
 
-        string goldAmountText = $"Gold: {_player.Gold}";
+        string goldAmountText = $"Gold: {_player.Gold.Amount}";
 
         Game1.DrawText(
             spriteBatch,
