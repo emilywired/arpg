@@ -6,6 +6,7 @@ public class Config
     public int Scale { get; private set; }
     public float ScaleX { get; private set; }
     public float ScaleY { get; private set; }
+    public bool DisplayEnemyHealthBars { get; set; } = true;
     private GraphicsDeviceManager _graphics;
     private GraphicsDevice _device;
     private RenderTarget2D _renderTarget;

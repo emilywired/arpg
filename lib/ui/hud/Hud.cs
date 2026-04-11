@@ -26,7 +26,6 @@ public class Hud
     {
         foreach (var element in _elements)
         {
-            // TODO: texture creating in Assets, private members instead of creating on draw call
             element.Draw(spriteBatch);
         }
     }

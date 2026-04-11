@@ -3,46 +3,43 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class ManaGlobe : IHudElement
 {
-    public double Mana { get; set; } = 100;
-    public double MaxMana { get; set; } = 100;
-
     public Vector2 Size { get; set; }
     public Vector2 Position { get; set; }
     public Rectangle Rectangle => new((int)Position.X, (int)Position.Y, (int)Size.X, (int)Size.Y);
 
+    private ProgressBar progressBar;
+
     public ManaGlobe()
     {
-        Size = new Vector2(55, 55);
+        Vector2 Size = new(60, 60);
         Position = new Vector2(
-            Game1.NativeResolution.Width - Size.X,
+            Game1.NativeResolution.Width,
             Game1.NativeResolution.Height - Size.Y
         );
 
-        Game1.World.Player.Stats.Mana.Connect(this, value => Mana = (int)value);
-        Game1.World.Player.Stats.MaxMana.Connect(this, value => MaxMana = (int)value);
+        progressBar = new ProgressBar()
+        {
+            Size = Size,
+            Position = Position,
+            Value = Game1.World.Player.Stats.Mana.Value,
+            MaxValue = Game1.World.Player.Stats.MaxMana.Value,
+            Color = Colors.Mana,
+            ShowText = true,
+            VerticalTextOffset = -(Size.Y / 2 + 10),
+            IsVertical = false,
+        };
+
+        Game1.World.Player.Stats.Mana.Connect(this, value => progressBar.Value = (int)value);
+        Game1.World.Player.Stats.MaxMana.Connect(
+            this,
+            value => progressBar.MaxValue = (int)value
+        );
     }
 
     public void Update(GameTime gameTime) { }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(
-            Assets.RectangleTexture,
-            Rectangle,
-            null,
-            new Color(10, 10, 140),
-            0f,
-            Vector2.Zero,
-            SpriteEffects.None,
-            Layer.HUD
-        );
-
-        Game1.DrawText(
-            spriteBatch,
-            $"{Mana}/{MaxMana}",
-            new Vector2(Position.X, Position.Y - 12),
-            Layer.Text,
-            Color.White
-        );
+        progressBar.Draw(spriteBatch);
     }
 };

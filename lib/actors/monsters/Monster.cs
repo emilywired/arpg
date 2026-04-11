@@ -38,7 +38,14 @@ public class Monster : IActor
         Level = level;
         Stats = new(this, speed: 400, health: 40);
 
-        healthBar = new ProgressBar() { MaxValue = Stats.MaxHealth.Value, Size = new(32, 4) };
+        healthBar = new ProgressBar()
+        {
+            MaxValue = Stats.MaxHealth.Value,
+            Size = new(32, 4),
+            Color = Colors.Health,
+            CenterHorizontally = true,
+            Position = Position,
+        };
 
         Stats.Health.Connect(this, value => healthBar.Value = value);
         Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
@@ -86,7 +93,7 @@ public class Monster : IActor
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        if (IsAlive)
+        if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
             healthBar.Draw(spriteBatch);
     }
 

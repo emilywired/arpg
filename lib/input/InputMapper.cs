@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 public enum FixedGameAction
@@ -19,6 +18,7 @@ public enum RemappableGameAction
     DebugMenu,
     CycleResolution,
     ToggleFullscreen,
+    ToggleDisplayEnemyHealthBars
 }
 
 public class InputMapper

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
 // TODO: fix this retarded way of adding new handlers
 public class GameInputController
 {
@@ -21,6 +20,10 @@ public class GameInputController
         Game1.InputManager.OnPress(RemappableGameAction.DebugMenu, ToggleDebugMode);
         Game1.InputManager.OnPress(RemappableGameAction.CycleResolution, CycleResolution);
         Game1.InputManager.OnPress(RemappableGameAction.ToggleFullscreen, ToggleFullscreen);
+        Game1.InputManager.OnPress(
+            RemappableGameAction.ToggleDisplayEnemyHealthBars,
+            ToggleDisplayEnemyHealthBars
+        );
     }
 
     public void RegisterOnClose(Func<bool> handler)
@@ -100,5 +103,10 @@ public class GameInputController
     {
         Game1.Config.ToggleFullScreen();
         Game1.Config.ApplyChanges();
+    }
+
+    private void ToggleDisplayEnemyHealthBars()
+    {
+        Game1.Config.DisplayEnemyHealthBars = !Game1.Config.DisplayEnemyHealthBars;
     }
 }

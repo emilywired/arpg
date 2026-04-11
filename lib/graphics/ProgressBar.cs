@@ -10,7 +10,10 @@ public class ProgressBar
     public Color BackgroundColor { get; set; } = Color.Black;
     public Color TextColor { get; set; } = Color.White;
 
+    public bool IsVertical { get; set; } = true;
+    public bool CenterHorizontally { get; set; } = false;
     public bool ShowText { get; set; }
+    public double VerticalTextOffset { get; set; } = 0;
 
     public double Value { get; set; } = 50;
     public double MaxValue { get; set; } = 100;
@@ -23,11 +26,12 @@ public class ProgressBar
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         var targetRect = new Rectangle(
-            (int)(Position.X - Size.X / 2),
+            (int)(Position.X - (CenterHorizontally ? Size.X / 2 : Size.X)),
             (int)Position.Y,
             (int)Size.X,
             (int)Size.Y
         );
+
         spriteBatch.Draw(
             Assets.RectangleTexture,
             targetRect,
@@ -39,12 +43,20 @@ public class ProgressBar
             Layer.Text
         );
 
-        spriteBatch.Draw(
-            Assets.RectangleTexture,
-            targetRect with
+        Rectangle destinationRectangle = IsVertical
+            ? targetRect with
             {
                 Width = (int)(Size.X * Progress),
-            },
+            }
+            : targetRect with
+            {
+                Y = (int)(targetRect.Y + Size.Y * (1 - Progress)),
+                Height = (int)(Size.Y * Progress),
+            };
+
+        spriteBatch.Draw(
+            Assets.RectangleTexture,
+            destinationRectangle,
             null,
             Color,
             0f,
@@ -55,16 +67,21 @@ public class ProgressBar
 
         if (ShowText)
         {
+            Vector2 textPosition = new Vector2(
+                targetRect.X + targetRect.Width / 2f,
+                targetRect.Y + (float)VerticalTextOffset + targetRect.Height / 2f
+            );
+
             string text = $"{Value} / {MaxValue}";
             Vector2 textMeasurement = Assets.Fonts.MonogramExtened.MeasureString(text);
 
             spriteBatch.DrawString(
                 Assets.Fonts.MonogramExtened,
                 text,
-                new((int)Position.X, (int)Position.Y),
+                textPosition,
                 TextColor,
                 0f,
-                new((int)(textMeasurement.X / 2), (int)(textMeasurement.Y / 2)),
+                textMeasurement / 2,
                 1f,
                 SpriteEffects.None,
                 Layer.DroppedItem
