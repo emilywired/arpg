@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,13 +17,12 @@ public class ManaGlobe : IHudElement
             Game1.NativeResolution.Width - Size.X,
             Game1.NativeResolution.Height - Size.Y
         );
+
+        Game1.World.Player.Stats.Mana.Connect(this, value => Mana = (int)value);
+        Game1.World.Player.Stats.MaxMana.Connect(this, value => MaxMana = (int)value);
     }
 
-    public void Update(GameTime gameTime)
-    {
-        Mana = Math.Floor(Game1.World.Player.Stats.Mana);
-        MaxMana = Math.Floor(Game1.World.Player.Stats.MaxMana);
-    }
+    public void Update(GameTime gameTime) { }
 
     public void Draw(SpriteBatch spriteBatch)
     {
@@ -38,7 +36,6 @@ public class ManaGlobe : IHudElement
             SpriteEffects.None,
             Layer.HUD
         );
-
 
         Game1.DrawText(
             spriteBatch,

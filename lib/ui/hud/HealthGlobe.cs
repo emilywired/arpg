@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,13 +14,12 @@ public class HealthGlobe : IHudElement
     {
         Size = new Vector2(55, 55);
         Position = new Vector2(0, Game1.NativeResolution.Height - Size.Y);
+
+        Game1.World.Player.Stats.Health.Connect(this, value => Health = (int)value);
+        Game1.World.Player.Stats.MaxHealth.Connect(this, value => MaxHealth = (int)value);
     }
 
-    public void Update(GameTime gameTime)
-    {
-        Health = Math.Floor(Game1.World.Player.Stats.Health.Value);
-        MaxHealth = Game1.World.Player.Stats.MaxHealth;
-    }
+    public void Update(GameTime gameTime) { }
 
     public void Draw(SpriteBatch spriteBatch)
     {

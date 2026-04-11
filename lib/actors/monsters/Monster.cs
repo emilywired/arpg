@@ -17,7 +17,7 @@ public class Monster : IActor
 
     public ActorFacing Facing { get; set; } = ActorFacing.Right;
     public Vector2 Position { get; set; } = Vector2.Zero;
-    public ActorBaseStats Stats { get; protected set; }
+    public ActorBaseStats Stats { get; }
     public bool IsAlive => Stats.Health.Value > 0;
     public IHitbox Hitbox => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
 
@@ -29,13 +29,19 @@ public class Monster : IActor
     protected MovementBehavior movementBehavior;
     protected List<Behavior> behaviors = [];
 
+    private ProgressBar healthBar;
     private float corpseDespawnTime = 10f;
     private float timeSinceDeath = 0;
 
     public Monster(int level)
     {
         Level = level;
-        Stats = new(this, speed: 150, health: 40);
+        Stats = new(this, speed: 400, health: 40);
+
+        healthBar = new ProgressBar() { MaxValue = Stats.MaxHealth.Value, Size = new(32, 4) };
+
+        Stats.Health.Connect(this, value => healthBar.Value = value);
+        Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
 
         movementBehavior = new(this);
     }
@@ -68,15 +74,20 @@ public class Monster : IActor
             {
                 State.Value = ActorState.Walking;
                 Position += movementBehavior.DesiredVelocity;
-            } else
+            }
+            else
             {
                 State.Value = ActorState.Idling;
             }
         }
+
+        healthBar.Position = Position - new Vector2(0, 20);
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
+        if (IsAlive)
+            healthBar.Draw(spriteBatch);
     }
 
     public void TakeDamage(double amount)

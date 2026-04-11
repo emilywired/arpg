@@ -9,7 +9,6 @@ public class SkeletonGraphicsComponent : AnimatedSprite
     private TextureAsset walkAsset = Assets.Monsters.Skeleton.Walk;
     private TextureAsset deathAsset = Assets.Monsters.Skeleton.Death; // TODO: add one of the two corpse frames
 
-    private ProgressBar healthBar;
 
     private Skeleton skeleton;
 
@@ -19,14 +18,6 @@ public class SkeletonGraphicsComponent : AnimatedSprite
         SetTextureAsset(idleAsset);
         FrameTime = 0.15f;
 
-        healthBar = new ProgressBar()
-        {
-            MaxValue = skeleton.Stats.MaxHealth,
-            Size = new(32, 4),
-        };
-
-        skeleton.Stats.Health.Connect(this, value => healthBar.Value = value);
-        
         this.skeleton.State.Connect(this, onSkeletonStateChanged);
         this.skeleton.ActionState.Connect(this, onSkeletonStateChanged);
     }
@@ -46,8 +37,6 @@ public class SkeletonGraphicsComponent : AnimatedSprite
 
     public override void Update(GameTime gameTime)
     {
-        healthBar.Position = Position - new Vector2(0, 20);
-
         base.Update(gameTime);
     }
 
@@ -79,8 +68,5 @@ public class SkeletonGraphicsComponent : AnimatedSprite
         }
 
         base.Draw(spriteBatch);
-
-        if (skeleton.IsAlive)
-            healthBar.Draw(spriteBatch);
     }
 }

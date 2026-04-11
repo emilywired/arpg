@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework;
 public class ActorBaseStats
 {
     public double Speed { get; set; }
-    public ReactiveProperty<double> Health { get; set; } = new(default);
-    public double MaxHealth { get; set; }
+    public ReactiveProperty<double> Health { get; } = new(default);
+    public ReactiveProperty<double> MaxHealth { get; } = new(default);
     public double HealthRegen { get; set; }
     public double HealthDegen { get; set; }
-    public double Mana { get; set; }
-    public double MaxMana { get; set; }
+    public ReactiveProperty<double> Mana { get; set; } = new(default);
+    public ReactiveProperty<double> MaxMana { get; set; } = new(default);
     public double ManaRegen { get; set; }
     public double ManaDegen { get; set; }
     public double Evasion { get; set; }
@@ -45,8 +45,8 @@ public class ActorBaseStats
     {
         _actor = actor;
         Speed = speed;
-        Health.Value = MaxHealth = health;
-        Mana = MaxMana = mana;
+        Health.Value = MaxHealth.Value = health;
+        Mana.Value = MaxMana.Value = mana;
         HealthRegen = healthRegen;
         ManaRegen = manaRegen;
         HealthDegen = 0;
@@ -85,12 +85,12 @@ public class ActorBaseStats
 
     public void OffsetHealth(double amount)
     {
-        Health.Value = Math.Clamp(Health.Value + amount, 0, MaxHealth);
+        Health.Value = Math.Clamp(Health.Value + amount, 0, MaxHealth.Value);
     }
 
     public void OffsetMana(double amount)
     {
-        Mana = Math.Clamp(Mana + amount, 0, MaxMana);
+        Mana.Value = Math.Clamp(Mana.Value + amount, 0, MaxMana.Value);
     }
 
     public void AddHealthDegen(double damagePerSecond)

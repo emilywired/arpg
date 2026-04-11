@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +8,9 @@ public class Skeleton : Monster
     public Skeleton(int level)
         : base(level)
     {
-        Stats = new(this, speed: 150, health: 40);
+        Stats.MaxHealth.Value = 200;
+        Stats.Health.Value = 200;
+        Stats.Speed = 150;
 
         graphicsComponent = new(this);
         movementBehavior = new MovementFollow(this, Game1.World.Player);
@@ -26,6 +27,7 @@ public class Skeleton : Monster
 
     public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
         graphicsComponent.Draw(spriteBatch);
     }
 }

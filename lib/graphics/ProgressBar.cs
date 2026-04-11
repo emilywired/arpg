@@ -22,7 +22,12 @@ public class ProgressBar
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        var targetRect = new Rectangle((int)(Position.X - Size.X / 2), (int)Position.Y, (int)Size.X, (int)Size.Y);
+        var targetRect = new Rectangle(
+            (int)(Position.X - Size.X / 2),
+            (int)Position.Y,
+            (int)Size.X,
+            (int)Size.Y
+        );
         spriteBatch.Draw(
             Assets.RectangleTexture,
             targetRect,
@@ -36,7 +41,10 @@ public class ProgressBar
 
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            targetRect with { Width = (int)(Size.X * Progress) },
+            targetRect with
+            {
+                Width = (int)(Size.X * Progress),
+            },
             null,
             Color,
             0f,

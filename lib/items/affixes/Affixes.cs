@@ -5,7 +5,7 @@ public class LifeAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.MaxHealth += value;
+        player.Stats.MaxHealth.Value += value;
     }
 
     public override string ToString()
@@ -21,7 +21,7 @@ public class ManaAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.MaxMana += value;
+        player.Stats.MaxMana.Value += value;
     }
 
     public override string ToString()
