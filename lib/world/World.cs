@@ -4,11 +4,14 @@ using Microsoft.Xna.Framework;
 
 public class World
 {
-    public readonly Player Player;
-    public readonly List<DroppedItem> Items = [];
-    public readonly List<IEntity> Entities = [];
-    public readonly List<IActor> Actors = [];
-    public readonly Stash Stash = new(new(30, 30));
+    public Player Player { get; }
+    public List<DroppedItem> Items { get; } = [];
+
+    private readonly List<Entity> entities = [];
+    private readonly List<Entity> entityQueue = [];
+    public IEnumerable<Entity> Entities => entities;
+
+    public Stash Stash { get; } = new(new(30, 30));
 
     private MonsterSpawner _monsterSpawner;
 
@@ -16,24 +19,20 @@ public class World
     {
         Player = player;
         _monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
-        Actors.Add(Player);
+        entities.Add(Player);
     }
 
     public void Update(GameTime gameTime)
     {
+        entities.AddRange(entityQueue);
+        entityQueue.Clear();
+
         _monsterSpawner.Update(gameTime);
 
         Stash.Update(gameTime);
 
-        for (int i = Actors.Count - 1; i >= 0; i--)
+        foreach (var entity in entities)
         {
-            IActor actor = Actors[i];
-            actor.Update(gameTime);
-        }
-
-        for (int i = Entities.Count - 1; i >= 0; i--)
-        {
-            IEntity entity = Entities[i];
             entity.Update(gameTime);
         }
 
@@ -42,18 +41,23 @@ public class World
             DroppedItem item = Items[i];
             item.Update(gameTime);
         }
+
+        var entitiesToRemove = entities.Where(e => e.IsDestroyed).ToList();
+        foreach (var entity in entitiesToRemove)
+        {
+            entities.Remove(entity);
+        }
     }
 
-    public void RemoveEntity(IEntity entity)
+    public void RemoveEntity(Entity entity)
     {
-        int index = Entities.FindIndex(e => e.Id == entity.Id);
-        Entities.RemoveAt(index);
+        if (!entity.IsDestroyed)
+            entity.Destroy();
     }
 
-    public void RemoveActor(IActor actor)
+    public void AddEntity(Entity entity)
     {
-        int index = Actors.FindIndex(e => e.Id == actor.Id);
-        Actors.RemoveAt(index);
+        entityQueue.Add(entity);
     }
 
     public bool OnLeftClick()

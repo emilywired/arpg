@@ -1,43 +1,35 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class FrozenOrbEntity : IEntity
+public class FrozenOrbEntity : Entity
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public Vector2 Position { get; set; }
     public float Speed { get; set; } = 100f;
     public readonly float MaxDuration = 3f;
     public double Angle = 0d;
     public float Rotation = 0f;
-    public IHitbox Hitbox
-    {
-        get => new RectangleHitbox(0, 0, 0, 0);
-    }
+    public override IHitbox Hitbox
+        => new RectangleHitbox(0, 0, 0, 0);
 
-    private IActor _owner;
+    private Actor _owner;
     private FrozenOrbGraphicsComponent _frozenOrbGraphicsComponent = new();
     private FrozenOrbBehaviorComponent _frozenOrbBehaviorComponent = new();
 
-    public FrozenOrbEntity(IActor owner)
+    public FrozenOrbEntity(Actor owner)
     {
         _owner = owner;
-        Game1.World.Entities.Add(this);
+        Game1.World.AddEntity(this);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
         _frozenOrbGraphicsComponent.Draw(this, spriteBatch);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
         Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 3f;
         _frozenOrbBehaviorComponent.Update(this, gameTime);
-    }
-
-    public void Destroy()
-    {
-        Game1.World.RemoveEntity(this);
     }
 }

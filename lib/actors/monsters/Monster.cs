@@ -3,23 +3,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class Monster : IActor
+public class Monster : Actor
 {
-    public string Id { get; } = Guid.NewGuid().ToString();
-
-    public ActorKind Kind { get; } = ActorKind.Monster;
-
-    public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
-    ActorState IActor.State => State.Value;
-
-    public ReactiveProperty<ActorActionState> ActionState = new(ActorActionState.None);
-    ActorActionState IActor.ActionState => ActionState.Value;
-
-    public ActorFacing Facing { get; set; } = ActorFacing.Right;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public ActorBaseStats Stats { get; }
-    public bool IsAlive => Stats.Health.Value > 0;
-    public IHitbox Hitbox => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
+    public override ActorKind Kind => ActorKind.Monster;
+    public override ActorBaseStats Stats { get; }
+    public override IHitbox Hitbox 
+        => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
 
     public int XP { get; }
     public int Level { get; }
@@ -53,8 +42,10 @@ public class Monster : IActor
         movementBehavior = new(this);
     }
 
-    public virtual void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
+
         var dt = gameTime.ElapsedGameTime.TotalSeconds;
         Stats.Update(gameTime);
 
@@ -65,7 +56,7 @@ public class Monster : IActor
         {
             timeSinceDeath += (float)dt;
             if (timeSinceDeath >= corpseDespawnTime)
-                Game1.World.RemoveActor(this);
+                Game1.World.RemoveEntity(this);
 
             ActionState.Value = ActorActionState.None;
             return;
@@ -91,18 +82,18 @@ public class Monster : IActor
         healthBar.Position = Position - new Vector2(0, 20);
     }
 
-    public virtual void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
+
         if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
             healthBar.Draw(spriteBatch);
     }
 
-    public void TakeDamage(double amount)
+    public override void TakeDamage(double amount)
     {
-        if (Stats.Health.Value <= 0)
-            return;
+        base.TakeDamage(amount);
 
-        Stats.OffsetHealth(-amount);
         if (Stats.Health.Value <= 0)
         {
             Game1.World.Player.OnKill(this);

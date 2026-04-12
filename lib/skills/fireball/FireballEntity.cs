@@ -1,40 +1,35 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class FireballEntity : IEntity
+public class FireballEntity : Entity
 {
-    public IActor Owner;
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public Vector2 Position { get; set; }
+    public Actor Owner;
     public float Speed { get; set; } = 300f;
     public double Angle = 0d;
     public float Damage = 10f;
     public readonly float MaxDuration = 2f;
-    public IHitbox Hitbox => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
+    public override IHitbox Hitbox 
+        => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
 
     private FireballGraphicsComponent _fireballGraphicsComponent = new();
     private FireballBehaviorComponent _fireballBehaviorComponent = new();
 
-    public FireballEntity(IActor owner)
+    public FireballEntity(Actor owner)
     {
         Owner = owner;
-        Game1.World.Entities.Add(this);
+        Game1.World.AddEntity(this);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
         _fireballGraphicsComponent.Draw(this, spriteBatch);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
         _fireballGraphicsComponent.Update(gameTime);
         _fireballBehaviorComponent.Update(this, gameTime);
-    }
-
-    public void Destroy()
-    {
-        Game1.World.RemoveEntity(this);
     }
 }

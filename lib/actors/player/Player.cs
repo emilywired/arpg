@@ -4,29 +4,20 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class Player : IActor
+public class Player : Actor
 {
+    public override ActorKind Kind => ActorKind.Player;
     public static readonly float ItemPickupRadius = 40;
     public static readonly float GoldPickupRadius = 60;
 
-    public string Id { get; } = Guid.NewGuid().ToString();
-    public ActorKind Kind { get; } = ActorKind.Player;
+    public override IHitbox Hitbox 
+        => new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);
 
-    public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
-    ActorState IActor.State => State.Value;
-
-    public ActorActionState ActionState { get; set; } = ActorActionState.None;
-    public ActorFacing Facing { get; set; } = ActorFacing.Right;
-    public Vector2 Position { get; set; } = Vector2.Zero;
-    public bool IsAlive => Stats.Health.Value > 0;
-    public IHitbox Hitbox
-    {
-        get => new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);
-    }
     public Vector2 Size => new(140, 140);
 
     public SkillCollection Skills;
-    public ActorBaseStats Stats { get; }
+    public override ActorBaseStats Stats { get; }
+
     public Equipment Equipment;
     public Inventory Inventory;
     public PlayerGold Gold;
@@ -58,8 +49,9 @@ public class Player : IActor
         sprite = new(this);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
         Stats.Update(gameTime);
 
         var goldWithinRange = Game1
@@ -78,14 +70,10 @@ public class Player : IActor
         sprite.Update(gameTime);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
         sprite.Draw(spriteBatch);
-    }
-
-    public void TakeDamage(double amount)
-    {
-        Stats.OffsetHealth(-amount);
     }
 
     public void OnKill(Monster monster)

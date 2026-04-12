@@ -1,8 +1,8 @@
-public class FrozenOrb(IActor owner) : ISkill
+public class FrozenOrb(Actor owner) : ISkill
 {
     public string Name { get; } = "Frozen Orb";
     public Cooldown Cooldown { get; } = new(0.5f);
-    private IActor _owner = owner;
+    private Actor _owner = owner;
 
     public void Cast(double angle)
     {

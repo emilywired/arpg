@@ -1,8 +1,8 @@
-public class HolyFire(IActor owner) : ISkill
+public class HolyFire(Actor owner) : ISkill
 {
     public string Name { get; } = "Holy Fire";
     public Cooldown Cooldown { get; } = new(1f);
-    private IActor _owner = owner;
+    private Actor _owner = owner;
     private bool isActive = false;
     private HolyFireEntity? _entity;
 

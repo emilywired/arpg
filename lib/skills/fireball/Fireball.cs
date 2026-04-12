@@ -1,8 +1,8 @@
-public class Fireball(IActor owner) : ISkill
+public class Fireball(Actor owner) : ISkill
 {
     public string Name { get; } = "Fireball";
     public Cooldown Cooldown { get; } = new(1.5f);
-    private IActor _owner = owner;
+    private Actor _owner = owner;
 
     public void Cast(double angle)
     {

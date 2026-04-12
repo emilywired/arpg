@@ -23,12 +23,12 @@ public class ActorBaseStats
     public double ColdResistance { get; set; }
     public double LightningResistance { get; set; }
 
-    private IActor _actor;
+    private Actor _actor;
     private const double TICK_TIME = 0.1d;
     private double _regenTimer = 0f;
 
     public ActorBaseStats(
-        IActor actor,
+        Actor actor,
         double speed,
         double health,
         double mana = 0,

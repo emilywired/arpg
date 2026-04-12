@@ -1,13 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class TestAnimation : IEntity
+public class TestAnimation : Entity
 {
-    public Vector2 Position { get; set; }
     public float Rotation { get; set; }
-    public string Id { get; set; } = "abc";
 
-    public IHitbox Hitbox => new RectangleHitbox((int)Position.X, (int)Position.Y, 64, 64);
+    public override IHitbox Hitbox 
+        => new RectangleHitbox((int)Position.X, (int)Position.Y, 64, 64);
 
     private ITransform transform;
 
@@ -27,13 +26,15 @@ public class TestAnimation : IEntity
         transform.Reset();
     }
 
-    public void Destroy()
+    public override void Update(GameTime gameTime)
     {
-        Game1.World.Entities.Remove(this);
+        base.Update(gameTime);
+        transform.Update(gameTime);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
+        base.Draw(spriteBatch);
         spriteBatch.Draw(
             Assets.RectangleTexture,
             new(Position.ToPoint(), new(64, 64)),
@@ -44,10 +45,5 @@ public class TestAnimation : IEntity
             SpriteEffects.None,
             Layer.Hitbox
         );
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        transform.Update(gameTime);
     }
 }

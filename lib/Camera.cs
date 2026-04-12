@@ -10,7 +10,7 @@ public static class Camera
     public static Vector2 ScreenToWorld(Vector2 screen)
         => Origin + screen;
 
-    public static void Follow(IActor actor)
+    public static void Follow(Actor actor)
     {
         Matrix position = Matrix.CreateTranslation(
             -(int)actor.Position.X,

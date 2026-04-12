@@ -19,15 +19,15 @@ public class FrozenOrbSecondaryBehaviorComponent
             return;
         }
 
-        double x =
+        float x =
             secondaryEntity.Position.X
-            + (secondaryEntity.Speed * elapsedTime * Math.Cos(secondaryEntity.Angle));
-        double y =
+            + (secondaryEntity.Speed * elapsedTime * MathF.Cos(secondaryEntity.Angle));
+        float y =
             secondaryEntity.Position.Y
-            + (secondaryEntity.Speed * elapsedTime * Math.Sin(secondaryEntity.Angle));
-        secondaryEntity.Position = new((float)x, (float)y);
+            + (secondaryEntity.Speed * elapsedTime * MathF.Sin(secondaryEntity.Angle));
+        secondaryEntity.Position = new(x, y);
 
-        foreach (IActor actor in Game1.World.Actors.Where(actor => actor.Kind == ActorKind.Monster))
+        foreach (Actor actor in Game1.World.Entities.OfType<Actor>().Where(actor => actor.Kind == ActorKind.Monster))
         {
             if (!_hitActors.Contains(actor.Id) && secondaryEntity.Hitbox.Intersects(actor.Hitbox))
             {

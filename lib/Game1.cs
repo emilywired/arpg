@@ -55,7 +55,7 @@ public class Game1 : Game
         _gameUI = new GameUI(player);
         _pauseMenu = new PauseMenu();
 
-        World.Entities.Add(new TestAnimation());
+        World.AddEntity(new TestAnimation());
 
         _gameInputController = new GameInputController();
         _gameInputController.RegisterOnClose(_gameUI.OnClose);
@@ -120,12 +120,7 @@ public class Game1 : Game
             blendState: BlendState.AlphaBlend
         );
 
-        foreach (IActor actor in World.Actors)
-        {
-            actor.Draw(_spriteBatch);
-        }
-
-        foreach (IEntity entity in World.Entities)
+        foreach (Entity entity in World.Entities)
         {
             entity.Draw(_spriteBatch);
         }

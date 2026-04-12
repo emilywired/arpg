@@ -5,7 +5,7 @@ public class PlayerStats : ActorBaseStats
     public int ManaOnKill { get; set; }
 
     public PlayerStats(
-        IActor actor,
+        Actor actor,
         double speed,
         double health,
         double mana = 0,

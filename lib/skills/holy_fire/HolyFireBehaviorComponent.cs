@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 public class HolyFireBehaviorComponent
 {
-    private List<IActor> _intersectingEntities = [];
+    private List<Actor> _intersectingEntities = [];
 
     public HolyFireBehaviorComponent(HolyFireEntity holyFire)
     {
@@ -16,7 +16,7 @@ public class HolyFireBehaviorComponent
         // TODO: replace 20 with the half width of the visible player sprite
         holyFire.Position = new(holyFire.Owner.Position.X + 0, holyFire.Owner.Position.Y + 20);
 
-        foreach (var actor in Game1.World.Actors.Where(actor => actor.Kind != holyFire.Owner.Kind))
+        foreach (var actor in Game1.World.Entities.OfType<Actor>().Where(actor => actor.Kind != holyFire.Owner.Kind))
         {
             bool wasAlreadyIntersecting = _intersectingEntities.Contains(actor);
             bool intersects = actor.Hitbox.Intersects(holyFire.Hitbox);
@@ -38,7 +38,7 @@ public class HolyFireBehaviorComponent
     {
         holyFire.Owner.Stats.SubtractHealthDegen(holyFire.SelfDamage);
 
-        foreach (var actor in Game1.World.Actors.Where(actor => actor.Kind != holyFire.Owner.Kind))
+        foreach (var actor in Game1.World.Entities.OfType<Actor>().Where(actor => actor.Kind != holyFire.Owner.Kind))
         {
             bool wasAlreadyIntersecting = _intersectingEntities.Contains(actor);
             if (wasAlreadyIntersecting)

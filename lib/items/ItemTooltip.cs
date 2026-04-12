@@ -13,7 +13,7 @@ public class ItemTooltip
     private static SpriteFont _font = Assets.Fonts.MonogramExtened;
     private static int _PADDING = 5;
     private static int _ELEMENT_SPACING = 4;
-    private static int _STRING_SPACING = 2;
+    // private static int _STRING_SPACING = 2;
 
     private List<TooltipElement> _elements = new();
     private List<int> _stringWidths = [];

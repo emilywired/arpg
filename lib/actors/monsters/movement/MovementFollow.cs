@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-public class MovementFollow(Monster monster, IActor target) : MovementBehavior(monster)
+public class MovementFollow(Monster monster, Actor target) : MovementBehavior(monster)
 {
     public override void Update(GameTime gameTime)
     {
