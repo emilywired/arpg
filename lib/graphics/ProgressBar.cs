@@ -68,8 +68,8 @@ public class ProgressBar
         if (ShowText)
         {
             Vector2 textPosition = new Vector2(
-                targetRect.X + targetRect.Width / 2f,
-                targetRect.Y + (float)VerticalTextOffset + targetRect.Height / 2f
+                (int)(targetRect.X + targetRect.Width / 2f),
+                (int)(targetRect.Y + (float)VerticalTextOffset + targetRect.Height / 2f)
             );
 
             string text = $"{Value} / {MaxValue}";
@@ -81,7 +81,7 @@ public class ProgressBar
                 textPosition,
                 TextColor,
                 0f,
-                textMeasurement / 2,
+                new((int)(textMeasurement.X / 2), (int)(textMeasurement.Y / 2)),
                 1f,
                 SpriteEffects.None,
                 Layer.DroppedItem

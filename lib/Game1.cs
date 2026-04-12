@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class Game1 : Game
@@ -168,8 +169,8 @@ public class Game1 : Game
 
         if (center)
         {
-            int textWidth = (int)Assets.Fonts.MonogramExtened.MeasureString(text).X;
-            _position.X -= textWidth / 2;
+            float textWidth = Assets.Fonts.MonogramExtened.MeasureString(text).X;
+            _position.X -= MathF.Round(textWidth / 2);
         }
 
         spriteBatch.DrawString(
