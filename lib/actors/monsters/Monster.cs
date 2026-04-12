@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class Monster : Actor
 {
-    public override ActorKind Kind => ActorKind.Monster;
     public override ActorBaseStats Stats { get; }
     public override IHitbox Hitbox 
         => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);

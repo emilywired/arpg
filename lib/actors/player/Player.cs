@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -6,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Player : Actor
 {
-    public override ActorKind Kind => ActorKind.Player;
     public static readonly float ItemPickupRadius = 40;
     public static readonly float GoldPickupRadius = 60;
 

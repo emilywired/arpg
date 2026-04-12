@@ -27,7 +27,7 @@ public class FrozenOrbSecondaryBehaviorComponent
             + (secondaryEntity.Speed * elapsedTime * MathF.Sin(secondaryEntity.Angle));
         secondaryEntity.Position = new(x, y);
 
-        foreach (Actor actor in Game1.World.Entities.OfType<Actor>().Where(actor => actor.Kind == ActorKind.Monster))
+        foreach (Monster actor in Game1.World.Entities.OfType<Monster>())
         {
             if (!_hitActors.Contains(actor.Id) && secondaryEntity.Hitbox.Intersects(actor.Hitbox))
             {

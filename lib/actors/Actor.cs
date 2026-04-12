@@ -1,9 +1,3 @@
-public enum ActorKind
-{
-    Player,
-    Monster,
-}
-
 public enum ActorState
 {
     Idling,
@@ -26,11 +20,10 @@ public enum ActorFacing
 
 public abstract class Actor : Entity
 {
-    public abstract ActorKind Kind { get; }
     public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
     public ReactiveProperty<ActorActionState> ActionState { get; } = new(ActorActionState.None);
     public ActorFacing Facing { get; set; }
-    public abstract ActorBaseStats Stats { get; } 
+    public abstract ActorBaseStats Stats { get; }
     public bool IsAlive { get; private set; } = true;
 
     public virtual void TakeDamage(double amount)
