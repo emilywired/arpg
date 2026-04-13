@@ -1,0 +1,1 @@
+public class RectangleSprite() : Sprite(Assets.RectangleTexture) { }

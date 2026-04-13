@@ -7,6 +7,7 @@ public class AnimatedSpriteDrawNode(AnimatedSprite source) : DrawNode<AnimatedSp
     private Texture2D texture = source.Asset.Texture;
     private Rectangle frame = source.Asset.Frames[source.CurrentFrame];
     private SpriteEffects spriteEffects = source.SpriteEffects;
+    private float rotation = source.Rotation;
 
     public override void Draw(SpriteBatch spriteBatch)
     {
@@ -15,8 +16,8 @@ public class AnimatedSpriteDrawNode(AnimatedSprite source) : DrawNode<AnimatedSp
             new((int)position.X, (int)position.Y),
             frame,
             Color.White,
-            0f,
-            frame.Size.ToVector2() / 2,
+            rotation,
+            Source.RelativeOrigin * frame.Size.ToVector2(),
             1f,
             spriteEffects,
             Layer.Player

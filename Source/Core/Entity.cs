@@ -13,6 +13,8 @@ public abstract class Entity : IDrawable
 
     public bool IsDestroyed { get; private set; }
 
+    public bool Hidden { get; }
+
     protected List<IDrawable> drawables = [];
 
     public virtual void Update(GameTime gameTime) { }
@@ -24,7 +26,7 @@ public abstract class Entity : IDrawable
     }
 
     protected virtual IEnumerable<DrawNode> CreateCompositeDrawNodes()
-        => drawables.Select(drawable => drawable.CreateDrawNode());
+        => drawables.Where(drawable => !drawable.Hidden).Select(drawable => drawable.CreateDrawNode());
 
     public DrawNode CreateDrawNode()
     {

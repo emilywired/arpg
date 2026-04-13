@@ -1,0 +1,1 @@
+public class CircleSprite(int radius) : Sprite(Assets.CreateCircleTexture(radius)) { }

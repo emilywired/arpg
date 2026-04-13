@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public class HolyFireEntity(Entity parent) : SkillEntity(parent)
+public class HolyFireEntity : SkillEntity
 {
     public override IHitbox Hitbox
         => new CircleHitbox(Position, Radius);
@@ -11,18 +9,16 @@ public class HolyFireEntity(Entity parent) : SkillEntity(parent)
     public double Damage = 100d;
     public double SelfDamage = 2d;
 
-    public Texture2D? Texture { get; private set; }
-    public override void Update(GameTime gameTime)
+    private CircleSprite sprite;
+
+    public HolyFireEntity(Entity parent) : base(parent)
     {
-        base.Update(gameTime);
-        Texture = Assets.CreateCircleTexture((int)Radius);
+        AddDrawable(sprite = new CircleSprite((int)Radius)
+        {
+            Color = new Color(205, 45, 10, 64),
+        });
     }
 
     protected override SkillBehaviorComponent CreateBehavior()
         => new HolyFireBehaviorComponent(this);
-
-    protected override IEnumerable<DrawNode> CreateCompositeDrawNodes()
-    {
-        yield return new HolyFireDrawNode(this);
-    }
 }

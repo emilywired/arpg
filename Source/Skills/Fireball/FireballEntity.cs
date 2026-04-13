@@ -1,30 +1,46 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-public class FireballEntity(Entity parent) : SkillEntity(parent)
+public class FireballEntity : SkillEntity
 {
     public float Speed { get; set; } = 300f;
     public double Angle = 0d;
     public float Damage = 10f;
     public readonly float MaxDuration = 2f;
-    public override IHitbox Hitbox
-        => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
 
-    public TextureAsset Asset { get; } = Assets.Spells.Fireball;
-    public int CurrentFrame { get; private set; }
+    private RectangleHitbox localHitbox = new(-8, -8, 16, 16);
+    public override IHitbox Hitbox
+        => localHitbox with
+        {
+            Bounds = localHitbox.Bounds with
+            {
+                X = (int)Position.X + localHitbox.Bounds.X,
+                Y = (int)Position.Y + localHitbox.Bounds.Y
+            }
+        };
+
+    private AnimatedSprite animatedSprite;
+    private RectangleSprite debug;
+
+    public FireballEntity(Entity parent) : base(parent)
+    {
+        AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.Fireball));
+        AddDrawable(debug = new RectangleSprite
+        {
+            Position = localHitbox.Bounds.Location.ToVector2(),
+            Size = localHitbox.Bounds.Size.ToVector2(),
+            Color = Color.Yellow,
+        });
+    }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        CurrentFrame++;
-        CurrentFrame %= Asset.Frames.Count;
+        animatedSprite.Rotation = (float)Angle;
+        animatedSprite.Update(gameTime);
+
+        debug.Hidden = !GameState.IsDebugMode;
     }
 
     protected override SkillBehaviorComponent CreateBehavior()
         => new FireballBehaviorComponent(this);
-
-    protected override IEnumerable<DrawNode> CreateCompositeDrawNodes()
-    {
-        yield return new FireballDrawNode(this);
-    }
 }

@@ -3,17 +3,20 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class AnimatedSprite : IDrawable
+public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable
 {
     public IDrawable? Parent { get; set; }
 
     private float elapsedTime = 0f;
     protected float FrameTime { get; set; } = 0.1f;
-    public TextureAsset Asset { get; private set; } = null!;
+    public TextureAsset Asset { get; private set; } = initialAsset!;
     public int CurrentFrame { get; private set; }
 
     public SpriteEffects SpriteEffects { get; set; }
     public Vector2 Position { get; set; }
+    public float Rotation { get; set; }
+    public Vector2 RelativeOrigin { get; set; } = new(0.5f);
+    public bool Hidden { get; set; }
 
     public void SetTextureAsset(TextureAsset asset)
     {

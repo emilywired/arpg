@@ -6,6 +6,7 @@ public class ProgressBar : IDrawable
 
     public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
+    public bool Hidden { get; set; }
 
     public Color Color { get; set; } = Color.CornflowerBlue;
     public Color BackgroundColor { get; set; } = Color.Black;

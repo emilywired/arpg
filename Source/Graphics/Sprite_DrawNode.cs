@@ -14,7 +14,7 @@ public class SpriteDrawNode(Sprite source) : DrawNode<Sprite>(source)
             null,
             Source.Color,
             Source.Rotation,
-            Vector2.Zero,
+            Source.RelativeOrigin * size,
             SpriteEffects.None,
             Layer.Hitbox
         );
