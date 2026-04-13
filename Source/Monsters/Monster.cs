@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 public class Monster : Actor
 {
     public override ActorBaseStats Stats { get; }
-    public override IHitbox Hitbox
-        => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
+    public override IHitbox Hitbox =>
+        new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
 
     public int XP { get; }
     public int Level { get; }
@@ -90,6 +90,9 @@ public class Monster : Actor
 
     public override void TakeDamage(double amount)
     {
+        if (!IsAlive)
+            return;
+
         base.TakeDamage(amount);
 
         if (Stats.Health.Value <= 0)
