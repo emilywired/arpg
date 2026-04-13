@@ -14,7 +14,7 @@ public class DroppedItem
     private string GetDisplayName()
     {
         string displayText = $"{Item.Name}";
-        if (Item is MaterialItem materialItem && materialItem.StackQuantity > 0)
+        if (Item is MaterialItem materialItem && materialItem.StackQuantity > 1)
         {
             displayText += $" x{materialItem.StackQuantity}";
         }

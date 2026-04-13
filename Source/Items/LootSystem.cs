@@ -5,17 +5,17 @@ public class LootSystem
 {
     private Dictionary<Func<Item>, int> lootPool = new()
     {
-        { () => new OrbOfCorruption(), 1000 },
-        { () => new AugmentingCore(), 100 },
+        { () => new OrbOfCorruption(), 100000 },
+        { () => new AugmentingCore(), 50000 },
         { () => new Hood(), 5000 },
         { () => new Sandals(), 5000 },
-        { () => new RubyRing(), 100000 },
-        { () => new SapphireRing(), 100000 },
+        { () => new RubyRing(), 2000 },
+        { () => new SapphireRing(), 2000 },
     };
 
     private Dictionary<int, int> dropCountWeights = new()
     {
-        { 0, 10000 },
+        { 0, 4000 },
         { 1, 1000 },
         { 2, 0 },
         { 3, 0 },
@@ -36,7 +36,7 @@ public class LootSystem
 
         List<Item> drops = [];
 
-        int goldRoll = Random.Shared.Next(0, 1);
+        int goldRoll = Random.Shared.Next(5);
         if (goldRoll == 0)
         {
             int goldAmount = Random.Shared.Next(
