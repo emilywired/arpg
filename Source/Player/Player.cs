@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -21,8 +22,10 @@ public class Player : Actor
     public PlayerGold Gold;
 
     public PlayerInputComponent InputComponent;
+    private AnimatedSprite sprite;
 
-    private PlayerSprite sprite;
+    private TextureAsset idleAsset = Assets.Player.Idle;
+    private TextureAsset walkAsset = Assets.Player.Walk;
 
     public Player()
     {
@@ -45,13 +48,23 @@ public class Player : Actor
         Equipment.Equip(new RubyRing());
 
         InputComponent = new(this);
-        sprite = new(this);
+        AddDrawable(sprite = new());
+
+        State.Connect(this, () =>
+        {
+            sprite.SetTextureAsset(State.Value switch
+            {
+                ActorState.Idling => idleAsset,
+                ActorState.Walking => walkAsset,
+                _ => throw new Exception("Unhandled ActorState"),
+            });
+        });
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        Stats.Update(gameTime);
+        base.Update(dt);
+        Stats.Update(dt);
 
         var goldWithinRange = Game1
             .World.Items.Where(droppedItem => droppedItem.Item is Gold)
@@ -63,17 +76,37 @@ public class Player : Actor
             _ = gold.GetPickedUp(this);
         }
 
-        InputComponent.Update(gameTime);
+        InputComponent.Update(dt);
 
-        sprite.Position = Position;
-        sprite.Update(gameTime);
+        sprite.SpriteEffects = Facing == ActorFacing.Right
+            ? SpriteEffects.None
+            : SpriteEffects.FlipHorizontally;
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
-        sprite.Draw(spriteBatch);
-    }
+    /*
+
+    if (GameState.IsDebugMode)
+        {
+            if (player.Hitbox is RectangleHitbox rectangleHitbox)
+            {
+                spriteBatch.Draw(
+                    Assets.RectangleTexture,
+                    rectangleHitbox.Bounds,
+                    null,
+                    Color.Yellow,
+                    0f,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    Layer.Hitbox
+                );
+            }
+            else
+            {
+                throw new NotImplementedException("Unhandled hitbox type");
+            }
+        }
+
+    */
 
     public void OnKill(Monster monster)
     {

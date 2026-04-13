@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 public class TestAnimation : Entity
 {
@@ -9,6 +8,8 @@ public class TestAnimation : Entity
         => new RectangleHitbox((int)Position.X, (int)Position.Y, 64, 64);
 
     private ITransform transform;
+
+    private Sprite sprite;
 
     public TestAnimation()
     {
@@ -24,26 +25,19 @@ public class TestAnimation : Entity
         ]);
         transform.OnFinish += Destroy;
         transform.Reset();
+
+        AddDrawable(sprite = new Sprite(Assets.RectangleTexture)
+        {
+            Size = new(64),
+            Color = Color.Yellow,
+        });
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        transform.Update(gameTime);
-    }
+        base.Update(dt);
+        transform.Update(dt);
 
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
-        spriteBatch.Draw(
-            Assets.RectangleTexture,
-            new(Position.ToPoint(), new(64, 64)),
-            null,
-            Color.Yellow,
-            Rotation,
-            Vector2.Zero,
-            SpriteEffects.None,
-            Layer.Hitbox
-        );
+        sprite.Rotation = Rotation;
     }
 }

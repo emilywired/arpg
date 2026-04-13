@@ -1,37 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
-public class FrozenOrbSecondaryBehaviorComponent
+public class FrozenOrbSecondaryBehaviorComponent(FrozenOrbSecondaryEntity parent)
+    : SkillBehaviorComponent<FrozenOrbSecondaryEntity>(parent)
 {
-    public float CurrentDuration = 0f;
     private List<string> hitActors = [];
 
-    public void Update(FrozenOrbSecondaryEntity secondaryEntity, GameTime gameTime)
+    public override void Update(float dt)
     {
-        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        CurrentDuration += elapsedTime;
-
-        if (CurrentDuration >= secondaryEntity.MaxDuration)
+        base.Update(dt);
+        if (CurrentDuration >= Parent.MaxDuration)
         {
-            secondaryEntity.Destroy();
+            Parent.Destroy();
             return;
         }
 
         float x =
-            secondaryEntity.Position.X
-            + (secondaryEntity.Speed * elapsedTime * MathF.Cos(secondaryEntity.Angle));
+            Parent.Position.X
+            + (Parent.Speed * dt * MathF.Cos(Parent.Angle));
         float y =
-            secondaryEntity.Position.Y
-            + (secondaryEntity.Speed * elapsedTime * MathF.Sin(secondaryEntity.Angle));
-        secondaryEntity.Position = new(x, y);
+            Parent.Position.Y
+            + (Parent.Speed * dt * MathF.Sin(Parent.Angle));
+        Parent.Position = new(x, y);
 
         foreach (Monster actor in Game1.World.Entities.OfType<Monster>())
         {
-            if (!hitActors.Contains(actor.Id) && secondaryEntity.Hitbox.Intersects(actor.Hitbox))
+            if (!hitActors.Contains(actor.Id) && Parent.Hitbox.Intersects(actor.Hitbox))
             {
-                actor.TakeDamage(secondaryEntity.Damage);
+                actor.TakeDamage(Parent.Damage);
                 hitActors.Add(actor.Id);
             }
         }

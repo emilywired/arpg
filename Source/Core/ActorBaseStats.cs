@@ -1,7 +1,6 @@
 using System;
-using Microsoft.Xna.Framework;
 
-public class ActorBaseStats
+public class ActorBaseStats : IUpdateable
 {
     public double Speed { get; set; }
     public ReactiveProperty<double> Health { get; } = new(default);
@@ -60,9 +59,9 @@ public class ActorBaseStats
         Spirit = spirit;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
-        regenTimer += gameTime.ElapsedGameTime.TotalSeconds;
+        regenTimer += dt;
         if (regenTimer >= TICK_TIME)
         {
             double netHealthChange = (HealthRegen - HealthDegen) * TICK_TIME;

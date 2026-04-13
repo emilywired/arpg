@@ -60,7 +60,7 @@ public class PlayerInputComponent
             heldSkill = null;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
         if (!GameState.IsRunning)
             return;
@@ -85,13 +85,12 @@ public class PlayerInputComponent
         float distanceToDestination = Vector2.Distance(player.Position, destination);
         if (distanceToDestination > 1f)
         {
-            double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
             float x =
                 player.Position.X
-                + (float)(player.Stats.Speed * elapsedTime * Math.Cos(destinationAngle));
+                + (float)(player.Stats.Speed * dt * Math.Cos(destinationAngle));
             float y =
                 player.Position.Y
-                + (float)(player.Stats.Speed * elapsedTime * Math.Sin(destinationAngle));
+                + (float)(player.Stats.Speed * dt * Math.Sin(destinationAngle));
             player.Position = new(x, y);
         }
         else

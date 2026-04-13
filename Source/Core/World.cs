@@ -33,7 +33,7 @@ public class World
 
         foreach (Entity entity in entities)
         {
-            entity.Update(gameTime);
+            entity.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         for (int i = Items.Count - 1; i >= 0; i--)

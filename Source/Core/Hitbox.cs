@@ -7,11 +7,11 @@ public interface IHitbox
 }
 
 // TODO: refactor
-public class RectangleHitbox(int x, int y, int width, int height) : IHitbox
+public struct RectangleHitbox(int x, int y, int width, int height) : IHitbox
 {
     public Rectangle Bounds { get; set; } = new(x, y, width, height);
 
-    public bool Intersects(IHitbox other)
+    public readonly bool Intersects(IHitbox other)
     {
         return other switch
         {
@@ -21,12 +21,12 @@ public class RectangleHitbox(int x, int y, int width, int height) : IHitbox
         };
     }
 
-    public bool Intersects(RectangleHitbox rectangleHitbox)
+    public readonly bool Intersects(RectangleHitbox rectangleHitbox)
     {
         return Bounds.Intersects(rectangleHitbox.Bounds);
     }
 
-    public bool Intersects(CircleHitbox circleHitbox)
+    public readonly bool Intersects(CircleHitbox circleHitbox)
     {
         float closestX = Math.Clamp(circleHitbox.Center.X, Bounds.Left, Bounds.Right);
         float closestY = Math.Clamp(circleHitbox.Center.Y, Bounds.Top, Bounds.Bottom);
@@ -37,12 +37,12 @@ public class RectangleHitbox(int x, int y, int width, int height) : IHitbox
     }
 }
 
-public class CircleHitbox(Vector2 center, double radius) : IHitbox
+public struct CircleHitbox(Vector2 center, double radius) : IHitbox
 {
     public Vector2 Center = center;
     public double Radius = radius;
 
-    public bool Intersects(IHitbox other)
+    public readonly bool Intersects(IHitbox other)
     {
         return other switch
         {
@@ -52,7 +52,7 @@ public class CircleHitbox(Vector2 center, double radius) : IHitbox
         };
     }
 
-    public bool Intersects(CircleHitbox circle)
+    public readonly bool Intersects(CircleHitbox circle)
     {
         double x1 = Center.X;
         double y1 = Center.Y;
@@ -62,7 +62,7 @@ public class CircleHitbox(Vector2 center, double radius) : IHitbox
         return distance <= Radius + circle.Radius;
     }
 
-    public bool Intersects(Rectangle rectangle)
+    public readonly bool Intersects(Rectangle rectangle)
     {
         float closestX = Math.Clamp(Center.X, rectangle.Left, rectangle.Right);
         float closestY = Math.Clamp(Center.Y, rectangle.Top, rectangle.Bottom);

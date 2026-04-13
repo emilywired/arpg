@@ -1,59 +1,57 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
-public class HolyFireBehaviorComponent
+public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 {
     private List<Actor> intersectingEntities = [];
 
-    public HolyFireBehaviorComponent(HolyFireEntity holyFire)
+    public HolyFireBehaviorComponent(HolyFireEntity parent)
+        : base(parent)
     {
-        holyFire.Owner.Stats.AddHealthDegen(holyFire.SelfDamage);
+        parent.Owner.Stats.AddHealthDegen(parent.SelfDamage);
     }
 
-#pragma warning disable IDE0060
-    public void Update(HolyFireEntity holyFire, GameTime gameTime)
-#pragma warning restore IDE0060
+    public override void Update(float dt)
     {
         // TODO: replace 20 with the half width of the visible player sprite
-        holyFire.Position = new(holyFire.Owner.Position.X + 0, holyFire.Owner.Position.Y + 20);
+        Parent.Position = new(Parent.Owner.Position.X + 0, Parent.Owner.Position.Y + 20);
 
         foreach (
             Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
-                .Where(actor => actor != holyFire.Owner)
+                .Where(actor => actor != Parent.Parent)
         )
         {
             bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
-            bool intersects = actor.Hitbox.Intersects(holyFire.Hitbox);
+            bool intersects = actor.Hitbox.Intersects(Parent.Hitbox);
 
             if (!wasAlreadyIntersecting && intersects)
             {
-                actor.Stats.AddHealthDegen(holyFire.Damage);
+                actor.Stats.AddHealthDegen(Parent.Damage);
                 intersectingEntities.Add(actor);
             }
             else if (wasAlreadyIntersecting && !intersects)
             {
-                actor.Stats.SubtractHealthDegen(holyFire.Damage);
+                actor.Stats.SubtractHealthDegen(Parent.Damage);
                 _ = intersectingEntities.Remove(actor);
             }
         }
     }
 
-    public void Destroy(HolyFireEntity holyFire)
+    public override void Destroy()
     {
-        holyFire.Owner.Stats.SubtractHealthDegen(holyFire.SelfDamage);
+        Parent.Owner.Stats.SubtractHealthDegen(Parent.SelfDamage);
 
         foreach (
             Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
-                .Where(actor => actor != holyFire.Owner)
+                .Where(actor => actor != Parent.Owner)
         )
         {
             bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
             if (wasAlreadyIntersecting)
             {
-                actor.Stats.SubtractHealthDegen(holyFire.Damage);
+                actor.Stats.SubtractHealthDegen(Parent.Damage);
             }
         }
     }

@@ -1,8 +1,8 @@
-public class Fireball(Actor _owner) : ISkill
+public class Fireball(Actor owner) : ISkill
 {
     public string Name { get; } = "Fireball";
     public Cooldown Cooldown { get; } = new(1.5f);
-    private Actor owner = _owner;
+    private Actor owner = owner;
 
     public void Cast(double angle)
     {
@@ -11,7 +11,7 @@ public class Fireball(Actor _owner) : ISkill
 
         _ = new FireballEntity(owner)
         {
-            Position = new(owner.Position.X, owner.Position.Y),
+            Position = owner.Position,
             Angle = angle,
         };
 

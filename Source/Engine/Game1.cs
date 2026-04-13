@@ -123,7 +123,11 @@ public class Game1 : Game
 
         foreach (Entity entity in World.Entities)
         {
-            entity.Draw(spriteBatch);
+            if (!entity.Hidden)
+            {
+                DrawNode node = entity.CreateDrawNode();
+                node.Draw(spriteBatch);
+            }
         }
 
         World.Stash.Draw(spriteBatch);

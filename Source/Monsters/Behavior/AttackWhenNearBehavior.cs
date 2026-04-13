@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-
 public class AttackWhenNearBehavior(Monster monster) : Behavior(monster)
 {
     private bool isAttacking = false;
@@ -8,10 +6,8 @@ public class AttackWhenNearBehavior(Monster monster) : Behavior(monster)
     private double swingTimer = 0.3f;
     private const float ATTACK_LAND_FRAME = 0.6f;
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        double dt = gameTime.ElapsedGameTime.TotalSeconds;
-
         float distance = monster.Position.DistanceTo(Game1.World.Player.Position);
 
         bool withinAttackHitDistance = distance <= 64;

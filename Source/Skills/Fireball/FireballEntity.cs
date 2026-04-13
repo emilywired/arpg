@@ -1,35 +1,44 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public class FireballEntity : Entity
+public class FireballEntity : SkillEntity
 {
-    public Actor Owner;
     public float Speed { get; set; } = 300f;
     public double Angle = 0d;
     public float Damage = 10f;
     public readonly float MaxDuration = 2f;
-    public override IHitbox Hitbox =>
-        new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
 
-    private FireballGraphicsComponent fireballGraphicsComponent = new();
-    private FireballBehaviorComponent fireballBehaviorComponent = new();
+    private RectangleHitbox localHitbox = new(-8, -8, 16, 16);
+    public override IHitbox Hitbox
+        => localHitbox with
+        {
+            Bounds = localHitbox.Bounds with
+            {
+                X = (int)Position.X + localHitbox.Bounds.X,
+                Y = (int)Position.Y + localHitbox.Bounds.Y
+            }
+        };
 
-    public FireballEntity(Actor owner)
+    private AnimatedSprite animatedSprite;
+    private RectangleSprite debug;
+
+    public FireballEntity(Actor owner) : base(owner)
     {
-        Owner = owner;
-        Game1.World.AddEntity(this);
+        AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.Fireball));
+        AddDrawable(debug = new RectangleSprite
+        {
+            Position = localHitbox.Bounds.Location.ToVector2(),
+            Size = localHitbox.Bounds.Size.ToVector2(),
+            Color = Color.Yellow,
+        });
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Update(float dt)
     {
-        base.Draw(spriteBatch);
-        fireballGraphicsComponent.Draw(this, spriteBatch);
+        base.Update(dt);
+        animatedSprite.Rotation = (float)Angle;
+        debug.Hidden = !GameState.IsDebugMode;
     }
 
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        fireballGraphicsComponent.Update(gameTime);
-        fireballBehaviorComponent.Update(this, gameTime);
-    }
+    protected override SkillBehaviorComponent CreateBehavior()
+        => new FireballBehaviorComponent(this);
 }

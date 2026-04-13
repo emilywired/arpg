@@ -1,32 +1,28 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public class FrozenOrbSecondaryEntity : Entity
+public class FrozenOrbSecondaryEntity : SkillEntity
 {
     public float Speed { get; set; } = 150f;
     public float Angle = 0f;
     public float Damage = 5f;
     public readonly float MaxDuration = 1.5f;
-    public override IHitbox Hitbox =>
-        new RectangleHitbox((int)Position.X - 16, (int)Position.Y - 16, 32, 32);
 
-    private FrozenOrbSecondaryGraphicsComponent frozenOrbSecondaryGraphicsComponent = new();
-    private FrozenOrbSecondaryBehaviorComponent frozenOrbSecondaryBehaviorComponent = new();
+    public override IHitbox Hitbox
+        => new RectangleHitbox((int)Position.X - 16, (int)Position.Y - 16, 32, 32);
 
-    public FrozenOrbSecondaryEntity()
+    private AnimatedSprite animatedSprite;
+
+    public FrozenOrbSecondaryEntity(Actor owner) : base(owner)
     {
-        Game1.World.AddEntity(this);
+        AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.FrozenOrbSecondary));
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
+    public override void Update(float dt)
     {
-        base.Draw(spriteBatch);
-        frozenOrbSecondaryGraphicsComponent.Draw(this, spriteBatch);
+        base.Update(dt);
+        animatedSprite.Rotation = Angle + MathHelper.ToRadians(90);
     }
 
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        frozenOrbSecondaryBehaviorComponent.Update(this, gameTime);
-    }
+    protected override SkillBehaviorComponent CreateBehavior()
+        => new FrozenOrbSecondaryBehaviorComponent(this);
 }

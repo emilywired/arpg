@@ -1,40 +1,22 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public class HolyFireEntity : Entity
+public class HolyFireEntity : SkillEntity
 {
-    public Actor Owner;
-    public override IHitbox Hitbox => new CircleHitbox(Position, Radius);
+    public override IHitbox Hitbox
+        => new CircleHitbox(Position, Radius);
+
     public double Radius = 100d;
     public double Damage = 100d;
     public double SelfDamage = 2d;
 
-    private HolyFireGraphicsComponent holyFireGraphicsComponent;
-    private HolyFireBehaviorComponent holyFireBehaviorComponent;
-
-    public HolyFireEntity(Actor owner)
+    public HolyFireEntity(Actor owner) : base(owner)
     {
-        Game1.World.AddEntity(this);
-        Owner = owner;
-        holyFireGraphicsComponent = new(this);
-        holyFireBehaviorComponent = new(this);
+        AddDrawable(new CircleSprite((int)Radius)
+        {
+            Color = new Color(205, 45, 10, 64),
+        });
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
-        holyFireGraphicsComponent.Draw(this, spriteBatch);
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-        holyFireBehaviorComponent.Update(this, gameTime);
-    }
-
-    public override void Destroy()
-    {
-        base.Destroy();
-        holyFireBehaviorComponent.Destroy(this);
-    }
+    protected override SkillBehaviorComponent CreateBehavior()
+        => new HolyFireBehaviorComponent(this);
 }

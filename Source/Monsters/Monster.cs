@@ -15,44 +15,51 @@ public class Monster : Actor
 
     protected MovementBehavior movementBehavior;
     protected List<Behavior> behaviors = [];
+    protected AnimatedSprite sprite;
 
     private ProgressBar healthBar;
     private float corpseDespawnTime = 10f;
     private float timeSinceDeath = 0;
+
 
     public Monster(int level)
     {
         Level = level;
         Stats = new(this, speed: 400, health: 40);
 
-        healthBar = new ProgressBar()
+        AddDrawable(healthBar = new ProgressBar()
         {
             MaxValue = Stats.MaxHealth.Value,
             Size = new(32, 4),
             Color = Colors.Health,
             CenterHorizontally = true,
-            Position = Position,
-        };
+            Position = new Vector2(0, -20),
+        });
 
         Stats.Health.Connect(this, value => healthBar.Value = value);
         Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
 
         movementBehavior = new(this);
+        AddDrawable(sprite = new());
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
+        base.Update(dt);
 
-        double dt = gameTime.ElapsedGameTime.TotalSeconds;
-        Stats.Update(gameTime);
+        Stats.Update(dt);
+
+        sprite.SpriteEffects = Facing == ActorFacing.Right
+            ? SpriteEffects.None
+            : SpriteEffects.FlipHorizontally;
+        healthBar.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
 
         if (!IsAlive)
             State.Value = ActorState.Dead;
 
         if (State.Value == ActorState.Dead)
         {
-            timeSinceDeath += (float)dt;
+            timeSinceDeath += dt;
             if (timeSinceDeath >= corpseDespawnTime)
                 Game1.World.RemoveEntity(this);
 
@@ -61,11 +68,11 @@ public class Monster : Actor
         }
 
         foreach (Behavior behavior in behaviors)
-            behavior.Update(gameTime);
+            behavior.Update(dt);
 
         if (IsAlive)
         {
-            movementBehavior.Update(gameTime);
+            movementBehavior.Update(dt);
             if (CanMove && movementBehavior.DesiredVelocity != Vector2.Zero)
             {
                 State.Value = ActorState.Walking;
@@ -76,16 +83,6 @@ public class Monster : Actor
                 State.Value = ActorState.Idling;
             }
         }
-
-        healthBar.Position = Position - new Vector2(0, 20);
-    }
-
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
-
-        if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
-            healthBar.Draw(spriteBatch);
     }
 
     public override void TakeDamage(double amount)
