@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Microsoft.Xna.Framework;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 public class TransformVector2 : ITransform
@@ -39,7 +38,7 @@ public class TransformVector2 : ITransform
         IsReady = true;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
         if (IsFinished)
             return;
@@ -47,7 +46,7 @@ public class TransformVector2 : ITransform
         if (!IsReady)
             throw new Exception("Call reset before starting to update transform.");
 
-        time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        time += dt;
         if (time > length)
         {
             time = length;

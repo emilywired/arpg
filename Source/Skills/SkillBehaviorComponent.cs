@@ -1,14 +1,12 @@
-using Microsoft.Xna.Framework;
-
 public abstract class SkillBehaviorComponent(SkillEntity parent)
 {
     public SkillEntity Parent { get; } = parent;
 
     public float CurrentDuration = 0f;
 
-    public virtual void Update(GameTime gameTime)
+    public virtual void Update(float dt)
     {
-        CurrentDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        CurrentDuration += dt;
     }
 
     public virtual void Destroy() { }

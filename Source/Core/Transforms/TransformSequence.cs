@@ -16,7 +16,7 @@ public class TransformSequence(IEnumerable<ITransform> transforms) : ITransform
         IsReady = true;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
         if (IsFinished)
             return;
@@ -29,7 +29,7 @@ public class TransformSequence(IEnumerable<ITransform> transforms) : ITransform
             if (!transform.IsReady)
                 transform.Reset();
 
-            transform.Update(gameTime);
+            transform.Update(dt);
             if (transform.IsFinished)
                 _ = transforms.Remove(transform);
         }

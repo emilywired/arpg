@@ -19,7 +19,7 @@ public class TransformList(IEnumerable<ITransform> transforms) : ITransform
         IsReady = true;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
         if (IsFinished)
             return;
@@ -29,7 +29,7 @@ public class TransformList(IEnumerable<ITransform> transforms) : ITransform
 
         foreach (ITransform transform in transforms)
         {
-            transform.Update(gameTime);
+            transform.Update(dt);
         }
 
         _ = transforms.RemoveAll(t => t.IsFinished);

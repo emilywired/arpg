@@ -61,10 +61,10 @@ public class Player : Actor
         });
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        Stats.Update(gameTime);
+        base.Update(dt);
+        Stats.Update(dt);
 
         var goldWithinRange = Game1
             .World.Items.Where(droppedItem => droppedItem.Item is Gold)
@@ -76,9 +76,8 @@ public class Player : Actor
             _ = gold.GetPickedUp(this);
         }
 
-        InputComponent.Update(gameTime);
+        InputComponent.Update(dt);
 
-        sprite.Update(gameTime);
         sprite.SpriteEffects = Facing == ActorFacing.Right
             ? SpriteEffects.None
             : SpriteEffects.FlipHorizontally;

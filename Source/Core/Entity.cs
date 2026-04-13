@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-public abstract class Entity : IDrawable
+public abstract class Entity : IDrawable, IUpdateable
 {
     public IDrawable? Parent { get; set; }
 
@@ -17,7 +17,13 @@ public abstract class Entity : IDrawable
 
     protected List<IDrawable> drawables = [];
 
-    public virtual void Update(GameTime gameTime) { }
+    public virtual void Update(float dt)
+    {
+        foreach (IUpdateable updateables in drawables.OfType<IUpdateable>())
+        {
+            updateables.Update(dt);
+        }
+    }
 
     protected void AddDrawable(IDrawable drawable)
     {

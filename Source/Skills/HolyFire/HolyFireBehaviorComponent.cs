@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
 public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 {
@@ -9,13 +8,13 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
     public HolyFireBehaviorComponent(HolyFireEntity parent)
         : base(parent)
     {
-        ((Actor)parent.Parent).Stats.AddHealthDegen(parent.SelfDamage);
+        parent.Owner.Stats.AddHealthDegen(parent.SelfDamage);
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
         // TODO: replace 20 with the half width of the visible player sprite
-        Parent.Position = new(Parent.Parent.Position.X + 0, Parent.Parent.Position.Y + 20);
+        Parent.Position = new(Parent.Owner.Position.X + 0, Parent.Owner.Position.Y + 20);
 
         foreach (
             Actor? actor in Game1
@@ -41,12 +40,12 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 
     public override void Destroy()
     {
-        ((Actor)Parent.Parent).Stats.SubtractHealthDegen(Parent.SelfDamage);
+        Parent.Owner.Stats.SubtractHealthDegen(Parent.SelfDamage);
 
         foreach (
             Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
-                .Where(actor => actor != Parent.Parent)
+                .Where(actor => actor != Parent.Owner)
         )
         {
             bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);

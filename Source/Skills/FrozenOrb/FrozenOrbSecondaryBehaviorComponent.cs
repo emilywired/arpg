@@ -8,11 +8,9 @@ public class FrozenOrbSecondaryBehaviorComponent(FrozenOrbSecondaryEntity parent
 {
     private List<string> hitActors = [];
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+        base.Update(dt);
         if (CurrentDuration >= Parent.MaxDuration)
         {
             Parent.Destroy();
@@ -21,10 +19,10 @@ public class FrozenOrbSecondaryBehaviorComponent(FrozenOrbSecondaryEntity parent
 
         float x =
             Parent.Position.X
-            + (Parent.Speed * elapsedTime * MathF.Cos(Parent.Angle));
+            + (Parent.Speed * dt * MathF.Cos(Parent.Angle));
         float y =
             Parent.Position.Y
-            + (Parent.Speed * elapsedTime * MathF.Sin(Parent.Angle));
+            + (Parent.Speed * dt * MathF.Sin(Parent.Angle));
         Parent.Position = new(x, y);
 
         foreach (Monster actor in Game1.World.Entities.OfType<Monster>())

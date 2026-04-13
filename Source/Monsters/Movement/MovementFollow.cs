@@ -2,10 +2,9 @@ using Microsoft.Xna.Framework;
 
 public class MovementFollow(Monster monster, Actor target) : MovementBehavior(monster)
 {
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        double dt = gameTime.ElapsedGameTime.TotalSeconds;
-        base.Update(gameTime);
+        base.Update(dt);
 
         float angle = monster.Position.AngleTo(target.Position);
         var vector = Vector2.Rotate(Vector2.UnitX, angle);

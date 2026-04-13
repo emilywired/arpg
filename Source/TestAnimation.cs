@@ -33,10 +33,10 @@ public class TestAnimation : Entity
         });
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        transform.Update(gameTime);
+        base.Update(dt);
+        transform.Update(dt);
 
         sprite.Rotation = Rotation;
     }

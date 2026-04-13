@@ -1,9 +1,9 @@
-public class HolyFire(Actor _owner) : ISkill
+public class HolyFire(Actor owner) : ISkill
 {
     public string Name { get; } = "Holy Fire";
     public Cooldown Cooldown { get; } = new(1f);
 
-    private Actor owner = _owner;
+    private Actor owner = owner;
     private HolyFireEntity? entity;
     private bool isActive = false;
 
@@ -16,7 +16,7 @@ public class HolyFire(Actor _owner) : ISkill
         {
             HolyFireEntity holyFireEntity = new(owner)
             {
-                Position = new(owner.Position.X, owner.Position.Y),
+                Position = owner.Position,
                 Radius = 100f,
             };
 

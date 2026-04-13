@@ -1,22 +1,21 @@
-using Microsoft.Xna.Framework;
 
 public abstract class SkillEntity : Entity
 {
-    public Entity Parent { get; }
+    public Actor Owner { get; }
 
     private SkillBehaviorComponent behaviorComponent;
 
-    public SkillEntity(Entity parent)
+    public SkillEntity(Actor owner)
     {
-        Parent = parent;
+        Owner = owner;
         behaviorComponent = CreateBehavior();
         Game1.World.AddEntity(this);
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        behaviorComponent.Update(gameTime);
+        base.Update(dt);
+        behaviorComponent.Update(dt);
     }
 
     protected abstract SkillBehaviorComponent CreateBehavior();

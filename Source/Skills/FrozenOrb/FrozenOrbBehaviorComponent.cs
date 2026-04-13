@@ -10,12 +10,10 @@ public class FrozenOrbBehaviorComponent(FrozenOrbEntity parent) : SkillBehaviorC
     private float secondaryProjectileInterval = 0.1f;
     private float rotationIncreasePerProjectile = MathHelper.ToRadians(75f);
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        frameTime += elapsedTime;
+        base.Update(dt);
+        frameTime += dt;
 
         if (CurrentDuration >= Parent.MaxDuration)
         {
@@ -24,14 +22,14 @@ public class FrozenOrbBehaviorComponent(FrozenOrbEntity parent) : SkillBehaviorC
         }
 
         double x =
-            Parent.Position.X + (Parent.Speed * elapsedTime * Math.Cos(Parent.Angle));
+            Parent.Position.X + (Parent.Speed * dt * Math.Cos(Parent.Angle));
         double y =
-            Parent.Position.Y + (Parent.Speed * elapsedTime * Math.Sin(Parent.Angle));
+            Parent.Position.Y + (Parent.Speed * dt * Math.Sin(Parent.Angle));
         Parent.Position = new((float)x, (float)y);
 
         float rotationIncreasePerSecond =
             rotationIncreasePerProjectile / secondaryProjectileInterval;
-        secondaryProjectileAngle += rotationIncreasePerSecond * elapsedTime % 360;
+        secondaryProjectileAngle += (rotationIncreasePerSecond * dt) % 360;
 
         if (frameTime >= secondaryProjectileInterval)
         {
@@ -41,7 +39,7 @@ public class FrozenOrbBehaviorComponent(FrozenOrbEntity parent) : SkillBehaviorC
                 Parent.Position.Y + (offset * (float)Math.Sin(secondaryProjectileAngle))
             );
 
-            FrozenOrbSecondaryEntity secondaryEntity = new(Parent)
+            FrozenOrbSecondaryEntity secondaryEntity = new(Parent.Owner)
             {
                 Position = position,
                 Angle = secondaryProjectileAngle,

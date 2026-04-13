@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-
 public class FrozenOrbEntity : SkillEntity
 {
     public float Speed { get; set; } = 100f;
@@ -12,16 +10,16 @@ public class FrozenOrbEntity : SkillEntity
     public override IHitbox Hitbox
         => new RectangleHitbox(0, 0, 0, 0);
 
-    public FrozenOrbEntity(Entity parent) : base(parent)
+    public FrozenOrbEntity(Actor owner) : base(owner)
     {
         AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.FrozenOrb));
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 3f;
-        base.Update(gameTime);
-        animatedSprite.Update(gameTime);
+        Rotation += dt * 3f;
+        base.Update(dt);
+        animatedSprite.Rotation = Rotation;
     }
 
     protected override SkillBehaviorComponent CreateBehavior()

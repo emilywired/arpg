@@ -9,7 +9,7 @@ public class HolyFireEntity : SkillEntity
     public double Damage = 100d;
     public double SelfDamage = 2d;
 
-    public HolyFireEntity(Entity parent) : base(parent)
+    public HolyFireEntity(Actor owner) : base(owner)
     {
         AddDrawable(new CircleSprite((int)Radius)
         {

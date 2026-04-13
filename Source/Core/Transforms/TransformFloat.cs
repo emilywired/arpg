@@ -38,7 +38,7 @@ public class TransformFloat : ITransform
         IsReady = true;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float dt)
     {
         if (IsFinished)
             return;
@@ -46,7 +46,7 @@ public class TransformFloat : ITransform
         if (!IsReady)
             throw new Exception("Call reset before starting to update transform.");
 
-        time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        time += dt;
         if (time > length)
         {
             time = length;

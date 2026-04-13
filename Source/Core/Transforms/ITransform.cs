@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Xna.Framework;
 
 public interface ITransform
 {
@@ -8,5 +7,5 @@ public interface ITransform
     event Action? OnFinish;
 
     void Reset();
-    void Update(GameTime gameTime);
+    void Update(float dt);
 }

@@ -21,7 +21,7 @@ public class FireballEntity : SkillEntity
     private AnimatedSprite animatedSprite;
     private RectangleSprite debug;
 
-    public FireballEntity(Entity parent) : base(parent)
+    public FireballEntity(Actor owner) : base(owner)
     {
         AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.Fireball));
         AddDrawable(debug = new RectangleSprite
@@ -32,12 +32,10 @@ public class FireballEntity : SkillEntity
         });
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
+        base.Update(dt);
         animatedSprite.Rotation = (float)Angle;
-        animatedSprite.Update(gameTime);
-
         debug.Hidden = !GameState.IsDebugMode;
     }
 

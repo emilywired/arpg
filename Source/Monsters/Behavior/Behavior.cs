@@ -1,10 +1,8 @@
-using Microsoft.Xna.Framework;
-
-public class Behavior(Monster monster)
+public class Behavior(Monster monster) : IUpdateable
 {
     protected Monster monster = monster;
 
-    public virtual void Update(GameTime gameTime)
+    public virtual void Update(float dt)
     {
     }
 }

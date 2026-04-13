@@ -1,8 +1,8 @@
-public class FrozenOrb(Actor _owner) : ISkill
+public class FrozenOrb(Actor owner) : ISkill
 {
     public string Name { get; } = "Frozen Orb";
     public Cooldown Cooldown { get; } = new(0.5f);
-    private Actor owner = _owner;
+    private Actor owner = owner;
 
     public void Cast(double angle)
     {
@@ -13,7 +13,7 @@ public class FrozenOrb(Actor _owner) : ISkill
 
         _ = new FrozenOrbEntity(owner)
         {
-            Position = new(owner.Position.X, owner.Position.Y),
+            Position = owner.Position,
             Angle = angle,
         };
         Cooldown.StartCooldown();

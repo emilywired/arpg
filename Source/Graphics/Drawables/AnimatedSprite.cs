@@ -3,7 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable
+public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable, IUpdateable
 {
     public IDrawable? Parent { get; set; }
 
@@ -24,9 +24,9 @@ public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable
         Reset();
     }
 
-    public virtual void Update(GameTime gameTime)
+    public virtual void Update(float dt)
     {
-        elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        elapsedTime += dt;
 
         if (elapsedTime >= FrameTime)
         {

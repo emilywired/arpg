@@ -43,18 +43,15 @@ public class Monster : Actor
         AddDrawable(sprite = new());
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
+        base.Update(dt);
 
-        double dt = gameTime.ElapsedGameTime.TotalSeconds;
-        Stats.Update(gameTime);
+        Stats.Update(dt);
 
-        sprite.Update(gameTime);
         sprite.SpriteEffects = Facing == ActorFacing.Right
             ? SpriteEffects.None
             : SpriteEffects.FlipHorizontally;
-
         sprite.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
 
         if (!IsAlive)
@@ -62,7 +59,7 @@ public class Monster : Actor
 
         if (State.Value == ActorState.Dead)
         {
-            timeSinceDeath += (float)dt;
+            timeSinceDeath += dt;
             if (timeSinceDeath >= corpseDespawnTime)
                 Game1.World.RemoveEntity(this);
 
@@ -71,11 +68,11 @@ public class Monster : Actor
         }
 
         foreach (Behavior behavior in behaviors)
-            behavior.Update(gameTime);
+            behavior.Update(dt);
 
         if (IsAlive)
         {
-            movementBehavior.Update(gameTime);
+            movementBehavior.Update(dt);
             if (CanMove && movementBehavior.DesiredVelocity != Vector2.Zero)
             {
                 State.Value = ActorState.Walking;

@@ -12,15 +12,14 @@ public class FrozenOrbSecondaryEntity : SkillEntity
 
     private AnimatedSprite animatedSprite;
 
-    public FrozenOrbSecondaryEntity(Entity parent) : base(parent)
+    public FrozenOrbSecondaryEntity(Actor owner) : base(owner)
     {
         AddDrawable(animatedSprite = new AnimatedSprite(Assets.Spells.FrozenOrbSecondary));
     }
 
-    public override void Update(GameTime gameTime)
+    public override void Update(float dt)
     {
-        base.Update(gameTime);
-        animatedSprite.Update(gameTime);
+        base.Update(dt);
         animatedSprite.Rotation = Angle + MathHelper.ToRadians(90);
     }
 
