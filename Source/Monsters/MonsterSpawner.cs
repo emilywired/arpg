@@ -38,8 +38,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
                 (bottomLeftCorner, topLeftCorner),
             ];
 
-            Random rng = new();
-            int index = rng.Next(lineSegments.Count);
+            int index = Random.Shared.Next(lineSegments.Count);
 
             (Vector2 start, Vector2 end) = lineSegments[index];
 
@@ -52,7 +51,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
             {
                 int rngMin = (int)Math.Min(start.X, end.X);
                 int rngMax = (int)Math.Max(start.X, end.X);
-                x = rng.Next(rngMin, rngMax);
+                x = Random.Shared.Next(rngMin, rngMax);
                 y = (int)start.Y;
             }
             else
@@ -60,7 +59,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
                 x = (int)start.X;
                 int rngMin = (int)Math.Min(start.Y, end.Y);
                 int rngMax = (int)Math.Max(start.Y, end.Y);
-                y = rng.Next(rngMin, rngMax);
+                y = Random.Shared.Next(rngMin, rngMax);
             }
 
             Skeleton skeleton = new(Random.Shared.Next(1, 3)) { Position = new(x, y) };

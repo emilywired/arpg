@@ -15,7 +15,7 @@ public class LootSystem
 
     private Dictionary<int, int> dropCountWeights = new()
     {
-        { 0, 6000 },
+        { 0, 10000 },
         { 1, 1000 },
         { 2, 0 },
         { 3, 0 },

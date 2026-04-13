@@ -8,8 +8,8 @@ public class Skeleton : Monster
     public Skeleton(int level)
         : base(level)
     {
-        Stats.MaxHealth.Value = 200;
-        Stats.Health.Value = 200;
+        Stats.MaxHealth.Value = 50;
+        Stats.Health.Value = 50;
         Stats.Speed = 150;
 
         graphicsComponent = new(this);
