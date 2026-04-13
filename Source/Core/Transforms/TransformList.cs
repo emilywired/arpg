@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
 public class TransformList(IEnumerable<ITransform> transforms) : ITransform
 {
     public bool IsFinished { get; protected set; } = false;
     public bool IsReady { get; protected set; } = false;
     public event Action? OnFinish;
-    private List<ITransform> transforms = new(transforms);
+    private List<ITransform> transforms = [.. transforms];
 
     public void Reset()
     {

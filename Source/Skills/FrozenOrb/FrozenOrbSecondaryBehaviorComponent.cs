@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
 public class FrozenOrbSecondaryBehaviorComponent(FrozenOrbSecondaryEntity parent)
     : SkillBehaviorComponent<FrozenOrbSecondaryEntity>(parent)
