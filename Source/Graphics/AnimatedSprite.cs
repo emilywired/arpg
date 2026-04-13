@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class AnimatedSprite : IDrawable
 {
+    public IDrawable? Parent { get; set; }
+
     private float elapsedTime = 0f;
     protected float FrameTime { get; set; } = 0.1f;
     public TextureAsset Asset { get; private set; } = null!;

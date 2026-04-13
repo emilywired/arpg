@@ -79,7 +79,6 @@ public class Player : Actor
         InputComponent.Update(gameTime);
 
         sprite.Update(gameTime);
-        sprite.Position = Position;
         sprite.SpriteEffects = Facing == ActorFacing.Right
             ? SpriteEffects.None
             : SpriteEffects.FlipHorizontally;

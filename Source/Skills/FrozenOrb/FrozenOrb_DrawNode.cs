@@ -9,7 +9,7 @@ public class FrozenOrbDrawNode(FrozenOrbEntity source) : DrawNode<FrozenOrbEntit
     {
         spriteBatch.Draw(
             asset.Texture,
-            new((int)Source.Position.X, (int)Source.Position.Y),
+            new((int)Source.GetDrawPosition().X, (int)Source.GetDrawPosition().Y),
             asset.Frames[0],
             Color.White,
             Source.Rotation,

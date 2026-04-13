@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Xna.Framework;
 
 public class Skeleton : Monster
 {
@@ -7,7 +6,6 @@ public class Skeleton : Monster
     private TextureAsset attackAsset = Assets.Monsters.Skeleton.Attack;
     private TextureAsset walkAsset = Assets.Monsters.Skeleton.Walk;
     private TextureAsset deathAsset = Assets.Monsters.Skeleton.Death; // TODO: add one of the two corpse frames
-
 
     public Skeleton(int level)
         : base(level)
@@ -34,13 +32,5 @@ public class Skeleton : Monster
             (ActorState.Walking, _) => walkAsset,
             _ => throw new Exception("Unhandled ActorState"),
         });
-    }
-
-    public override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-
-        sprite.Position = Position;
-        sprite.Update(gameTime);
     }
 }

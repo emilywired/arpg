@@ -14,7 +14,11 @@ public class FrozenOrbSecondaryDrawNode(FrozenOrbSecondaryEntity source) : DrawN
             {
                 spriteBatch.Draw(
                     Assets.RectangleTexture,
-                    rectangleHitbox.Bounds,
+                    rectangleHitbox.Bounds with
+                    {
+                        X = (int)Source.GetDrawPosition().X + rectangleHitbox.Bounds.X,
+                        Y = (int)Source.GetDrawPosition().Y + rectangleHitbox.Bounds.Y,
+                    },
                     null,
                     Color.Yellow,
                     0f,
@@ -31,7 +35,7 @@ public class FrozenOrbSecondaryDrawNode(FrozenOrbSecondaryEntity source) : DrawN
 
         spriteBatch.Draw(
             asset.Texture,
-            new((int)Source.Position.X, (int)Source.Position.Y),
+            new((int)Source.GetDrawPosition().X, (int)Source.GetDrawPosition().Y),
             asset.Frames[0],
             Color.White,
             Source.Angle + MathHelper.ToRadians(90),

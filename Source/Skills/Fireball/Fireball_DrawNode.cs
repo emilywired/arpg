@@ -8,7 +8,7 @@ public class FireballDrawNode(FireballEntity source) : DrawNode<FireballEntity>(
     {
         spriteBatch.Draw(
             Source.Asset.Texture,
-            new((int)Source.Position.X, (int)Source.Position.Y),
+            new((int)Source.GetDrawPosition().X, (int)Source.GetDrawPosition().Y),
             Source.Asset.Frames[Source.CurrentFrame],
             Color.White,
             (float)Source.Angle,
@@ -27,7 +27,11 @@ public class FireballDrawNode(FireballEntity source) : DrawNode<FireballEntity>(
             {
                 spriteBatch.Draw(
                     Assets.RectangleTexture,
-                    rectangleHitbox.Bounds,
+                    rectangleHitbox.Bounds with
+                    {
+                        X = (int)Source.GetDrawPosition().X + rectangleHitbox.Bounds.X,
+                        Y = (int)Source.GetDrawPosition().Y + rectangleHitbox.Bounds.Y,
+                    },
                     null,
                     Color.Yellow,
                     0f,

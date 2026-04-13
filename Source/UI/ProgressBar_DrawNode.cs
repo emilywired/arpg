@@ -6,8 +6,8 @@ public class ProgressBarDrawNode(ProgressBar source) : DrawNode<ProgressBar>(sou
     public override void Draw(SpriteBatch spriteBatch)
     {
         var targetRect = new Rectangle(
-            (int)(Source.Position.X - (Source.CenterHorizontally ? Source.Size.X / 2 : Source.Size.X)),
-            (int)Source.Position.Y,
+            (int)(Source.GetDrawPosition().X - (Source.CenterHorizontally ? Source.Size.X / 2 : Source.Size.X)),
+            (int)Source.GetDrawPosition().Y,
             (int)Source.Size.X,
             (int)Source.Size.Y
         );

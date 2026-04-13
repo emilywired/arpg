@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 
 public abstract class Entity : IDrawable
 {
+    public IDrawable? Parent { get; set; }
+
     public string Id { get; } = Guid.NewGuid().ToString();
     public abstract IHitbox Hitbox { get; }
     public Vector2 Position { get; set; }
@@ -18,6 +20,7 @@ public abstract class Entity : IDrawable
     protected void AddDrawable(IDrawable drawable)
     {
         drawables.Add(drawable);
+        drawable.Parent = this;
     }
 
     protected virtual IEnumerable<DrawNode> CreateCompositeDrawNodes()

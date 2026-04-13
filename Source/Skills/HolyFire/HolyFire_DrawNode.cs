@@ -12,8 +12,8 @@ public class HolyFireDrawNode(HolyFireEntity source) : DrawNode<HolyFireEntity>(
         spriteBatch.Draw(
             Source.Texture,
             new(
-                (int)(Source.Position.X - Source.Radius),
-                (int)(Source.Position.Y - Source.Radius)
+                (int)(Source.GetDrawPosition().X - Source.Radius),
+                (int)(Source.GetDrawPosition().Y - Source.Radius)
             ),
             null,
             new Color(205, 45, 10, 64),

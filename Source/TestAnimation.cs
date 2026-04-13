@@ -26,7 +26,11 @@ public class TestAnimation : Entity
         transform.OnFinish += Destroy;
         transform.Reset();
 
-        AddDrawable(sprite = new Sprite(Assets.RectangleTexture));
+        AddDrawable(sprite = new Sprite(Assets.RectangleTexture)
+        {
+            Size = new(64),
+            Color = Color.Yellow,
+        });
     }
 
     public override void Update(GameTime gameTime)
@@ -34,7 +38,6 @@ public class TestAnimation : Entity
         base.Update(gameTime);
         transform.Update(gameTime);
 
-        sprite.Position = Position;
         sprite.Rotation = Rotation;
     }
 }

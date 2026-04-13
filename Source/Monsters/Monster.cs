@@ -27,14 +27,14 @@ public class Monster : Actor
         Level = level;
         Stats = new(this, speed: 400, health: 40);
 
-        healthBar = new ProgressBar()
+        AddDrawable(healthBar = new ProgressBar()
         {
             MaxValue = Stats.MaxHealth.Value,
             Size = new(32, 4),
             Color = Colors.Health,
             CenterHorizontally = true,
-            Position = Position,
-        };
+            Position = new Vector2(0, -20),
+        });
 
         Stats.Health.Connect(this, value => healthBar.Value = value);
         Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
@@ -49,6 +49,11 @@ public class Monster : Actor
 
         double dt = gameTime.ElapsedGameTime.TotalSeconds;
         Stats.Update(gameTime);
+
+        sprite.Update(gameTime);
+        sprite.SpriteEffects = Facing == ActorFacing.Right
+            ? SpriteEffects.None
+            : SpriteEffects.FlipHorizontally;
 
         if (!IsAlive)
             State.Value = ActorState.Dead;
@@ -79,8 +84,6 @@ public class Monster : Actor
                 State.Value = ActorState.Idling;
             }
         }
-
-        healthBar.Position = Position - new Vector2(0, 20);
     }
 
     // public override void Draw(SpriteBatch spriteBatch)
