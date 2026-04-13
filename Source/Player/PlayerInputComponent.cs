@@ -87,10 +87,10 @@ public class PlayerInputComponent
         {
             float x =
                 player.Position.X
-                + (float)(player.Stats.Speed * dt * Math.Cos(_destinationAngle));
+                + (float)(player.Stats.Speed * dt * Math.Cos(destinationAngle));
             float y =
                 player.Position.Y
-                + (float)(player.Stats.Speed * dt * Math.Sin(_destinationAngle));
+                + (float)(player.Stats.Speed * dt * Math.Sin(destinationAngle));
             player.Position = new(x, y);
         }
         else

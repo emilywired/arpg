@@ -52,7 +52,7 @@ public class Monster : Actor
         sprite.SpriteEffects = Facing == ActorFacing.Right
             ? SpriteEffects.None
             : SpriteEffects.FlipHorizontally;
-        sprite.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
+        healthBar.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
 
         if (!IsAlive)
             State.Value = ActorState.Dead;
