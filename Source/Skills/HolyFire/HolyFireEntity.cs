@@ -9,11 +9,9 @@ public class HolyFireEntity : SkillEntity
     public double Damage = 100d;
     public double SelfDamage = 2d;
 
-    private CircleSprite sprite;
-
     public HolyFireEntity(Entity parent) : base(parent)
     {
-        AddDrawable(sprite = new CircleSprite((int)Radius)
+        AddDrawable(new CircleSprite((int)Radius)
         {
             Color = new Color(205, 45, 10, 64),
         });

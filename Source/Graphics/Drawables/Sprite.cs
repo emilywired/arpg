@@ -16,3 +16,7 @@ public class Sprite(Texture2D texture) : IDrawable
     public DrawNode CreateDrawNode()
         => new SpriteDrawNode(this);
 }
+
+public class CircleSprite(int radius) : Sprite(Assets.CreateCircleTexture(radius)) { }
+
+public class RectangleSprite() : Sprite(Assets.RectangleTexture) { }

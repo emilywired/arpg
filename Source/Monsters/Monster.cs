@@ -55,6 +55,8 @@ public class Monster : Actor
             ? SpriteEffects.None
             : SpriteEffects.FlipHorizontally;
 
+        sprite.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
+
         if (!IsAlive)
             State.Value = ActorState.Dead;
 
@@ -85,14 +87,6 @@ public class Monster : Actor
             }
         }
     }
-
-    // public override void Draw(SpriteBatch spriteBatch)
-    // {
-    //     base.Draw(spriteBatch);
-
-    //     if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
-    //         healthBar.Draw(spriteBatch);
-    // }
 
     public override void TakeDamage(double amount)
     {
