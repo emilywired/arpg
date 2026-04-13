@@ -34,7 +34,7 @@ public class FrozenOrbSecondaryGraphicsComponent
             new((int)frozenOrbSecondary.Position.X, (int)frozenOrbSecondary.Position.Y),
             _asset.Frames[0],
             Color.White,
-            (float)frozenOrbSecondary.Angle + MathHelper.ToRadians(90),
+            frozenOrbSecondary.Angle + MathHelper.ToRadians(90),
             new Vector2(_asset.Texture.Width / _asset.Frames.Count / 2, _asset.Texture.Height / 2),
             1f,
             SpriteEffects.None,

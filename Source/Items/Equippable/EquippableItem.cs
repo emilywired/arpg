@@ -85,11 +85,11 @@ public class EquippableItem : Item, IEquippable, ICorruptable
         int roll = Random.Shared.Next(0, 2);
         if (roll == 0)
         {
-            ToRare();
+            _ = ToRare();
         }
         else if (roll == 1)
         {
-            var affix = GlobalAffixes
+            Affix affix = GlobalAffixes
                 .CorruptedImplicits[Slot]
                 .Where(affixData => affixData.RequiredItemLevel <= Level)
                 .WeightedChoice(affixData => affixData.Weight)
@@ -125,14 +125,14 @@ public class EquippableItem : Item, IEquippable, ICorruptable
                 break;
             }
 
-            var rolledFamily = affixFamilyPool.WeightedChoice(affixFamily =>
+            AffixFamily rolledFamily = affixFamilyPool.WeightedChoice(affixFamily =>
                 affixFamily.TotalWeight
             );
-            var rolledAffix = rolledFamily.Tiers.WeightedChoice(tier => tier.Weight);
+            AffixTierInfo rolledAffix = rolledFamily.Tiers.WeightedChoice(tier => tier.Weight);
 
             affixes.Add(rolledAffix.CreateAffix());
 
-            affixFamilyPool.Remove(rolledFamily);
+            _ = affixFamilyPool.Remove(rolledFamily);
         }
 
         return affixes;

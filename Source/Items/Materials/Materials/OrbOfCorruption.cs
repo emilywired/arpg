@@ -1,6 +1,3 @@
-
-using Microsoft.Xna.Framework;
-
 public class OrbOfCorruption : MaterialItem, IUsableOnItem
 {
     public OrbOfCorruption(int quantity = 1)
@@ -13,7 +10,8 @@ public class OrbOfCorruption : MaterialItem, IUsableOnItem
             description: "Unpredictably modifies an item.",
             maxStackQuantity: 20,
             stackQuantity: quantity
-        ) { }
+        )
+    { }
 
     public void UseOn(Item item)
     {
@@ -24,6 +22,6 @@ public class OrbOfCorruption : MaterialItem, IUsableOnItem
 
         StackQuantity -= 1;
         if (StackQuantity == 0)
-            Game1.World.Player.Inventory.RemoveItem(this);
+            _ = Game1.World.Player.Inventory.RemoveItem(this);
     }
 }

@@ -16,7 +16,7 @@ public class Hud
 
     public void Update(GameTime gameTime)
     {
-        foreach (var element in _elements)
+        foreach (IHudElement element in _elements)
         {
             element.Update(gameTime);
         }
@@ -24,7 +24,7 @@ public class Hud
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        foreach (var element in _elements)
+        foreach (IHudElement element in _elements)
         {
             element.Draw(spriteBatch);
         }

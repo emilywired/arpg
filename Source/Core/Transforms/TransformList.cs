@@ -11,7 +11,7 @@ public class TransformList(IEnumerable<ITransform> transforms) : ITransform
 
     public void Reset()
     {
-        foreach(var transform in transforms)
+        foreach (ITransform transform in transforms)
         {
             transform.Reset();
         }
@@ -27,12 +27,12 @@ public class TransformList(IEnumerable<ITransform> transforms) : ITransform
         if (!IsReady)
             throw new Exception("Call reset before starting to update transform.");
 
-        foreach(var transform in transforms)
+        foreach (ITransform transform in transforms)
         {
             transform.Update(gameTime);
         }
 
-        transforms.RemoveAll(t => t.IsFinished);
+        _ = transforms.RemoveAll(t => t.IsFinished);
         if (transforms.Count == 0)
         {
             IsFinished = true;

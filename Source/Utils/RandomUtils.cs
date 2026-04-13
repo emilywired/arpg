@@ -12,7 +12,7 @@ public class RandomUtils
         int roll = Random.Shared.Next(weightsTotal);
         int cumulative = 0;
 
-        foreach (var (key, weight) in weights)
+        foreach ((K? key, int weight) in weights)
         {
             cumulative += weight;
             if (roll < cumulative)

@@ -1,11 +1,10 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class HolyFireEntity : Entity
 {
     public Actor Owner;
-    public override IHitbox Hitbox 
+    public override IHitbox Hitbox
         => new CircleHitbox(Position, Radius);
     public double Radius = 100d;
     public double Damage = 100d;

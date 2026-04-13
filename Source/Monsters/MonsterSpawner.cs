@@ -5,16 +5,12 @@ using Microsoft.Xna.Framework;
 public class MonsterSpawner(Player player, double frequency, int offscreenDistance)
 {
     public double Frequency = frequency;
-    public Rectangle SpawnEdge
-    {
-        get =>
-            new(
+    public Rectangle SpawnEdge => new(
                 (int)player.Position.X - _offscreenDistance - HALF_WINDOW_WIDTH,
                 (int)player.Position.Y - _offscreenDistance - HALF_WINDOW_HEIGHT,
-                Game1.NativeResolution.Width + _offscreenDistance * 2,
-                Game1.NativeResolution.Height + _offscreenDistance * 2
+                Game1.NativeResolution.Width + (_offscreenDistance * 2),
+                Game1.NativeResolution.Height + (_offscreenDistance * 2)
             );
-    }
     private const int HALF_WINDOW_WIDTH = Game1.NativeResolution.Width / 2;
     private const int HALF_WINDOW_HEIGHT = Game1.NativeResolution.Height / 2;
     private int _offscreenDistance = offscreenDistance;
@@ -44,7 +40,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
             Random rng = new();
             int index = rng.Next(lineSegments.Count);
 
-            var (start, end) = lineSegments[index];
+            (Vector2 start, Vector2 end) = lineSegments[index];
 
             bool isHorizontalEdge = start.Y == end.Y;
 

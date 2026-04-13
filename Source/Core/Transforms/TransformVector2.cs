@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
@@ -53,7 +52,7 @@ public class TransformVector2 : ITransform
             OnFinish?.Invoke();
         }
 
-        var value = _from + (_to - _from) * (float)Progress;
+        Vector2? value = _from + ((_to - _from) * (float)Progress);
         _property.SetValue(_obj, value);
     }
 }

@@ -9,8 +9,8 @@ public class Background
         {
             for (int j = 0; j < 9; j++)
             {
-                float tileX = ((int)Camera.Origin.X / 64 + i) * 64 - 64 * 2;
-                float tileY = ((int)Camera.Origin.Y / 64 + j) * 64 - 64 * 2;
+                float tileX = ((((int)Camera.Origin.X / 64) + i) * 64) - (64 * 2);
+                float tileY = ((((int)Camera.Origin.Y / 64) + j) * 64) - (64 * 2);
                 spriteBatch.Draw(
                     Assets.Environment.Cobblestone.Texture,
                     new(tileX - Camera.Origin.X, tileY - Camera.Origin.Y),

@@ -61,13 +61,13 @@ public class InputManager
 
     private void BindKey(Keys key, FixedGameAction gameAction)
     {
-        _hardBoundKeys.Add(key);
+        _ = _hardBoundKeys.Add(key);
         _inputMapper.BindKey(key, gameAction);
     }
 
     public void BindKey(Keys key, RemappableGameAction gameAction)
     {
-        _boundKeys.Add(key);
+        _ = _boundKeys.Add(key);
         _inputMapper.BindKey(key, gameAction);
     }
 
@@ -85,7 +85,7 @@ public class InputManager
     {
         if (_hardBoundKeys.Contains(key))
             throw new InvalidOperationException("Cannot unbind a fixed keybind.");
-        _boundKeys.Remove(key);
+        _ = _boundKeys.Remove(key);
         _inputMapper.UnbindKey(key);
     }
 }

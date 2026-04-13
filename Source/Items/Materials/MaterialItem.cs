@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework.Graphics;
-
 public class MaterialItem : Item, IMaterial
 {
     public int StackQuantity { get; set; }

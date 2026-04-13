@@ -77,7 +77,7 @@ public class PlayerInputComponent
         _heldSkill?.Cast(_playerAimAngle);
 
         if (_isHoldingLeftClick)
-            StartMove(MouseManager.WorldMousePosition);
+            _ = StartMove(MouseManager.WorldMousePosition);
 
         if (!IsMoving)
             return;
@@ -110,7 +110,7 @@ public class PlayerInputComponent
             return false;
 
         _isHoldingLeftClick = true;
-        StartMove(MouseManager.WorldMousePosition);
+        _ = StartMove(MouseManager.WorldMousePosition);
 
         return true;
     }
@@ -130,7 +130,7 @@ public class PlayerInputComponent
         _destinationAngle = CalculateAngle(_player.Position, aimCoordinate);
 
         double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
-        bool isFacingRight = angleInDegrees >= -90 && angleInDegrees <= 90;
+        bool isFacingRight = angleInDegrees is >= -90 and <= 90;
         _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
         _player.State.Value = ActorState.Walking;
 

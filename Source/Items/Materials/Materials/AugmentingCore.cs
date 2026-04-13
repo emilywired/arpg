@@ -3,14 +3,15 @@
 public class AugmentingCore : MaterialItem
 {
     public AugmentingCore(int quantity = 1)
-        : base(
-            name: "Augmenting Core",
-            rarity: Rarity.Magic,
-            width: 1,
-            height: 1,
-            asset: Assets.Items.None_1x1,
-            description: "Use to attempt to upgrade an \nexisting affix on a Magic or\nRare item by one Tier.",
-            maxStackQuantity: 20,
-            stackQuantity: quantity
-        ) { }
+                    : base(
+                    name: "Augmenting Core",
+                    rarity: Rarity.Magic,
+                    width: 1,
+                    height: 1,
+                    asset: Assets.Items.None_1x1,
+                    description: "Use to attempt to upgrade an \nexisting affix on a Magic or\nRare item by one Tier.",
+                    maxStackQuantity: 20,
+                    stackQuantity: quantity
+                    )
+    { }
 }

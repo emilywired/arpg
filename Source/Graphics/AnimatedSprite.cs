@@ -8,16 +8,14 @@ public class AnimatedSprite
     private int currentFrame = 0;
     private float elapsedTime = 0f;
     protected float FrameTime { get; set; } = 0.1f;
-
-    private TextureAsset asset = null!;
-    public TextureAsset Asset => asset;
+    public TextureAsset Asset { get; private set; } = null!;
 
     public SpriteEffects SpriteEffects { get; set; }
     public Vector2 Position { get; set; }
 
     public void SetTextureAsset(TextureAsset asset)
     {
-        this.asset = asset;
+        Asset = asset;
         Reset();
     }
 
@@ -29,18 +27,18 @@ public class AnimatedSprite
         {
             elapsedTime = 0f;
 
-            var nextFrame = currentFrame + 1;
+            int nextFrame = currentFrame + 1;
             if (Asset.Looping)
                 nextFrame %= Asset.Frames.Count;
             else
                 nextFrame = Math.Min(nextFrame, Asset.Frames.Count - 1);
-            currentFrame  = nextFrame;
+            currentFrame = nextFrame;
         }
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        var frame = Asset.Frames[currentFrame];
+        Rectangle frame = Asset.Frames[currentFrame];
 
         spriteBatch.Draw(
             Asset.Texture,

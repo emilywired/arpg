@@ -31,7 +31,7 @@ public class TransformSequence(IEnumerable<ITransform> transforms) : ITransform
 
             transform.Update(gameTime);
             if (transform.IsFinished)
-                transforms.Remove(transform);
+                _ = transforms.Remove(transform);
         }
 
         if (transforms.Count == 0)

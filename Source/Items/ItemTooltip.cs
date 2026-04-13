@@ -15,7 +15,7 @@ public class ItemTooltip
     private static int _ELEMENT_SPACING = 4;
     // private static int _STRING_SPACING = 2;
 
-    private List<TooltipElement> _elements = new();
+    private List<TooltipElement> _elements = [];
     private List<int> _stringWidths = [];
     private int _tooltipWidth;
     private int _tooltipHeight;
@@ -116,9 +116,9 @@ public class ItemTooltip
 
     private void CalculateTooltipSize(List<int> _stringWidths)
     {
-        _tooltipWidth = (_stringWidths.Count > 0 ? _stringWidths.Max() : 100) + _PADDING * 2;
+        _tooltipWidth = (_stringWidths.Count > 0 ? _stringWidths.Max() : 100) + (_PADDING * 2);
         _tooltipHeight =
-            _PADDING * 2 + _elements.Sum(e => e.Height + _ELEMENT_SPACING) - _ELEMENT_SPACING;
+            (_PADDING * 2) + _elements.Sum(e => e.Height + _ELEMENT_SPACING) - _ELEMENT_SPACING;
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -131,11 +131,14 @@ public class ItemTooltip
         DrawBackground(spriteBatch, tooltipOrigin);
 
         Vector2 position = tooltipOrigin + new Vector2(_PADDING, _PADDING);
-        foreach (var element in _elements)
+        foreach (TooltipElement element in _elements)
         {
             if (element.IsLine)
+            {
                 DrawHorizontalLine(spriteBatch, position, element.Color);
+            }
             else
+            {
                 Game1.DrawText(
                     spriteBatch,
                     element.Text,
@@ -143,6 +146,7 @@ public class ItemTooltip
                     Layer.ItemTooltipContent,
                     element.Color
                 );
+            }
 
             position.Y += element.Height + _ELEMENT_SPACING;
         }
@@ -162,9 +166,9 @@ public class ItemTooltip
 
     private string GetUniqueName(Item item)
     {
-        if (item is IUnique unique)
-            return unique.UniqueName;
-        return "";
+        return item is IUnique unique
+            ? unique.UniqueName
+            : "";
     }
 
     private string GetRarityName(Item item)
@@ -197,7 +201,7 @@ public class ItemTooltip
     {
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            new Rectangle((int)position.X, (int)position.Y, _tooltipWidth - _PADDING * 2, 1),
+            new Rectangle((int)position.X, (int)position.Y, _tooltipWidth - (_PADDING * 2), 1),
             null,
             color,
             0f,

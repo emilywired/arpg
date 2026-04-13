@@ -47,7 +47,7 @@ public class Game1 : Game
         Assets.Load(Content, GraphicsDevice);
         Config = new Config(_graphics, GraphicsDevice, _renderTarget);
 
-        Player player = new Player();
+        var player = new Player();
         World = new World(player);
         LootSystem = new LootSystem();
         _background = new Background();

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 public class Monster : Actor
 {
     public override ActorBaseStats Stats { get; }
-    public override IHitbox Hitbox 
+    public override IHitbox Hitbox
         => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
 
     public int XP { get; }
@@ -44,7 +44,7 @@ public class Monster : Actor
     {
         base.Update(gameTime);
 
-        var dt = gameTime.ElapsedGameTime.TotalSeconds;
+        double dt = gameTime.ElapsedGameTime.TotalSeconds;
         Stats.Update(gameTime);
 
         if (!IsAlive)
@@ -60,7 +60,7 @@ public class Monster : Actor
             return;
         }
 
-        foreach (var behavior in behaviors)
+        foreach (Behavior behavior in behaviors)
             behavior.Update(gameTime);
 
         if (IsAlive)

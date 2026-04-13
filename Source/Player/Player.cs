@@ -8,7 +8,7 @@ public class Player : Actor
     public static readonly float ItemPickupRadius = 40;
     public static readonly float GoldPickupRadius = 60;
 
-    public override IHitbox Hitbox 
+    public override IHitbox Hitbox
         => new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);
 
     public Vector2 Size => new(140, 140);
@@ -57,9 +57,9 @@ public class Player : Actor
             .Where(item => item.Position.DistanceTo(Position) <= GoldPickupRadius)
             .ToList();
 
-        foreach (var gold in goldWithinRange)
+        foreach (DroppedItem? gold in goldWithinRange)
         {
-            gold.GetPickedUp(this);
+            _ = gold.GetPickedUp(this);
         }
 
         InputComponent.Update(gameTime);
@@ -76,13 +76,13 @@ public class Player : Actor
 
     public void OnKill(Monster monster)
     {
-        PlayerStats playerStats = (PlayerStats)Stats;
+        var playerStats = (PlayerStats)Stats;
         playerStats.Level.GrantXP(monster.XP);
         playerStats.OffsetHealth(playerStats.HealthOnKill);
         playerStats.OffsetMana(playerStats.ManaOnKill);
 
         List<Item> loot = Game1.LootSystem.GenerateLoot(monster, this);
-        foreach (var item in loot)
+        foreach (Item item in loot)
         {
             DroppedItem droppedItem = new(item, monster.Position);
             Game1.World.Items.Add(droppedItem);

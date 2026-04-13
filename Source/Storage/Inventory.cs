@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
 public class Inventory
 {
@@ -39,11 +38,11 @@ public class Inventory
 
     private void StackMaterial(MaterialItem item)
     {
-        var existingMaterials = Grid.Items()
+        IEnumerable<MaterialItem> existingMaterials = Grid.Items()
             .Where(material => material.Name == item.Name)
             .Cast<MaterialItem>();
 
-        foreach (var existingMaterial in existingMaterials)
+        foreach (MaterialItem existingMaterial in existingMaterials)
         {
             int remainingCapacity =
                 existingMaterial.MaxStackQuantity - existingMaterial.StackQuantity;

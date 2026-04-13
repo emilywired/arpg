@@ -10,7 +10,7 @@ public class FireballBehaviorComponent
 
     public void Update(FireballEntity fireball, GameTime gameTime)
     {
-        var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         CurrentDuration += elapsedTime;
 
         if (CurrentDuration >= fireball.MaxDuration)
@@ -24,7 +24,7 @@ public class FireballBehaviorComponent
         fireball.Position = new((float)x, (float)y);
 
         foreach (
-            var actor in Game1
+            Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
                 .Where(actor => actor != fireball.Owner)
         )

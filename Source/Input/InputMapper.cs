@@ -105,36 +105,36 @@ public class InputMapper
 
     public void UnbindKey(Keys key)
     {
-        if (_remappableKeyboardKeybinds.TryGetValue(key, out var _))
-            _remappableKeyboardKeybinds.Remove(key);
+        if (_remappableKeyboardKeybinds.TryGetValue(key, out _))
+            _ = _remappableKeyboardKeybinds.Remove(key);
     }
 
     private FixedGameAction? GetFixedKeyboardKeybindAction(Keys key)
     {
-        if (!_fixedKeyboardKeybinds.TryGetValue(key, out var fixedGameAction))
+        if (!_fixedKeyboardKeybinds.TryGetValue(key, out FixedGameAction fixedGameAction))
             return null;
         return fixedGameAction;
     }
 
     private FixedGameAction? GetFixedMouseKeybindAction(MouseButtons button)
     {
-        if (!_fixedMouseKeybinds.TryGetValue(button, out var fixedGameAction))
-            return null;
-        return fixedGameAction;
+        return !_fixedMouseKeybinds.TryGetValue(button, out FixedGameAction fixedGameAction)
+            ? null
+            : fixedGameAction;
     }
 
     private RemappableGameAction? GetRemappableKeyboardKeybindAction(Keys key)
     {
-        if (!_remappableKeyboardKeybinds.TryGetValue(key, out var remappableGameAction))
-            return null;
-        return remappableGameAction;
+        return !_remappableKeyboardKeybinds.TryGetValue(key, out RemappableGameAction remappableGameAction)
+            ? null
+            : remappableGameAction;
     }
 
     private RemappableGameAction? GetRemappableMouseKeybindAction(MouseButtons button)
     {
-        if (!_remappableMouseKeybinds.TryGetValue(button, out var fixedGameAction))
-            return null;
-        return fixedGameAction;
+        return !_remappableMouseKeybinds.TryGetValue(button, out RemappableGameAction fixedGameAction)
+            ? null
+            : fixedGameAction;
     }
 
     private void TriggerKeyboardKeyPressedAction(Keys key)

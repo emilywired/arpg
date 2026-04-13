@@ -12,13 +12,13 @@ public static class Camera
 
     public static void Follow(Actor actor)
     {
-        Matrix position = Matrix.CreateTranslation(
+        var position = Matrix.CreateTranslation(
             -(int)actor.Position.X,
             -(int)actor.Position.Y,
             0
         );
 
-        Matrix offset = Matrix.CreateTranslation(
+        var offset = Matrix.CreateTranslation(
             Game1.NativeResolution.Width / 2,
             Game1.NativeResolution.Height / 2,
             0
@@ -28,8 +28,8 @@ public static class Camera
         Offset = new(-Game1.NativeResolution.Width / 2, -Game1.NativeResolution.Height / 2);
 
         Origin = new(
-            actor.Position.X - Game1.NativeResolution.Width / 2,
-            actor.Position.Y - Game1.NativeResolution.Height / 2
+            actor.Position.X - (Game1.NativeResolution.Width / 2),
+            actor.Position.Y - (Game1.NativeResolution.Height / 2)
         );
     }
 }

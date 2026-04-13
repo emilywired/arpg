@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class LootSystem
 {
@@ -40,7 +39,7 @@ public class LootSystem
         {
             int goldAmount = Random.Shared.Next(
                 monster.Level * 10,
-                monster.Level * 10 + monster.Level * 2
+                (monster.Level * 10) + (monster.Level * 2)
             );
             drops.Add(new Gold(goldAmount));
         }
@@ -55,7 +54,9 @@ public class LootSystem
                 && item.Rarity != Rarity.Unique
                 && item.Rarity != Rarity.Set
             )
+            {
                 RollRarity(equippableItem);
+            }
 
             drops.Add(item);
         }
@@ -69,10 +70,10 @@ public class LootSystem
         switch (rarity)
         {
             case Rarity.Magic:
-                item.ToMagic();
+                _ = item.ToMagic();
                 break;
             case Rarity.Rare:
-                item.ToRare();
+                _ = item.ToRare();
                 break;
         }
     }

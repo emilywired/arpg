@@ -10,7 +10,7 @@ public class FrozenOrbSecondaryBehaviorComponent
 
     public void Update(FrozenOrbSecondaryEntity secondaryEntity, GameTime gameTime)
     {
-        var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         CurrentDuration += elapsedTime;
 
         if (CurrentDuration >= secondaryEntity.MaxDuration)

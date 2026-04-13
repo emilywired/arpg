@@ -31,7 +31,7 @@ public class World
 
         Stash.Update(gameTime);
 
-        foreach (var entity in entities)
+        foreach (Entity entity in entities)
         {
             entity.Update(gameTime);
         }
@@ -43,9 +43,9 @@ public class World
         }
 
         var entitiesToRemove = entities.Where(e => e.IsDestroyed).ToList();
-        foreach (var entity in entitiesToRemove)
+        foreach (Entity? entity in entitiesToRemove)
         {
-            entities.Remove(entity);
+            _ = entities.Remove(entity);
         }
     }
 
@@ -66,16 +66,16 @@ public class World
 
         if (hoveredItems.Count != 0)
         {
-            var itemInRange = hoveredItems.Find(item =>
+            DroppedItem? itemInRange = hoveredItems.Find(item =>
                 Player.Position.DistanceTo(item.Position) <= Player.ItemPickupRadius
             );
             if (itemInRange != null)
             {
-                itemInRange.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
+                _ = itemInRange.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
             }
             else
             {
-                var targetItem = hoveredItems.First();
+                DroppedItem targetItem = hoveredItems.First();
 
                 Vector2 pickupPoint = MathUtils.ClosestEdgeOfCircle(
                     targetItem.Position,
@@ -83,7 +83,7 @@ public class World
                     Player.Position
                 );
 
-                var track = Player.InputComponent.StartMove(pickupPoint);
+                PlayerInputComponent.MovementTrack track = Player.InputComponent.StartMove(pickupPoint);
                 track.OnComplete += () =>
                 {
                     if (
@@ -92,7 +92,7 @@ public class World
                             <= Player.ItemPickupRadius
                     )
                     {
-                        targetItem.GetPickedUp(Player);
+                        _ = targetItem.GetPickedUp(Player);
                     }
                 };
             }

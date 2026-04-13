@@ -4,10 +4,10 @@ public class MovementFollow(Monster monster, Actor target) : MovementBehavior(mo
 {
     public override void Update(GameTime gameTime)
     {
-        var dt = gameTime.ElapsedGameTime.TotalSeconds;
+        double dt = gameTime.ElapsedGameTime.TotalSeconds;
         base.Update(gameTime);
 
-        var angle = monster.Position.AngleTo(target.Position);
+        float angle = monster.Position.AngleTo(target.Position);
         var vector = Vector2.Rotate(Vector2.UnitX, angle);
         DesiredVelocity = (float)monster.Stats.Speed * (float)dt * vector;
 

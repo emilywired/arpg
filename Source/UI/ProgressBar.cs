@@ -18,10 +18,7 @@ public class ProgressBar
     public double Value { get; set; } = 50;
     public double MaxValue { get; set; } = 100;
 
-    public double Progress
-    {
-        get => MaxValue != 0 ? Value / MaxValue : 0;
-    }
+    public double Progress => MaxValue != 0 ? Value / MaxValue : 0;
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
@@ -50,7 +47,7 @@ public class ProgressBar
             }
             : targetRect with
             {
-                Y = (int)(targetRect.Y + Size.Y * (1 - Progress)),
+                Y = (int)(targetRect.Y + (Size.Y * (1 - Progress))),
                 Height = (int)(Size.Y * Progress),
             };
 
@@ -67,9 +64,9 @@ public class ProgressBar
 
         if (ShowText)
         {
-            Vector2 textPosition = new Vector2(
-                (int)(targetRect.X + targetRect.Width / 2f),
-                (int)(targetRect.Y + (float)VerticalTextOffset + targetRect.Height / 2f)
+            var textPosition = new Vector2(
+                (int)(targetRect.X + (targetRect.Width / 2f)),
+                (int)(targetRect.Y + (float)VerticalTextOffset + (targetRect.Height / 2f))
             );
 
             string text = $"{Value} / {MaxValue}";

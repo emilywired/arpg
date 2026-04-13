@@ -83,7 +83,7 @@ public class Equipment(Player player)
                 throw new NotImplementedException("Unhandled EquippableSlot");
         }
 
-        _player.Inventory.RemoveItem(item);
+        _ = _player.Inventory.RemoveItem(item);
         item.Equip(_player);
     }
 

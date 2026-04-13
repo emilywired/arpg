@@ -33,8 +33,8 @@ public class DroppedItem
         const int HEIGHT = 16;
         int WIDTH = (int)_stringOrigin.X + 16;
         _bounds = new Rectangle(
-            (int)Position.X - WIDTH / 2,
-            (int)Position.Y - HEIGHT / 2,
+            (int)Position.X - (WIDTH / 2),
+            (int)Position.Y - (HEIGHT / 2),
             WIDTH,
             HEIGHT
         );
@@ -42,7 +42,6 @@ public class DroppedItem
 
     public void Update(GameTime gameTime)
     {
-        Vector2 playerAimCoordinate = MouseManager.WorldMousePosition;
         IsHovered = _bounds.Contains(MouseManager.WorldMousePosition);
     }
 
@@ -55,7 +54,7 @@ public class DroppedItem
         // Top border
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            new Rectangle((int)_bounds.X, (int)_bounds.Y, _bounds.Width, borderThickness),
+            _bounds with { Height = borderThickness },
             null,
             Item.Rarity.GetColor(),
             0f,
@@ -68,8 +67,8 @@ public class DroppedItem
         spriteBatch.Draw(
             Assets.RectangleTexture,
             new Rectangle(
-                (int)_bounds.X,
-                (int)_bounds.Y + _bounds.Height - borderThickness,
+                _bounds.X,
+                _bounds.Y + _bounds.Height - borderThickness,
                 _bounds.Width,
                 borderThickness
             ),
@@ -84,7 +83,7 @@ public class DroppedItem
         // Left border
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            new Rectangle((int)_bounds.X, (int)_bounds.Y, borderThickness, _bounds.Height),
+            _bounds with { Width = borderThickness },
             null,
             Item.Rarity.GetColor(),
             0f,
@@ -97,8 +96,8 @@ public class DroppedItem
         spriteBatch.Draw(
             Assets.RectangleTexture,
             new Rectangle(
-                (int)_bounds.X + _bounds.Width - borderThickness,
-                (int)_bounds.Y,
+                _bounds.X + _bounds.Width - borderThickness,
+                _bounds.Y,
                 borderThickness,
                 _bounds.Height
             ),
@@ -122,7 +121,7 @@ public class DroppedItem
         );
 
         Color textColor = Item.Rarity.GetColor();
-        if (Item.Rarity == Rarity.Normal && this.IsHovered)
+        if (Item.Rarity == Rarity.Normal && IsHovered)
         {
             textColor = Color.Black;
         }
@@ -130,7 +129,7 @@ public class DroppedItem
         Game1.DrawText(
             spriteBatch,
             DisplayText,
-            new((int)_bounds.X + (_bounds.Width - _stringOrigin.X) / 2, (int)_bounds.Y),
+            new(_bounds.X + ((_bounds.Width - _stringOrigin.X) / 2), _bounds.Y),
             Layer.DroppedItemText,
             textColor
         );
@@ -140,7 +139,7 @@ public class DroppedItem
     {
         bool added = Item.GetPickedUp(player);
         if (added)
-            Game1.World.Items.Remove(this);
+            _ = Game1.World.Items.Remove(this);
 
         return added;
     }

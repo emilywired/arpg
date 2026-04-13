@@ -117,7 +117,7 @@ public static class Assets
     {
         int diameter = radius * 2;
         Texture2D texture = new(Game1.GraphicsDevice, diameter, diameter);
-        Color[] colorData = new Color[diameter * diameter];
+        var colorData = new Color[diameter * diameter];
 
         float radiusSquared = radius * radius;
 
@@ -125,7 +125,7 @@ public static class Assets
         {
             for (int y = 0; y < diameter; y++)
             {
-                int index = x + y * diameter;
+                int index = x + (y * diameter);
                 Vector2 pos = new(x - radius, y - radius);
                 if (pos.LengthSquared() <= radiusSquared)
                 {
@@ -144,7 +144,7 @@ public static class Assets
 
     private static void AddFont(ContentManager contentManager, string path)
     {
-        var font = contentManager.Load<SpriteFont>("fonts/monogram_extended");
+        SpriteFont font = contentManager.Load<SpriteFont>("fonts/monogram_extended");
         _fonts.Add(path, font);
     }
 

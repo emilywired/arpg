@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework;
 
 public interface ITransform
 {
-    public bool IsFinished { get; }
-    public bool IsReady { get; }
-    public event Action? OnFinish;
+    bool IsFinished { get; }
+    bool IsReady { get; }
+    event Action? OnFinish;
 
-    public void Reset();
-    public void Update(GameTime gameTime);
+    void Reset();
+    void Update(GameTime gameTime);
 }

@@ -4,18 +4,37 @@ dotnet_analyzer_diagnostic.category-Style.severity = warning
 # CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 dotnet_diagnostic.CS8632.severity = none
 
-# Use expression body for methods 
-csharp_style_expression_bodied_methods = when_on_single_line:warning
+# These diagnostics gives false positives
+# IDE0072: Add missing cases to switch expression
+# IDE0010: Add missing cases to switch statement
+dotnet_diagnostic.IDE0072.severity = none
+dotnet_diagnostic.IDE0010.severity = none
 
-# Require file-scoped namespace style
-# dotnet_diagnostic.IDE0161.severity = warning
+# csharp_style_expression_bodied_methods = when_on_single_line:warning
+# IDE0022: Use expression body for methods 
+dotnet_diagnostic.IDE0022.severity = none
 
-# Require namespace placement consistency
-# dotnet_diagnostic.IDE0130.severity = warning
+dotnet_style_readonly_field = false
+csharp_prefer_braces = when_multiline:warning
+dotnet_style_prefer_conditional_expression_over_assignment = false
+csharp_style_var_when_type_is_apparent = true
+csharp_style_prefer_primary_constructors = false
+dotnet_style_prefer_conditional_expression_over_return = false
 
-# IDE0130: Namespace does not match folder structure
-# dotnet_diagnostic.IDE0130.severity = warning
+# dotnet_naming_rule.private_methods_lowercase.severity = suggestion
+# dotnet_naming_rule.private_methods_lowercase.symbols = private_methods
+# dotnet_naming_rule.private_methods_lowercase.style = lowercase
 
-# IDE0161: Convert to file-scoped namespace
-# csharp_style_namespace_declarations = file_scoped:warning
+# dotnet_naming_symbols.private_methods.applicable_kinds = method
+# dotnet_naming_symbols.private_methods.applicable_accessibilities = private
 
+# dotnet_naming_style.lowercase.capitalization = all_lower
+
+dotnet_naming_rule.private_properties_lowercase.severity = warning
+dotnet_naming_rule.private_properties_lowercase.symbols = private_properties
+dotnet_naming_rule.private_properties_lowercase.style = camel_case
+
+dotnet_naming_symbols.private_properties.applicable_kinds = property
+dotnet_naming_symbols.private_properties.applicable_accessibilities = private
+
+dotnet_naming_style.camel_case.capitalization = camel_case

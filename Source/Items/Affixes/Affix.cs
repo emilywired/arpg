@@ -20,7 +20,7 @@ public abstract class Affix
     {
         MinRange = minRange;
         MaxRange = maxRange ?? minRange;
-        RollValue();
+        _ = RollValue();
     }
 
     public Affix RollValue()

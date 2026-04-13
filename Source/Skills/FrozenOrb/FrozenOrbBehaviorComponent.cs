@@ -13,7 +13,7 @@ public class FrozenOrbBehaviorComponent
 
     public void Update(FrozenOrbEntity frozenOrb, GameTime gameTime)
     {
-        var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         _frameTime += elapsedTime;
         CurrentDuration += elapsedTime;
 
@@ -37,8 +37,8 @@ public class FrozenOrbBehaviorComponent
         {
             int offset = 16;
             Vector2 position = new(
-                frozenOrb.Position.X + offset * (float)Math.Cos(_secondaryProjectileAngle),
-                frozenOrb.Position.Y + offset * (float)Math.Sin(_secondaryProjectileAngle)
+                frozenOrb.Position.X + (offset * (float)Math.Cos(_secondaryProjectileAngle)),
+                frozenOrb.Position.Y + (offset * (float)Math.Sin(_secondaryProjectileAngle))
             );
 
             FrozenOrbSecondaryEntity secondaryEntity = new()

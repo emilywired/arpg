@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 public enum AffixId
 {
@@ -63,116 +62,116 @@ public static class GlobalAffixes
     public static ImmutableDictionary<EquippableSlot, ImmutableArray<AffixFamily>> Prefixes =
         new Dictionary<EquippableSlot, ImmutableArray<AffixFamily>>()
         {
-            { EquippableSlot.MainHand, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.OffHand, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Chest, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Head, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Gloves, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Boots, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Belt, [GreaterLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Amulet, [LesserLife, Mana, LifeOnKill, ManaOnKill] },
-            { EquippableSlot.Ring, [LesserLife, Mana, LifeOnKill, ManaOnKill] },
+            { EquippableSlot.MainHand, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.OffHand, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Chest, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Head, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Gloves, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Boots, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Belt, [greaterLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Amulet, [lesserLife, mana, lifeOnKill, manaOnKill] },
+            { EquippableSlot.Ring, [lesserLife, mana, lifeOnKill, manaOnKill] },
         }.ToImmutableDictionary();
 
     public static ImmutableDictionary<EquippableSlot, ImmutableArray<AffixFamily>> Suffixes =
         new Dictionary<EquippableSlot, ImmutableArray<AffixFamily>>()
         {
-            { EquippableSlot.MainHand, [Strength, Agility, Intelligence, Vitality, Spirit] },
-            { EquippableSlot.OffHand, [Strength, Agility, Intelligence, Vitality, Spirit] },
+            { EquippableSlot.MainHand, [strength, agility, intelligence, vitality, spirit] },
+            { EquippableSlot.OffHand, [strength, agility, intelligence, vitality, spirit] },
             {
                 EquippableSlot.Chest,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Head,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Gloves,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Boots,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Belt,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Amulet,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
             {
                 EquippableSlot.Ring,
                 [
-                    FireResistance,
-                    ColdResistance,
-                    LightningResistance,
-                    Strength,
-                    Agility,
-                    Intelligence,
-                    Vitality,
-                    Spirit,
+                    fireResistance,
+                    coldResistance,
+                    lightningResistance,
+                    strength,
+                    agility,
+                    intelligence,
+                    vitality,
+                    spirit,
                 ]
             },
         }.ToImmutableDictionary();
 
-    private static AffixFamily LesserLife =>
+    private static AffixFamily lesserLife =>
         new(
             AffixId.LesserLife,
             [
@@ -185,7 +184,7 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily GreaterLife =>
+    private static AffixFamily greaterLife =>
         new(
             AffixId.GreaterLife,
             [
@@ -198,7 +197,7 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Mana =>
+    private static AffixFamily mana =>
         new(
             AffixId.Mana,
             [
@@ -211,7 +210,7 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily LifeOnKill =>
+    private static AffixFamily lifeOnKill =>
         new(
             AffixId.LifeOnKill,
             [
@@ -222,7 +221,7 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily ManaOnKill =>
+    private static AffixFamily manaOnKill =>
         new(
             AffixId.ManaOnKill,
             [
@@ -233,8 +232,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily FireResistance =>
-        new AffixFamily(
+    private static AffixFamily fireResistance =>
+        new(
             AffixId.FireResistance,
             [
                 new AffixTierInfo(1, 10000, 50, () => new FireResistanceAffix(41, 45)),
@@ -247,8 +246,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily ColdResistance =>
-        new AffixFamily(
+    private static AffixFamily coldResistance =>
+        new(
             AffixId.ColdResistance,
             [
                 new AffixTierInfo(1, 10000, 50, () => new ColdResistanceAffix(41, 45)),
@@ -261,8 +260,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily LightningResistance =>
-        new AffixFamily(
+    private static AffixFamily lightningResistance =>
+        new(
             AffixId.LightningResistance,
             [
                 new AffixTierInfo(1, 10000, 50, () => new LightningResistanceAffix(41, 45)),
@@ -275,8 +274,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Strength =>
-        new AffixFamily(
+    private static AffixFamily strength =>
+        new(
             AffixId.Strength,
             [
                 new AffixTierInfo(1, 10000, 50, () => new StrengthAffix(23, 30)),
@@ -288,8 +287,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Agility =>
-        new AffixFamily(
+    private static AffixFamily agility =>
+        new(
             AffixId.Agility,
             [
                 new AffixTierInfo(1, 10000, 50, () => new AgilityAffix(23, 30)),
@@ -301,8 +300,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Intelligence =>
-        new AffixFamily(
+    private static AffixFamily intelligence =>
+        new(
             AffixId.Intelligence,
             [
                 new AffixTierInfo(1, 10000, 50, () => new IntelligenceAffix(23, 30)),
@@ -314,8 +313,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Vitality =>
-        new AffixFamily(
+    private static AffixFamily vitality =>
+        new(
             AffixId.Vitality,
             [
                 new AffixTierInfo(1, 10000, 50, () => new VitalityAffix(23, 30)),
@@ -327,8 +326,8 @@ public static class GlobalAffixes
             ]
         );
 
-    private static AffixFamily Spirit =>
-        new AffixFamily(
+    private static AffixFamily spirit =>
+        new(
             AffixId.Spirit,
             [
                 new AffixTierInfo(1, 10000, 50, () => new SpiritAffix(23, 30)),

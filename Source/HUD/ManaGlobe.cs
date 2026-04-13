@@ -25,7 +25,7 @@ public class ManaGlobe : IHudElement
             MaxValue = Game1.World.Player.Stats.MaxMana.Value,
             Color = Colors.Mana,
             ShowText = true,
-            VerticalTextOffset = -(Size.Y / 2 + 10),
+            VerticalTextOffset = -((Size.Y / 2) + 10),
             IsVertical = false,
         };
 

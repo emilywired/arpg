@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework.Graphics;
-
 public class Gold : Item
 {
     public int Amount { get; }

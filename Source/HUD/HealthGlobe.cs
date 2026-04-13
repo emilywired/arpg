@@ -22,7 +22,7 @@ public class HealthGlobe : IHudElement
             MaxValue = Game1.World.Player.Stats.MaxHealth.Value,
             Color = Colors.Health,
             ShowText = true,
-            VerticalTextOffset = -(Size.Y / 2 + 10),
+            VerticalTextOffset = -((Size.Y / 2) + 10),
             IsVertical = false,
         };
 

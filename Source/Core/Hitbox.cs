@@ -32,7 +32,7 @@ public class RectangleHitbox(int x, int y, int width, int height) : IHitbox
         float closestY = Math.Clamp(circleHitbox.Center.Y, Bounds.Top, Bounds.Bottom);
         float distanceX = circleHitbox.Center.X - closestX;
         float distanceY = circleHitbox.Center.Y - closestY;
-        return (distanceX * distanceX + distanceY * distanceY)
+        return ((distanceX * distanceX) + (distanceY * distanceY))
             <= (circleHitbox.Radius * circleHitbox.Radius);
     }
 }
@@ -68,6 +68,6 @@ public class CircleHitbox(Vector2 center, double radius) : IHitbox
         float closestY = Math.Clamp(Center.Y, rectangle.Top, rectangle.Bottom);
         float distanceX = Center.X - closestX;
         float distanceY = Center.Y - closestY;
-        return (distanceX * distanceX + distanceY * distanceY) <= (Radius * Radius);
+        return ((distanceX * distanceX) + (distanceY * distanceY)) <= (Radius * Radius);
     }
 }

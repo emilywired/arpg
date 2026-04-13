@@ -5,7 +5,7 @@ public class TestAnimation : Entity
 {
     public float Rotation { get; set; }
 
-    public override IHitbox Hitbox 
+    public override IHitbox Hitbox
         => new RectangleHitbox((int)Position.X, (int)Position.Y, 64, 64);
 
     private ITransform transform;

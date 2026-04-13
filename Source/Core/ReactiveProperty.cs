@@ -4,11 +4,12 @@ using System.Collections.Generic;
 public class ReactiveProperty<T>
 {
     private T _value;
-    public T Value { 
+    public T Value
+    {
         get => _value;
         set
         {
-            var changed = !_value!.Equals(value);
+            bool changed = !_value!.Equals(value);
             _value = value;
             if (changed)
                 onChangeTrigger();
@@ -25,7 +26,7 @@ public class ReactiveProperty<T>
     public void Connect(object owner, Action<T> handler, bool triggerNow = true)
     {
         var subscription = new Subscription(owner, handler);
-        subscriptions.Add(subscription);
+        _ = subscriptions.Add(subscription);
 
         if (triggerNow)
             handler.Invoke(_value);
@@ -37,22 +38,22 @@ public class ReactiveProperty<T>
     private void onChangeTrigger()
     {
         HashSet<Subscription> invalidSubscribers = [];
-        foreach (var sub in subscriptions)
+        foreach (Subscription sub in subscriptions)
         {
             if (!sub.Owner.IsAlive)
             {
-                invalidSubscribers.Add(sub);
+                _ = invalidSubscribers.Add(sub);
                 continue;
             }
 
             sub.Handler.Invoke(_value);
         }
 
-        foreach (var invalidSubscriber in invalidSubscribers)
-            subscriptions.Remove(invalidSubscriber);
+        foreach (Subscription invalidSubscriber in invalidSubscribers)
+            _ = subscriptions.Remove(invalidSubscriber);
     }
 
-    class Subscription(object owner, Action<T> handler)
+    private class Subscription(object owner, Action<T> handler)
     {
         public WeakReference Owner = new(owner);
         public Action<T> Handler = handler;

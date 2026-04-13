@@ -10,10 +10,10 @@ public class AttackWhenNearBehavior(Monster monster) : Behavior(monster)
 
     public override void Update(GameTime gameTime)
     {
-        var dt = gameTime.ElapsedGameTime.TotalSeconds;
+        double dt = gameTime.ElapsedGameTime.TotalSeconds;
 
-        var distance = monster.Position.DistanceTo(Game1.World.Player.Position);
-        
+        float distance = monster.Position.DistanceTo(Game1.World.Player.Position);
+
         bool withinAttackHitDistance = distance <= 64;
         bool withinAttackTriggerDistance = distance <= 32;
 
@@ -44,7 +44,7 @@ public class AttackWhenNearBehavior(Monster monster) : Behavior(monster)
                 swingTimer = 0f;
                 isAttacking = false;
                 playerWasHit = false;
-                
+
                 monster.ActionState.Value = ActorActionState.None;
                 monster.CanMove = true;
             }
