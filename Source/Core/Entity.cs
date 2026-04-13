@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public abstract class Entity
+public abstract class Entity : IDrawable
 {
     public string Id { get; } = Guid.NewGuid().ToString();
     public abstract IHitbox Hitbox { get; }
@@ -10,8 +11,23 @@ public abstract class Entity
 
     public bool IsDestroyed { get; private set; }
 
-    public virtual void Update(GameTime gameTime) {}
-    public virtual void Draw(SpriteBatch spriteBatch) {}
+    protected List<IDrawable> drawables = [];
+
+    public virtual void Update(GameTime gameTime) { }
+
+    protected void AddDrawable(IDrawable drawable)
+    {
+        drawables.Add(drawable);
+    }
+
+    protected virtual IEnumerable<DrawNode> CreateCompositeDrawNodes()
+        => drawables.Select(drawable => drawable.CreateDrawNode());
+
+    public DrawNode CreateDrawNode()
+    {
+        IEnumerable<DrawNode> drawableNodes = CreateCompositeDrawNodes();
+        return new CompositeDrawNode(this, drawableNodes);
+    }
 
     public virtual void Destroy()
     {

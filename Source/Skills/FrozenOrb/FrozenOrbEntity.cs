@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-public class FrozenOrbEntity : Entity
+public class FrozenOrbEntity(Entity parent) : SkillEntity(parent)
 {
     public float Speed { get; set; } = 100f;
     public readonly float MaxDuration = 3f;
@@ -9,24 +9,17 @@ public class FrozenOrbEntity : Entity
     public float Rotation = 0f;
     public override IHitbox Hitbox => new RectangleHitbox(0, 0, 0, 0);
 
-    private FrozenOrbGraphicsComponent frozenOrbGraphicsComponent = new();
-    private FrozenOrbBehaviorComponent frozenOrbBehaviorComponent = new();
-
-    public FrozenOrbEntity()
-    {
-        Game1.World.AddEntity(this);
-    }
-
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
-        frozenOrbGraphicsComponent.Draw(this, spriteBatch);
-    }
-
     public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
         Rotation += (float)gameTime.ElapsedGameTime.TotalSeconds * 3f;
-        frozenOrbBehaviorComponent.Update(this, gameTime);
+        base.Update(gameTime);
+    }
+
+    protected override SkillBehaviorComponent CreateBehavior()
+        => new FrozenOrbBehaviorComponent(this);
+
+    protected override IEnumerable<DrawNode> CreateCompositeDrawNodes()
+    {
+        yield return new FrozenOrbDrawNode(this);
     }
 }

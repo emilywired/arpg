@@ -3,35 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-public class FireballBehaviorComponent
+public class FireballBehaviorComponent(FireballEntity parent) : SkillBehaviorComponent<FireballEntity>(parent)
 {
     private List<Actor> hitActors = [];
-    public float CurrentDuration = 0f;
 
-    public void Update(FireballEntity fireball, GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         CurrentDuration += elapsedTime;
 
-        if (CurrentDuration >= fireball.MaxDuration)
+        if (CurrentDuration >= Parent.MaxDuration)
         {
-            fireball.Destroy();
+            Parent.Destroy();
             return;
         }
 
-        double x = fireball.Position.X + (fireball.Speed * elapsedTime * Math.Cos(fireball.Angle));
-        double y = fireball.Position.Y + (fireball.Speed * elapsedTime * Math.Sin(fireball.Angle));
-        fireball.Position = new((float)x, (float)y);
+        double x = Parent.Position.X + (Parent.Speed * elapsedTime * Math.Cos(Parent.Angle));
+        double y = Parent.Position.Y + (Parent.Speed * elapsedTime * Math.Sin(Parent.Angle));
+        Parent.Position = new((float)x, (float)y);
 
         foreach (
             Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
-                .Where(actor => actor != fireball.Owner)
+                .Where(actor => actor != Parent.Parent)
         )
         {
-            if (!hitActors.Contains(actor) && fireball.Hitbox.Intersects(actor.Hitbox))
+            if (!hitActors.Contains(actor) && Parent.Hitbox.Intersects(actor.Hitbox))
             {
-                actor.TakeDamage(fireball.Damage);
+                actor.TakeDamage(Parent.Damage);
                 hitActors.Add(actor);
             }
         }

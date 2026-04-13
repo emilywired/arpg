@@ -40,6 +40,7 @@ public class ManaGlobe : IHudElement
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        progressBar.Draw(spriteBatch);
+        DrawNode node = progressBar.CreateDrawNode();
+        node.Draw(spriteBatch);
     }
 };

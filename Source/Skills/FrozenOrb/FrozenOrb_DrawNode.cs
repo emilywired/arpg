@@ -1,18 +1,18 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class FrozenOrbGraphicsComponent
+public class FrozenOrbDrawNode(FrozenOrbEntity source) : DrawNode<FrozenOrbEntity>(source)
 {
     private TextureAsset asset = Assets.Spells.FrozenOrb;
 
-    public void Draw(FrozenOrbEntity frozenOrb, SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(
             asset.Texture,
-            new((int)frozenOrb.Position.X, (int)frozenOrb.Position.Y),
+            new((int)Source.Position.X, (int)Source.Position.Y),
             asset.Frames[0],
             Color.White,
-            frozenOrb.Rotation,
+            Source.Rotation,
             new Vector2(asset.Texture.Width / asset.Frames.Count / 2, asset.Texture.Height / 2),
             1f,
             SpriteEffects.None,

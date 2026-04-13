@@ -2,15 +2,15 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public class FrozenOrbSecondaryGraphicsComponent
+public class FrozenOrbSecondaryDrawNode(FrozenOrbSecondaryEntity source) : DrawNode<FrozenOrbSecondaryEntity>(source)
 {
     private TextureAsset asset = Assets.Spells.FrozenOrbSecondary;
 
-    public void Draw(FrozenOrbSecondaryEntity frozenOrbSecondary, SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
         if (GameState.IsDebugMode)
         {
-            if (frozenOrbSecondary.Hitbox is RectangleHitbox rectangleHitbox)
+            if (Source.Hitbox is RectangleHitbox rectangleHitbox)
             {
                 spriteBatch.Draw(
                     Assets.RectangleTexture,
@@ -31,10 +31,10 @@ public class FrozenOrbSecondaryGraphicsComponent
 
         spriteBatch.Draw(
             asset.Texture,
-            new((int)frozenOrbSecondary.Position.X, (int)frozenOrbSecondary.Position.Y),
+            new((int)Source.Position.X, (int)Source.Position.Y),
             asset.Frames[0],
             Color.White,
-            frozenOrbSecondary.Angle + MathHelper.ToRadians(90),
+            Source.Angle + MathHelper.ToRadians(90),
             new Vector2(asset.Texture.Width / asset.Frames.Count / 2, asset.Texture.Height / 2),
             1f,
             SpriteEffects.None,

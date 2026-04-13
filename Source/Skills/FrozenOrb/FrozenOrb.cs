@@ -11,7 +11,7 @@ public class FrozenOrb(Actor _owner) : ISkill
             return;
         }
 
-        _ = new FrozenOrbEntity()
+        _ = new FrozenOrbEntity(owner)
         {
             Position = new(owner.Position.X, owner.Position.Y),
             Angle = angle,

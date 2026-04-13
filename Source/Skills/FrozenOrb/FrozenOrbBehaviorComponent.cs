@@ -2,32 +2,32 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-public class FrozenOrbBehaviorComponent
+public class FrozenOrbBehaviorComponent(FrozenOrbEntity parent) : SkillBehaviorComponent<FrozenOrbEntity>(parent)
 {
-    public float CurrentDuration = 0f;
     private readonly List<FrozenOrbSecondaryEntity> SecondaryEntities = [];
     private float frameTime = 0f;
     private float secondaryProjectileAngle = 0f;
     private float secondaryProjectileInterval = 0.1f;
     private float rotationIncreasePerProjectile = MathHelper.ToRadians(75f);
 
-    public void Update(FrozenOrbEntity frozenOrb, GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
         float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        frameTime += elapsedTime;
-        CurrentDuration += elapsedTime;
 
-        if (CurrentDuration >= frozenOrb.MaxDuration)
+        frameTime += elapsedTime;
+
+        if (CurrentDuration >= Parent.MaxDuration)
         {
-            frozenOrb.Destroy();
+            Parent.Destroy();
             return;
         }
 
         double x =
-            frozenOrb.Position.X + (frozenOrb.Speed * elapsedTime * Math.Cos(frozenOrb.Angle));
+            Parent.Position.X + (Parent.Speed * elapsedTime * Math.Cos(Parent.Angle));
         double y =
-            frozenOrb.Position.Y + (frozenOrb.Speed * elapsedTime * Math.Sin(frozenOrb.Angle));
-        frozenOrb.Position = new((float)x, (float)y);
+            Parent.Position.Y + (Parent.Speed * elapsedTime * Math.Sin(Parent.Angle));
+        Parent.Position = new((float)x, (float)y);
 
         float rotationIncreasePerSecond =
             rotationIncreasePerProjectile / secondaryProjectileInterval;
@@ -37,11 +37,11 @@ public class FrozenOrbBehaviorComponent
         {
             int offset = 16;
             Vector2 position = new(
-                frozenOrb.Position.X + (offset * (float)Math.Cos(secondaryProjectileAngle)),
-                frozenOrb.Position.Y + (offset * (float)Math.Sin(secondaryProjectileAngle))
+                Parent.Position.X + (offset * (float)Math.Cos(secondaryProjectileAngle)),
+                Parent.Position.Y + (offset * (float)Math.Sin(secondaryProjectileAngle))
             );
 
-            FrozenOrbSecondaryEntity secondaryEntity = new()
+            FrozenOrbSecondaryEntity secondaryEntity = new(Parent)
             {
                 Position = position,
                 Angle = secondaryProjectileAngle,

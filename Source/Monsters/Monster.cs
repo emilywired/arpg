@@ -15,10 +15,12 @@ public class Monster : Actor
 
     protected MovementBehavior movementBehavior;
     protected List<Behavior> behaviors = [];
+    protected AnimatedSprite sprite;
 
     private ProgressBar healthBar;
     private float corpseDespawnTime = 10f;
     private float timeSinceDeath = 0;
+
 
     public Monster(int level)
     {
@@ -38,6 +40,7 @@ public class Monster : Actor
         Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
 
         movementBehavior = new(this);
+        AddDrawable(sprite = new());
     }
 
     public override void Update(GameTime gameTime)
@@ -80,13 +83,13 @@ public class Monster : Actor
         healthBar.Position = Position - new Vector2(0, 20);
     }
 
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        base.Draw(spriteBatch);
+    // public override void Draw(SpriteBatch spriteBatch)
+    // {
+    //     base.Draw(spriteBatch);
 
-        if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
-            healthBar.Draw(spriteBatch);
-    }
+    //     if (Game1.Config.DisplayEnemyHealthBars && IsAlive)
+    //         healthBar.Draw(spriteBatch);
+    // }
 
     public override void TakeDamage(double amount)
     {

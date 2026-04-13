@@ -123,7 +123,9 @@ public class Game1 : Game
 
         foreach (Entity entity in World.Entities)
         {
-            entity.Draw(spriteBatch);
+
+            DrawNode node = entity.CreateDrawNode();
+            node.Draw(spriteBatch);
         }
 
         World.Stash.Draw(spriteBatch);
