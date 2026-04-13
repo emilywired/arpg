@@ -4,19 +4,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Hud
 {
-    private List<IHudElement> _elements = [];
+    private List<IHudElement> elements = [];
 
     public Hud()
     {
-        _elements.Add(new HealthGlobe());
-        _elements.Add(new ManaGlobe());
-        _elements.Add(new DebugScreen());
-        _elements.Add(new XpBar());
+        elements.Add(new HealthGlobe());
+        elements.Add(new ManaGlobe());
+        elements.Add(new DebugScreen());
+        elements.Add(new XpBar());
     }
 
     public void Update(GameTime gameTime)
     {
-        foreach (IHudElement element in _elements)
+        foreach (IHudElement element in elements)
         {
             element.Update(gameTime);
         }
@@ -24,7 +24,7 @@ public class Hud
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        foreach (IHudElement element in _elements)
+        foreach (IHudElement element in elements)
         {
             element.Draw(spriteBatch);
         }

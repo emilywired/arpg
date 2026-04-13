@@ -14,25 +14,25 @@ public class MouseInputManager
 {
     public event Action<MouseButtons>? KeyPressed;
     public event Action<MouseButtons>? KeyReleased;
-    private MouseState _mouseState;
-    private MouseState _previousMouseState;
+    private MouseState mouseState;
+    private MouseState previousMouseState;
 
     public void Update()
     {
-        _mouseState = Mouse.GetState();
+        mouseState = Mouse.GetState();
 
         foreach (MouseButtons button in Enum.GetValues(typeof(MouseButtons)))
         {
             ProcessButton(button);
         }
 
-        _previousMouseState = _mouseState;
+        previousMouseState = mouseState;
     }
 
     private void ProcessButton(MouseButtons button)
     {
-        ButtonState buttonState = GetButtonState(button, _mouseState);
-        ButtonState previousButtonState = GetButtonState(button, _previousMouseState);
+        ButtonState buttonState = GetButtonState(button, mouseState);
+        ButtonState previousButtonState = GetButtonState(button, previousMouseState);
         bool isNewButtonPress =
             buttonState == ButtonState.Pressed && previousButtonState == ButtonState.Released;
         bool isButtonReleased =

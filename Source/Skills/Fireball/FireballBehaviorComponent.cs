@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 public class FireballBehaviorComponent
 {
-    private List<string> _hitActors = [];
+    private List<Actor> hitActors = [];
     public float CurrentDuration = 0f;
 
     public void Update(FireballEntity fireball, GameTime gameTime)
@@ -29,10 +29,10 @@ public class FireballBehaviorComponent
                 .Where(actor => actor != fireball.Owner)
         )
         {
-            if (!_hitActors.Contains(actor.Id) && fireball.Hitbox.Intersects(actor.Hitbox))
+            if (!hitActors.Contains(actor) && fireball.Hitbox.Intersects(actor.Hitbox))
             {
                 actor.TakeDamage(fireball.Damage);
-                _hitActors.Add(actor.Id);
+                hitActors.Add(actor);
             }
         }
     }

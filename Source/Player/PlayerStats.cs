@@ -3,6 +3,7 @@ public class PlayerStats : ActorBaseStats
     public PlayerLevel Level { get; }
     public int HealthOnKill { get; set; }
     public int ManaOnKill { get; set; }
+    public int MagicFind { get; set; }
 
     public PlayerStats(
         Actor actor,
@@ -19,7 +20,8 @@ public class PlayerStats : ActorBaseStats
         double agility = 10,
         double intelligence = 10,
         double vitality = 10,
-        double spirit = 10
+        double spirit = 10,
+        int magicFind = 0
     )
         : base(
             actor,
@@ -40,5 +42,6 @@ public class PlayerStats : ActorBaseStats
         Level = new();
         HealthOnKill = healthOnKill;
         ManaOnKill = manaOnKill;
+        MagicFind = magicFind;
     }
 }

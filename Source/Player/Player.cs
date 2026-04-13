@@ -8,19 +8,20 @@ public class Player : Actor
     public static readonly float ItemPickupRadius = 40;
     public static readonly float GoldPickupRadius = 60;
 
-    public override IHitbox Hitbox
-        => new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);
+    public override IHitbox Hitbox =>
+        new RectangleHitbox((int)Position.X - 12, (int)Position.Y - 24, 20, 50);
 
     public Vector2 Size => new(140, 140);
 
     public SkillCollection Skills;
-    public override ActorBaseStats Stats { get; }
+    public override PlayerStats Stats { get; }
 
     public Equipment Equipment;
     public Inventory Inventory;
     public PlayerGold Gold;
 
     public PlayerInputComponent InputComponent;
+
     private PlayerSprite sprite;
 
     public Player()
@@ -35,7 +36,7 @@ public class Player : Actor
             manaRegen: 0
         );
         Equipment = new(this);
-        Inventory = new(this);
+        Inventory = new();
         Gold = new();
 
         Equipment.Equip(new Sandals().ToMagic().Corrupted());
@@ -76,10 +77,9 @@ public class Player : Actor
 
     public void OnKill(Monster monster)
     {
-        var playerStats = (PlayerStats)Stats;
-        playerStats.Level.GrantXP(monster.XP);
-        playerStats.OffsetHealth(playerStats.HealthOnKill);
-        playerStats.OffsetMana(playerStats.ManaOnKill);
+        Stats.Level.GrantXP(monster.XP);
+        Stats.OffsetHealth(Stats.HealthOnKill);
+        Stats.OffsetMana(Stats.ManaOnKill);
 
         List<Item> loot = Game1.LootSystem.GenerateLoot(monster, this);
         foreach (Item item in loot)

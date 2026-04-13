@@ -9,11 +9,10 @@ public class SkeletonGraphicsComponent : AnimatedSprite
     private TextureAsset walkAsset = Assets.Monsters.Skeleton.Walk;
     private TextureAsset deathAsset = Assets.Monsters.Skeleton.Death; // TODO: add one of the two corpse frames
 
-
     private Skeleton skeleton;
 
     public SkeletonGraphicsComponent(Skeleton skeleton)
-    { 
+    {
         this.skeleton = skeleton;
         SetTextureAsset(idleAsset);
         FrameTime = 0.15f;
@@ -24,15 +23,17 @@ public class SkeletonGraphicsComponent : AnimatedSprite
 
     private void onSkeletonStateChanged()
     {
-        SetTextureAsset((skeleton.State.Value, skeleton.ActionState.Value) switch
-        {
-            // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
-            (ActorState.Dead, _) => deathAsset,
-            (_, ActorActionState.Swinging) => attackAsset,
-            (ActorState.Idling, _) => idleAsset,
-            (ActorState.Walking, _) => walkAsset,
-            _ => throw new SystemException("Unhandled ActorState"),
-        });
+        SetTextureAsset(
+            (skeleton.State.Value, skeleton.ActionState.Value) switch
+            {
+                // (ActorState.Walking, ActorActionState.Swinging) => walkAttackAsset,
+                (ActorState.Dead, _) => deathAsset,
+                (_, ActorActionState.Swinging) => attackAsset,
+                (ActorState.Idling, _) => idleAsset,
+                (ActorState.Walking, _) => walkAsset,
+                _ => throw new SystemException("Unhandled ActorState"),
+            }
+        );
     }
 
     public override void Update(GameTime gameTime)
@@ -42,9 +43,10 @@ public class SkeletonGraphicsComponent : AnimatedSprite
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        SpriteEffects = skeleton.Facing == ActorFacing.Right
-            ? SpriteEffects.None
-            : SpriteEffects.FlipHorizontally;
+        SpriteEffects =
+            skeleton.Facing == ActorFacing.Right
+                ? SpriteEffects.None
+                : SpriteEffects.FlipHorizontally;
 
         if (GameState.IsDebugMode)
         {

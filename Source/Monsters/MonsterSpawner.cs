@@ -5,23 +5,24 @@ using Microsoft.Xna.Framework;
 public class MonsterSpawner(Player player, double frequency, int offscreenDistance)
 {
     public double Frequency = frequency;
-    public Rectangle SpawnEdge => new(
-                (int)player.Position.X - _offscreenDistance - HALF_WINDOW_WIDTH,
-                (int)player.Position.Y - _offscreenDistance - HALF_WINDOW_HEIGHT,
-                Game1.NativeResolution.Width + (_offscreenDistance * 2),
-                Game1.NativeResolution.Height + (_offscreenDistance * 2)
-            );
+    public Rectangle SpawnEdge =>
+        new(
+            (int)player.Position.X - offscreenDistance - HALF_WINDOW_WIDTH,
+            (int)player.Position.Y - offscreenDistance - HALF_WINDOW_HEIGHT,
+            Game1.NativeResolution.Width + (offscreenDistance * 2),
+            Game1.NativeResolution.Height + (offscreenDistance * 2)
+        );
     private const int HALF_WINDOW_WIDTH = Game1.NativeResolution.Width / 2;
     private const int HALF_WINDOW_HEIGHT = Game1.NativeResolution.Height / 2;
-    private int _offscreenDistance = offscreenDistance;
-    private double _timer = 0f;
+    private int offscreenDistance = offscreenDistance;
+    private double timer = 0f;
 
     public void Update(GameTime gameTime)
     {
         double elapsed = gameTime.ElapsedGameTime.TotalSeconds;
-        _timer += elapsed;
+        timer += elapsed;
 
-        if (_timer >= Frequency)
+        if (timer >= Frequency)
         {
             Rectangle spawnEdge = SpawnEdge;
             Vector2 topLeftCorner = new(spawnEdge.Left, spawnEdge.Top);
@@ -65,7 +66,7 @@ public class MonsterSpawner(Player player, double frequency, int offscreenDistan
             Skeleton skeleton = new(Random.Shared.Next(1, 3)) { Position = new(x, y) };
             Game1.World.AddEntity(skeleton);
 
-            _timer -= Frequency;
+            timer -= Frequency;
         }
     }
 }

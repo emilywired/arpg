@@ -8,11 +8,11 @@ public class FireballEntity : Entity
     public double Angle = 0d;
     public float Damage = 10f;
     public readonly float MaxDuration = 2f;
-    public override IHitbox Hitbox 
-        => new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
+    public override IHitbox Hitbox =>
+        new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
 
-    private FireballGraphicsComponent _fireballGraphicsComponent = new();
-    private FireballBehaviorComponent _fireballBehaviorComponent = new();
+    private FireballGraphicsComponent fireballGraphicsComponent = new();
+    private FireballBehaviorComponent fireballBehaviorComponent = new();
 
     public FireballEntity(Actor owner)
     {
@@ -23,13 +23,13 @@ public class FireballEntity : Entity
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
-        _fireballGraphicsComponent.Draw(this, spriteBatch);
+        fireballGraphicsComponent.Draw(this, spriteBatch);
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        _fireballGraphicsComponent.Update(gameTime);
-        _fireballBehaviorComponent.Update(this, gameTime);
+        fireballGraphicsComponent.Update(gameTime);
+        fireballBehaviorComponent.Update(this, gameTime);
     }
 }

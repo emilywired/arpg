@@ -8,12 +8,12 @@ public class KeyboardInputManager
     public event Action<Keys>? KeyPressed;
     public event Action<Keys>? KeyReleased;
 
-    private KeyboardState _keyboardState;
-    private KeyboardState _previousKeyboardState;
+    private KeyboardState keyboardState;
+    private KeyboardState previousKeyboardState;
 
     public void Update(HashSet<Keys> hardBoundKeys, HashSet<Keys> boundKeys)
     {
-        _keyboardState = Keyboard.GetState();
+        keyboardState = Keyboard.GetState();
 
         foreach (Keys key in hardBoundKeys)
         {
@@ -25,14 +25,14 @@ public class KeyboardInputManager
             ProcessKey(key);
         }
 
-        _previousKeyboardState = _keyboardState;
+        previousKeyboardState = keyboardState;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void ProcessKey(Keys key)
     {
-        bool isKeyDown = _keyboardState.IsKeyDown(key);
-        bool isPreviousKeyDown = _previousKeyboardState.IsKeyDown(key);
+        bool isKeyDown = keyboardState.IsKeyDown(key);
+        bool isPreviousKeyDown = previousKeyboardState.IsKeyDown(key);
 
         bool isNewKeyPress = isKeyDown && !isPreviousKeyDown;
         bool IsKeyReleased = !isKeyDown && isPreviousKeyDown;

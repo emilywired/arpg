@@ -6,15 +6,15 @@ public class FrozenOrbBehaviorComponent
 {
     public float CurrentDuration = 0f;
     private readonly List<FrozenOrbSecondaryEntity> SecondaryEntities = [];
-    private float _frameTime = 0f;
-    private float _secondaryProjectileAngle = 0f;
-    private float _secondaryProjectileInterval = 0.1f;
-    private float _rotationIncreasePerProjectile = MathHelper.ToRadians(75f);
+    private float frameTime = 0f;
+    private float secondaryProjectileAngle = 0f;
+    private float secondaryProjectileInterval = 0.1f;
+    private float rotationIncreasePerProjectile = MathHelper.ToRadians(75f);
 
     public void Update(FrozenOrbEntity frozenOrb, GameTime gameTime)
     {
         float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        _frameTime += elapsedTime;
+        frameTime += elapsedTime;
         CurrentDuration += elapsedTime;
 
         if (CurrentDuration >= frozenOrb.MaxDuration)
@@ -30,25 +30,25 @@ public class FrozenOrbBehaviorComponent
         frozenOrb.Position = new((float)x, (float)y);
 
         float rotationIncreasePerSecond =
-            _rotationIncreasePerProjectile / _secondaryProjectileInterval;
-        _secondaryProjectileAngle += (rotationIncreasePerSecond * elapsedTime) % 360;
+            rotationIncreasePerProjectile / secondaryProjectileInterval;
+        secondaryProjectileAngle += rotationIncreasePerSecond * elapsedTime % 360;
 
-        if (_frameTime >= _secondaryProjectileInterval)
+        if (frameTime >= secondaryProjectileInterval)
         {
             int offset = 16;
             Vector2 position = new(
-                frozenOrb.Position.X + (offset * (float)Math.Cos(_secondaryProjectileAngle)),
-                frozenOrb.Position.Y + (offset * (float)Math.Sin(_secondaryProjectileAngle))
+                frozenOrb.Position.X + (offset * (float)Math.Cos(secondaryProjectileAngle)),
+                frozenOrb.Position.Y + (offset * (float)Math.Sin(secondaryProjectileAngle))
             );
 
             FrozenOrbSecondaryEntity secondaryEntity = new()
             {
                 Position = position,
-                Angle = _secondaryProjectileAngle,
+                Angle = secondaryProjectileAngle,
             };
             SecondaryEntities.Add(secondaryEntity);
 
-            _frameTime -= _secondaryProjectileInterval;
+            frameTime -= secondaryProjectileInterval;
         }
     }
 }

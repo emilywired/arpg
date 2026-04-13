@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class HolyFireGraphicsComponent
 {
-    private Texture2D _texture = null!;
+    private Texture2D texture = null!;
 
     public HolyFireGraphicsComponent(HolyFireEntity holyFire)
     {
@@ -12,13 +12,13 @@ public class HolyFireGraphicsComponent
 
     public void Update(HolyFireEntity holyFire)
     {
-        _texture = Assets.CreateCircleTexture((int)holyFire.Radius);
+        texture = Assets.CreateCircleTexture((int)holyFire.Radius);
     }
 
     public void Draw(HolyFireEntity holyFire, SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(
-            _texture,
+            texture,
             new(
                 (int)(holyFire.Position.X - holyFire.Radius),
                 (int)(holyFire.Position.Y - holyFire.Radius)

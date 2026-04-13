@@ -4,11 +4,11 @@ using System.Collections.Generic;
 // TODO: fix this retarded way of adding new handlers
 public class GameInputController
 {
-    private readonly List<Func<bool>> _escapeHandlers = [];
-    private readonly List<Func<bool>> _leftClickHandlers = [];
-    private readonly List<Func<bool>> _leftClickReleaseHandlers = [];
-    private readonly List<Func<bool>> _rightClickHandlers = [];
-    private readonly List<Func<bool>> _rightClickReleaseHandlers = [];
+    private readonly List<Func<bool>> escapeHandlers = [];
+    private readonly List<Func<bool>> leftClickHandlers = [];
+    private readonly List<Func<bool>> leftClickReleaseHandlers = [];
+    private readonly List<Func<bool>> rightClickHandlers = [];
+    private readonly List<Func<bool>> rightClickReleaseHandlers = [];
 
     public GameInputController()
     {
@@ -28,52 +28,52 @@ public class GameInputController
 
     public void RegisterOnClose(Func<bool> handler)
     {
-        _escapeHandlers.Add(handler);
+        escapeHandlers.Add(handler);
     }
 
     public void RegisterOnLeftClick(Func<bool> handler)
     {
-        _leftClickHandlers.Add(handler);
+        leftClickHandlers.Add(handler);
     }
 
     public void RegisterOnLeftClickRelease(Func<bool> handler)
     {
-        _leftClickReleaseHandlers.Add(handler);
+        leftClickReleaseHandlers.Add(handler);
     }
 
     public void RegisterOnRightClick(Func<bool> handler)
     {
-        _rightClickHandlers.Add(handler);
+        rightClickHandlers.Add(handler);
     }
 
     public void RegisterOnRightClickRelease(Func<bool> handler)
     {
-        _rightClickReleaseHandlers.Add(handler);
+        rightClickReleaseHandlers.Add(handler);
     }
 
     private void OnClose()
     {
-        HandleEventPropagation(_escapeHandlers);
+        HandleEventPropagation(escapeHandlers);
     }
 
     private void OnLeftClick()
     {
-        HandleEventPropagation(_leftClickHandlers);
+        HandleEventPropagation(leftClickHandlers);
     }
 
     private void OnLeftClickRelease()
     {
-        HandleEventPropagation(_leftClickReleaseHandlers);
+        HandleEventPropagation(leftClickReleaseHandlers);
     }
 
     private void OnRightClick()
     {
-        HandleEventPropagation(_rightClickHandlers);
+        HandleEventPropagation(rightClickHandlers);
     }
 
     private void OnRightClickRelease()
     {
-        HandleEventPropagation(_rightClickReleaseHandlers);
+        HandleEventPropagation(rightClickReleaseHandlers);
     }
 
     private void HandleEventPropagation(List<Func<bool>> handlers)

@@ -1,10 +1,11 @@
-public class HolyFire(Actor owner) : ISkill
+public class HolyFire(Actor _owner) : ISkill
 {
     public string Name { get; } = "Holy Fire";
     public Cooldown Cooldown { get; } = new(1f);
-    private Actor _owner = owner;
+
+    private Actor owner = _owner;
+    private HolyFireEntity? entity;
     private bool isActive = false;
-    private HolyFireEntity? _entity;
 
     public void Cast(double angle)
     {
@@ -13,18 +14,18 @@ public class HolyFire(Actor owner) : ISkill
 
         if (!isActive)
         {
-            HolyFireEntity holyFireEntity = new(_owner)
+            HolyFireEntity holyFireEntity = new(owner)
             {
-                Position = new(_owner.Position.X, _owner.Position.Y),
+                Position = new(owner.Position.X, owner.Position.Y),
                 Radius = 100f,
             };
 
-            _entity = holyFireEntity;
+            entity = holyFireEntity;
             isActive = true;
         }
         else
         {
-            _entity!.Destroy();
+            entity!.Destroy();
             isActive = false;
         }
 

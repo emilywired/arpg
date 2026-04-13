@@ -1,4 +1,3 @@
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,8 +7,9 @@ public class DroppedItem
     public Vector2 Position;
     public string DisplayText => GetDisplayName();
     public bool IsHovered = false;
-    private Vector2 _stringOrigin;
-    private Rectangle _bounds;
+
+    private Vector2 stringOrigin;
+    private Rectangle bounds;
 
     private string GetDisplayName()
     {
@@ -26,13 +26,13 @@ public class DroppedItem
         Item = item;
         Position = position;
 
-        _stringOrigin = Assets.Fonts.MonogramExtened.MeasureString(DisplayText);
+        stringOrigin = Assets.Fonts.MonogramExtened.MeasureString(DisplayText);
 
         // TODO: add some padding, decrease if needed to make materials with different stack sizes have same width
 
         const int HEIGHT = 16;
-        int WIDTH = (int)_stringOrigin.X + 16;
-        _bounds = new Rectangle(
+        int WIDTH = (int)stringOrigin.X + 16;
+        bounds = new Rectangle(
             (int)Position.X - (WIDTH / 2),
             (int)Position.Y - (HEIGHT / 2),
             WIDTH,
@@ -40,21 +40,27 @@ public class DroppedItem
         );
     }
 
+#pragma warning disable IDE0060
     public void Update(GameTime gameTime)
     {
-        IsHovered = _bounds.Contains(MouseManager.WorldMousePosition);
+        IsHovered = bounds.Contains(MouseManager.WorldMousePosition);
     }
+#pragma warning restore IDE0060
+
 
     public void Draw(SpriteBatch spriteBatch)
     {
         const int borderThickness = 1;
 
-        spriteBatch.Draw(Assets.RectangleTexture, _bounds, Color.Transparent);
+        spriteBatch.Draw(Assets.RectangleTexture, bounds, Color.Transparent);
 
         // Top border
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            _bounds with { Height = borderThickness },
+            bounds with
+            {
+                Height = borderThickness,
+            },
             null,
             Item.Rarity.GetColor(),
             0f,
@@ -67,9 +73,9 @@ public class DroppedItem
         spriteBatch.Draw(
             Assets.RectangleTexture,
             new Rectangle(
-                _bounds.X,
-                _bounds.Y + _bounds.Height - borderThickness,
-                _bounds.Width,
+                bounds.X,
+                bounds.Y + bounds.Height - borderThickness,
+                bounds.Width,
                 borderThickness
             ),
             null,
@@ -83,7 +89,10 @@ public class DroppedItem
         // Left border
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            _bounds with { Width = borderThickness },
+            bounds with
+            {
+                Width = borderThickness,
+            },
             null,
             Item.Rarity.GetColor(),
             0f,
@@ -96,10 +105,10 @@ public class DroppedItem
         spriteBatch.Draw(
             Assets.RectangleTexture,
             new Rectangle(
-                _bounds.X + _bounds.Width - borderThickness,
-                _bounds.Y,
+                bounds.X + bounds.Width - borderThickness,
+                bounds.Y,
                 borderThickness,
-                _bounds.Height
+                bounds.Height
             ),
             null,
             Item.Rarity.GetColor(),
@@ -111,7 +120,7 @@ public class DroppedItem
 
         spriteBatch.Draw(
             Assets.RectangleTexture,
-            _bounds,
+            bounds,
             null,
             IsHovered ? Color.White : new Color(0, 0, 0, 0.6f),
             0f,
@@ -129,7 +138,7 @@ public class DroppedItem
         Game1.DrawText(
             spriteBatch,
             DisplayText,
-            new(_bounds.X + ((_bounds.Width - _stringOrigin.X) / 2), _bounds.Y),
+            new(bounds.X + ((bounds.Width - stringOrigin.X) / 2), bounds.Y),
             Layer.DroppedItemText,
             textColor
         );

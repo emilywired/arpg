@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 public class FrozenOrbSecondaryBehaviorComponent
 {
     public float CurrentDuration = 0f;
-    private List<string> _hitActors = [];
+    private List<string> hitActors = [];
 
     public void Update(FrozenOrbSecondaryEntity secondaryEntity, GameTime gameTime)
     {
@@ -29,10 +29,10 @@ public class FrozenOrbSecondaryBehaviorComponent
 
         foreach (Monster actor in Game1.World.Entities.OfType<Monster>())
         {
-            if (!_hitActors.Contains(actor.Id) && secondaryEntity.Hitbox.Intersects(actor.Hitbox))
+            if (!hitActors.Contains(actor.Id) && secondaryEntity.Hitbox.Intersects(actor.Hitbox))
             {
                 actor.TakeDamage(secondaryEntity.Damage);
-                _hitActors.Add(actor.Id);
+                hitActors.Add(actor.Id);
             }
         }
     }

@@ -19,6 +19,6 @@ public static class RarityExtensions
             Rarity.Rare => ItemColors.Rare,
             Rarity.Unique => ItemColors.Unique,
             Rarity.Set => ItemColors.Set,
-            _ => Color.White,
+            _ => ItemColors.Normal,
         };
 }

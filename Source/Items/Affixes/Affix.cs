@@ -14,8 +14,6 @@ public abstract class Affix
     public int MaxRange { get; private set; }
     public int RolledValue { get; private set; }
 
-    private static Random _rng = new();
-
     public Affix(int minRange, int? maxRange = null)
     {
         MinRange = minRange;
@@ -25,7 +23,7 @@ public abstract class Affix
 
     public Affix RollValue()
     {
-        RolledValue = _rng.Next(MinRange, MaxRange + 1);
+        RolledValue = Random.Shared.Next(MinRange, MaxRange + 1);
         return this;
     }
 

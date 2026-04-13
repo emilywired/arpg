@@ -4,36 +4,38 @@ using Microsoft.Xna.Framework;
 
 public class HolyFireBehaviorComponent
 {
-    private List<Actor> _intersectingEntities = [];
+    private List<Actor> intersectingEntities = [];
 
     public HolyFireBehaviorComponent(HolyFireEntity holyFire)
     {
         holyFire.Owner.Stats.AddHealthDegen(holyFire.SelfDamage);
     }
 
+#pragma warning disable IDE0060
     public void Update(HolyFireEntity holyFire, GameTime gameTime)
+#pragma warning restore IDE0060
     {
         // TODO: replace 20 with the half width of the visible player sprite
         holyFire.Position = new(holyFire.Owner.Position.X + 0, holyFire.Owner.Position.Y + 20);
 
         foreach (
-            var actor in Game1
+            Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
                 .Where(actor => actor != holyFire.Owner)
         )
         {
-            bool wasAlreadyIntersecting = _intersectingEntities.Contains(actor);
+            bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
             bool intersects = actor.Hitbox.Intersects(holyFire.Hitbox);
 
             if (!wasAlreadyIntersecting && intersects)
             {
                 actor.Stats.AddHealthDegen(holyFire.Damage);
-                _intersectingEntities.Add(actor);
+                intersectingEntities.Add(actor);
             }
             else if (wasAlreadyIntersecting && !intersects)
             {
                 actor.Stats.SubtractHealthDegen(holyFire.Damage);
-                _intersectingEntities.Remove(actor);
+                _ = intersectingEntities.Remove(actor);
             }
         }
     }
@@ -43,12 +45,12 @@ public class HolyFireBehaviorComponent
         holyFire.Owner.Stats.SubtractHealthDegen(holyFire.SelfDamage);
 
         foreach (
-            var actor in Game1
+            Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
                 .Where(actor => actor != holyFire.Owner)
         )
         {
-            bool wasAlreadyIntersecting = _intersectingEntities.Contains(actor);
+            bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
             if (wasAlreadyIntersecting)
             {
                 actor.Stats.SubtractHealthDegen(holyFire.Damage);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LootSystem
 {
-    private Dictionary<Func<Item>, int> _lootPool = new()
+    private Dictionary<Func<Item>, int> lootPool = new()
     {
         { () => new OrbOfCorruption(), 1000 },
         { () => new AugmentingCore(), 100 },
@@ -13,7 +13,7 @@ public class LootSystem
         { () => new SapphireRing(), 100000 },
     };
 
-    private Dictionary<int, int> _dropCountWeights = new()
+    private Dictionary<int, int> dropCountWeights = new()
     {
         { 0, 6000 },
         { 1, 1000 },
@@ -21,7 +21,7 @@ public class LootSystem
         { 3, 0 },
     };
 
-    private Dictionary<Rarity, int> _rarityWeights = new()
+    private Dictionary<Rarity, int> rarityWeights = new()
     {
         { Rarity.Unique, 0 },
         { Rarity.Set, 0 },
@@ -32,6 +32,8 @@ public class LootSystem
 
     public List<Item> GenerateLoot(Monster monster, Player player)
     {
+        int MagicFind = player.Stats.MagicFind;
+
         List<Item> drops = [];
 
         int goldRoll = Random.Shared.Next(0, 1);
@@ -44,10 +46,10 @@ public class LootSystem
             drops.Add(new Gold(goldAmount));
         }
 
-        int dropCount = RandomUtils.WeightedChoice(_dropCountWeights);
+        int dropCount = RandomUtils.WeightedChoice(dropCountWeights);
         for (int i = 0; i < dropCount; i++)
         {
-            Item item = RandomUtils.WeightedChoice(_lootPool).Invoke();
+            Item item = RandomUtils.WeightedChoice(lootPool).Invoke();
 
             if (
                 item is EquippableItem equippableItem
@@ -66,7 +68,7 @@ public class LootSystem
 
     private void RollRarity(EquippableItem item)
     {
-        Rarity rarity = RandomUtils.WeightedChoice(_rarityWeights);
+        Rarity rarity = RandomUtils.WeightedChoice(rarityWeights);
         switch (rarity)
         {
             case Rarity.Magic:

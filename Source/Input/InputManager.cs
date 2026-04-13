@@ -4,16 +4,16 @@ using Microsoft.Xna.Framework.Input;
 
 public class InputManager
 {
-    private MouseInputManager _mouseInputManager = new();
-    private KeyboardInputManager _keyboardInputManager = new();
-    private InputMapper _inputMapper;
+    private MouseInputManager mouseInputManager = new();
+    private KeyboardInputManager keyboardInputManager = new();
+    private InputMapper inputMapper;
 
-    private HashSet<Keys> _hardBoundKeys = [];
-    private HashSet<Keys> _boundKeys = [];
+    private HashSet<Keys> hardBoundKeys = [];
+    private HashSet<Keys> boundKeys = [];
 
     public InputManager()
     {
-        _inputMapper = new(_keyboardInputManager, _mouseInputManager);
+        inputMapper = new(keyboardInputManager, mouseInputManager);
 
         // hardcoded keybinds
         BindKey(Keys.Escape, FixedGameAction.Close);
@@ -35,57 +35,57 @@ public class InputManager
 
     public void Update()
     {
-        _mouseInputManager.Update();
-        _keyboardInputManager.Update(_hardBoundKeys, _boundKeys);
+        mouseInputManager.Update();
+        keyboardInputManager.Update(hardBoundKeys, boundKeys);
     }
 
     public void OnPress(FixedGameAction gameAction, Action handler)
     {
-        _inputMapper.OnPress(gameAction, handler);
+        inputMapper.OnPress(gameAction, handler);
     }
 
     public void OnPress(RemappableGameAction gameAction, Action handler)
     {
-        _inputMapper.OnPress(gameAction, handler);
+        inputMapper.OnPress(gameAction, handler);
     }
 
     public void OnRelease(FixedGameAction gameAction, Action handler)
     {
-        _inputMapper.OnRelease(gameAction, handler);
+        inputMapper.OnRelease(gameAction, handler);
     }
 
     public void OnRelease(RemappableGameAction gameAction, Action handler)
     {
-        _inputMapper.OnRelease(gameAction, handler);
+        inputMapper.OnRelease(gameAction, handler);
     }
 
     private void BindKey(Keys key, FixedGameAction gameAction)
     {
-        _ = _hardBoundKeys.Add(key);
-        _inputMapper.BindKey(key, gameAction);
+        _ = hardBoundKeys.Add(key);
+        inputMapper.BindKey(key, gameAction);
     }
 
     public void BindKey(Keys key, RemappableGameAction gameAction)
     {
-        _ = _boundKeys.Add(key);
-        _inputMapper.BindKey(key, gameAction);
+        _ = boundKeys.Add(key);
+        inputMapper.BindKey(key, gameAction);
     }
 
     public void BindKey(MouseButtons button, FixedGameAction gameAction)
     {
-        _inputMapper.BindKey(button, gameAction);
+        inputMapper.BindKey(button, gameAction);
     }
 
     public void BindKey(MouseButtons button, RemappableGameAction gameAction)
     {
-        _inputMapper.BindKey(button, gameAction);
+        inputMapper.BindKey(button, gameAction);
     }
 
     public void UnbindKey(Keys key)
     {
-        if (_hardBoundKeys.Contains(key))
+        if (hardBoundKeys.Contains(key))
             throw new InvalidOperationException("Cannot unbind a fixed keybind.");
-        _ = _boundKeys.Remove(key);
-        _inputMapper.UnbindKey(key);
+        _ = boundKeys.Remove(key);
+        inputMapper.UnbindKey(key);
     }
 }

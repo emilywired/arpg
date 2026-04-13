@@ -5,34 +5,37 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 public class TransformVector2 : ITransform
 {
-    private object _obj;
+    private object obj;
 
-    private PropertyInfo _property;
+    private PropertyInfo property;
 
-    private Vector2? _from;
-    private Vector2 _to;
-    private double _time;
-    private double _length;
+    private Vector2? from;
+    private Vector2 to;
+    private double time;
+    private double length;
 
-    public double Progress => _time / _length;
+    public double Progress => time / length;
     public bool IsFinished { get; protected set; }
     public bool IsReady { get; protected set; }
     public event Action? OnFinish;
 
-    public TransformVector2(object obj, string propertyName, Vector2 to, double length)
+    public TransformVector2(object _obj, string _propertyName, Vector2 _to, double _length)
     {
-        _obj = obj;
-        _to = to;
-        _length = length;
+        obj = _obj;
+        to = _to;
+        length = _length;
 
-        Type type = obj.GetType();
-        _property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)!;
+        Type type = _obj.GetType();
+        property = type.GetProperty(
+            _propertyName,
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+        )!;
     }
 
     public void Reset()
     {
-        _from = (Vector2)_property.GetValue(_obj)!;
-        _time = 0;
+        from = (Vector2)property.GetValue(obj)!;
+        time = 0;
         IsReady = true;
     }
 
@@ -44,15 +47,15 @@ public class TransformVector2 : ITransform
         if (!IsReady)
             throw new Exception("Call reset before starting to update transform.");
 
-        _time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (_time > _length)
+        time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (time > length)
         {
-            _time = _length;
+            time = length;
             IsFinished = true;
             OnFinish?.Invoke();
         }
 
-        Vector2? value = _from + ((_to - _from) * (float)Progress);
-        _property.SetValue(_obj, value);
+        Vector2? value = from + ((to - from) * (float)Progress);
+        property.SetValue(obj, value);
     }
 }

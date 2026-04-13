@@ -3,19 +3,19 @@ using Microsoft.Xna.Framework;
 
 public class PlayerInputComponent
 {
-    private Player _player;
+    private Player player;
 
     public bool IsMoving { get; private set; } = false;
-    private bool _isHoldingLeftClick;
-    private Vector2 _destination;
-    private double _destinationAngle = 0d;
-    private double _playerAimAngle = 0d;
-    private ISkill? _heldSkill = null;
-    private MovementTrack? _movementTrack = null;
+    private bool isHoldingLeftClick;
+    private Vector2 destination;
+    private double destinationAngle = 0d;
+    private double playerAimAngle = 0d;
+    private ISkill? heldSkill = null;
+    private MovementTrack? movementTrack = null;
 
-    public PlayerInputComponent(Player player)
+    public PlayerInputComponent(Player _player)
     {
-        _player = player;
+        player = _player;
 
         // TODO: refactor
         Game1.InputManager.OnPress(
@@ -43,7 +43,7 @@ public class PlayerInputComponent
             {
                 if (GameState.IsRunning)
                 {
-                    player.Skills.HolyFire.Cast(_playerAimAngle);
+                    player.Skills.HolyFire.Cast(playerAimAngle);
                 }
             }
         );
@@ -51,13 +51,13 @@ public class PlayerInputComponent
 
     private void HoldSkill(ISkill skill)
     {
-        _heldSkill = skill;
+        heldSkill = skill;
     }
 
     private void ReleaseSkill(ISkill skill)
     {
-        if (_heldSkill == skill)
-            _heldSkill = null;
+        if (heldSkill == skill)
+            heldSkill = null;
     }
 
     public void Update(GameTime gameTime)
@@ -65,42 +65,42 @@ public class PlayerInputComponent
         if (!GameState.IsRunning)
             return;
 
-        // foreach (var transform in _transforms)
+        // foreach (var transform in transforms)
         // {
         //     transform.Update(gameTime);
         // }
-        // _transforms.RemoveAll(t => t.IsFinished);
+        // transforms.RemoveAll(t => t.IsFinished);
 
         // TODO: prevent clicks outside of window
-        _playerAimAngle = CalculateAngle(_player.Position, MouseManager.WorldMousePosition);
+        playerAimAngle = CalculateAngle(player.Position, MouseManager.WorldMousePosition);
 
-        _heldSkill?.Cast(_playerAimAngle);
+        heldSkill?.Cast(playerAimAngle);
 
-        if (_isHoldingLeftClick)
+        if (isHoldingLeftClick)
             _ = StartMove(MouseManager.WorldMousePosition);
 
         if (!IsMoving)
             return;
 
-        float distanceToDestination = Vector2.Distance(_player.Position, _destination);
+        float distanceToDestination = Vector2.Distance(player.Position, destination);
         if (distanceToDestination > 1f)
         {
             double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
             float x =
-                _player.Position.X
-                + (float)(_player.Stats.Speed * elapsedTime * Math.Cos(_destinationAngle));
+                player.Position.X
+                + (float)(player.Stats.Speed * elapsedTime * Math.Cos(destinationAngle));
             float y =
-                _player.Position.Y
-                + (float)(_player.Stats.Speed * elapsedTime * Math.Sin(_destinationAngle));
-            _player.Position = new(x, y);
+                player.Position.Y
+                + (float)(player.Stats.Speed * elapsedTime * Math.Sin(destinationAngle));
+            player.Position = new(x, y);
         }
         else
         {
-            _player.Position = _destination;
+            player.Position = destination;
             IsMoving = false;
-            _movementTrack?.InvokeOnComplete();
-            _movementTrack = null;
-            _player.State.Value = ActorState.Idling;
+            movementTrack?.InvokeOnComplete();
+            movementTrack = null;
+            player.State.Value = ActorState.Idling;
         }
     }
 
@@ -109,7 +109,7 @@ public class PlayerInputComponent
         if (!GameState.IsRunning)
             return false;
 
-        _isHoldingLeftClick = true;
+        isHoldingLeftClick = true;
         _ = StartMove(MouseManager.WorldMousePosition);
 
         return true;
@@ -117,7 +117,7 @@ public class PlayerInputComponent
 
     public bool OnLeftClickRelease()
     {
-        _isHoldingLeftClick = false;
+        isHoldingLeftClick = false;
         return true;
     }
 
@@ -126,15 +126,15 @@ public class PlayerInputComponent
         // TODO: refactor
 
         IsMoving = true;
-        _destination = aimCoordinate;
-        _destinationAngle = CalculateAngle(_player.Position, aimCoordinate);
+        destination = aimCoordinate;
+        destinationAngle = CalculateAngle(player.Position, aimCoordinate);
 
-        double angleInDegrees = MathHelper.ToDegrees((float)_destinationAngle);
+        double angleInDegrees = MathHelper.ToDegrees((float)destinationAngle);
         bool isFacingRight = angleInDegrees is >= -90 and <= 90;
-        _player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
-        _player.State.Value = ActorState.Walking;
+        player.Facing = isFacingRight ? ActorFacing.Right : ActorFacing.Left;
+        player.State.Value = ActorState.Walking;
 
-        return _movementTrack = new();
+        return movementTrack = new();
     }
 
     private double CalculateAngle(Vector2 a, Vector2 b)

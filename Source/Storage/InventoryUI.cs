@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,32 +10,34 @@ public class InventoryUI
     public Rectangle WindowBounds;
     public Item? HoveredItem;
 
-    private Player _player;
     private const int SQUARE_SIZE = 20;
     private const int INVENTORY_BORDER_SIZE = 1;
     private const int EQUIPMENT_BORDER_SIZE = 3;
-    private List<Rectangle> _inventorySquaresBounds = [];
-    private List<Rectangle> _equipmentBounds = [];
-    private List<EquippableItem?> equipmentItems => [
-        _player.Equipment.MainHand,
-        _player.Equipment.Gloves,
-        _player.Equipment.LeftRing,
-        _player.Equipment.Belt,
-        _player.Equipment.Chest,
-        _player.Equipment.Head,
-        _player.Equipment.RightRing,
-        _player.Equipment.Amulet,
-        _player.Equipment.Boots,
-        _player.Equipment.OffHand,
-    ];
 
-    private Dictionary<Rectangle, (int i, int j)> _inventorySquaresToGridPositions = [];
+    private Player player;
+    private List<Rectangle> inventorySquaresBounds = [];
+    private List<Rectangle> equipmentBounds = [];
+    private List<EquippableItem?> equipmentItems =>
+        [
+            player.Equipment.MainHand,
+            player.Equipment.Gloves,
+            player.Equipment.LeftRing,
+            player.Equipment.Belt,
+            player.Equipment.Chest,
+            player.Equipment.Head,
+            player.Equipment.RightRing,
+            player.Equipment.Amulet,
+            player.Equipment.Boots,
+            player.Equipment.OffHand,
+        ];
+
+    private Dictionary<Rectangle, (int i, int j)> inventorySquaresToGridPositions = [];
 
     private IUsableOnItem? activeUsable = null;
 
-    public InventoryUI(Player player)
+    public InventoryUI(Player _player)
     {
-        _player = player;
+        player = _player;
         int windowWidth = (Game1.NativeResolution.Width / 2) - 70;
         int screenWidth = Game1.NativeResolution.Width;
         int screenHeight = Game1.NativeResolution.Height;
@@ -46,7 +47,9 @@ public class InventoryUI
         InitEquipment();
     }
 
+#pragma warning disable IDE0060
     public void Update(GameTime gameTime)
+#pragma warning restore IDE0060
     {
         Vector2 mousePosition = MouseManager.ScreenMousePosition;
         FindHoveredItem(mousePosition);
@@ -54,7 +57,7 @@ public class InventoryUI
 
     private void FindHoveredItem(Vector2 mousePosition)
     {
-        foreach (Rectangle bounds in _inventorySquaresBounds)
+        foreach (Rectangle bounds in inventorySquaresBounds)
         {
             Rectangle boundsWidthBorder = new(
                 bounds.X,
@@ -65,8 +68,8 @@ public class InventoryUI
 
             if (boundsWidthBorder.Contains(mousePosition))
             {
-                (int i, int j) = _inventorySquaresToGridPositions[bounds];
-                Item? item = _player.Inventory.GetItem(i, j);
+                (int i, int j) = inventorySquaresToGridPositions[bounds];
+                Item? item = player.Inventory.GetItem(i, j);
                 if (item is not null)
                 {
                     HoveredItem = item;
@@ -75,9 +78,9 @@ public class InventoryUI
             }
         }
 
-        for (int i = 0; i < _equipmentBounds.Count; i++)
+        for (int i = 0; i < equipmentBounds.Count; i++)
         {
-            Rectangle bounds = _equipmentBounds[i];
+            Rectangle bounds = equipmentBounds[i];
             if (bounds.Contains(mousePosition))
             {
                 EquippableItem? item = equipmentItems[i];
@@ -105,8 +108,8 @@ public class InventoryUI
         if (activeUsable != null)
         {
             Vector2 mousePosition = MouseManager.ScreenMousePosition;
-            (int, int)? itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
-            Rectangle itemGridRect = _inventorySquaresToGridPositions
+            (int, int)? itemLocation = player.Inventory.FindItemPosition((activeUsable as Item)!)!;
+            Rectangle itemGridRect = inventorySquaresToGridPositions
                 .First(tuple => tuple.Value == itemLocation)
                 .Key;
             var itemGridPosition = itemGridRect.Center.ToVector2();
@@ -166,18 +169,20 @@ public class InventoryUI
 
                 if (equippable.IsEquipped)
                 {
-                    _ = _player.Equipment.Unequip(equippable);
+                    _ = player.Equipment.Unequip(equippable);
                 }
                 else
                 {
-                    _player.Equipment.Equip(equippable);
+                    player.Equipment.Equip(equippable);
                 }
                 return true;
             case IUsableOnItem itemUsable:
                 activeUsable = itemUsable;
 
-                (int, int)? itemLocation = _player.Inventory.FindItemPosition((activeUsable as Item)!)!;
-                var itemPosition = _inventorySquaresToGridPositions
+                (int, int)? itemLocation = player.Inventory.FindItemPosition(
+                    (activeUsable as Item)!
+                )!;
+                var itemPosition = inventorySquaresToGridPositions
                     .First(tuple => tuple.Value == itemLocation)
                     .Key.Location.ToVector2();
 
@@ -209,60 +214,60 @@ public class InventoryUI
         int currentY = 10;
 
         // main hand
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 4));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 4));
 
         currentY += (SQUARE_SIZE * 4) + EQUIPMENT_BORDER_SIZE;
 
         // gloves
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
         currentY += SQUARE_SIZE;
         currentX += (SQUARE_SIZE * 2) + EQUIPMENT_BORDER_SIZE;
 
         // left ring
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
         currentX += SQUARE_SIZE + EQUIPMENT_BORDER_SIZE;
 
         // belt
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 1));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 1));
         currentY -= (SQUARE_SIZE * 3) + EQUIPMENT_BORDER_SIZE;
 
         // chest
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 3));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 3));
         currentY -= (SQUARE_SIZE * 2) + EQUIPMENT_BORDER_SIZE;
 
         // helmet
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
         currentY += (SQUARE_SIZE * 5) + (EQUIPMENT_BORDER_SIZE * 2);
         currentX += (SQUARE_SIZE * 2) + EQUIPMENT_BORDER_SIZE;
 
         // right ring
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
         currentY -= (int)(SQUARE_SIZE * 3.5) + (EQUIPMENT_BORDER_SIZE * 2);
 
         // amulet
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 1, SQUARE_SIZE * 1));
         currentY += (int)(SQUARE_SIZE * 3.5) + (EQUIPMENT_BORDER_SIZE * 2);
         currentX += SQUARE_SIZE + EQUIPMENT_BORDER_SIZE;
         currentY -= SQUARE_SIZE;
 
         // boots
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 2));
         currentY -= (SQUARE_SIZE * 4) + EQUIPMENT_BORDER_SIZE;
 
         // offhand
-        _equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 4));
+        equipmentBounds.Add(new(currentX, currentY, SQUARE_SIZE * 2, SQUARE_SIZE * 4));
     }
 
     private void DrawEquipment(SpriteBatch spriteBatch)
     {
-        for (int i = 0; i < _equipmentBounds.Count; i++)
+        for (int i = 0; i < equipmentBounds.Count; i++)
         {
-            Rectangle bounds = _equipmentBounds[i];
+            Rectangle bounds = equipmentBounds[i];
             DrawSquare(spriteBatch, bounds);
             equipmentItems[i]?.Draw(spriteBatch, bounds.X, bounds.Y);
         }
 
-        string goldAmountText = $"Gold: {_player.Gold.Amount}";
+        string goldAmountText = $"Gold: {player.Gold.Amount}";
 
         Game1.DrawText(
             spriteBatch,
@@ -275,12 +280,11 @@ public class InventoryUI
 
     private void InitInventory()
     {
-        int inventoryHeight = (_player.Inventory.Height * (SQUARE_SIZE + INVENTORY_BORDER_SIZE)) - 1;
-        int inventoryWidth = (_player.Inventory.Width * (SQUARE_SIZE + INVENTORY_BORDER_SIZE)) - 1;
+        int inventoryHeight = (player.Inventory.Height * (SQUARE_SIZE + INVENTORY_BORDER_SIZE)) - 1;
 
-        for (int i = 0; i < _player.Inventory.Width; i++)
+        for (int i = 0; i < player.Inventory.Width; i++)
         {
-            for (int j = 0; j < _player.Inventory.Height; j++)
+            for (int j = 0; j < player.Inventory.Height; j++)
             {
                 int x = WindowBounds.Left + (i * (SQUARE_SIZE + INVENTORY_BORDER_SIZE));
                 int y =
@@ -289,20 +293,20 @@ public class InventoryUI
                     + (j * (SQUARE_SIZE + INVENTORY_BORDER_SIZE));
 
                 Rectangle bounds = new(x, y, SQUARE_SIZE, SQUARE_SIZE);
-                _inventorySquaresBounds.Add(bounds);
-                _inventorySquaresToGridPositions.Add(bounds, (i, j));
+                inventorySquaresBounds.Add(bounds);
+                inventorySquaresToGridPositions.Add(bounds, (i, j));
             }
         }
     }
 
     private void DrawInventory(SpriteBatch spriteBatch)
     {
-        foreach (Rectangle bounds in _inventorySquaresBounds)
+        foreach (Rectangle bounds in inventorySquaresBounds)
         {
             DrawSquare(spriteBatch, bounds);
-            (int i, int j) = _inventorySquaresToGridPositions[bounds];
-            Item? item = _player.Inventory.GetItem(i, j);
-            if (item is not null && _player.Inventory.Grid.SquareIsOriginSquare(i, j))
+            (int i, int j) = inventorySquaresToGridPositions[bounds];
+            Item? item = player.Inventory.GetItem(i, j);
+            if (item is not null && player.Inventory.Grid.SquareIsOriginSquare(i, j))
             {
                 item.Draw(spriteBatch, bounds.X, bounds.Y);
             }

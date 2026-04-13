@@ -13,12 +13,12 @@ public class World
 
     public Stash Stash { get; } = new(new(30, 30));
 
-    private MonsterSpawner _monsterSpawner;
+    private MonsterSpawner monsterSpawner;
 
     public World(Player player)
     {
         Player = player;
-        _monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
+        monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
         entities.Add(Player);
     }
 
@@ -27,7 +27,7 @@ public class World
         entities.AddRange(entityQueue);
         entityQueue.Clear();
 
-        _monsterSpawner.Update(gameTime);
+        monsterSpawner.Update(gameTime);
 
         Stash.Update(gameTime);
 
@@ -71,7 +71,7 @@ public class World
             );
             if (itemInRange != null)
             {
-                _ = itemInRange.GetPickedUp(Player); // TODO: player.PickUpItem(item)?
+                _ = itemInRange.GetPickedUp(Player);
             }
             else
             {
@@ -83,7 +83,9 @@ public class World
                     Player.Position
                 );
 
-                PlayerInputComponent.MovementTrack track = Player.InputComponent.StartMove(pickupPoint);
+                PlayerInputComponent.MovementTrack track = Player.InputComponent.StartMove(
+                    pickupPoint
+                );
                 track.OnComplete += () =>
                 {
                     if (

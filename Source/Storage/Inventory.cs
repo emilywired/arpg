@@ -9,11 +9,8 @@ public class Inventory
     public readonly int Height = 5;
     public Grid<Item> Grid;
 
-    private Player _player;
-
-    public Inventory(Player player)
+    public Inventory()
     {
-        _player = player;
         Grid = new(Width, Height);
     }
 

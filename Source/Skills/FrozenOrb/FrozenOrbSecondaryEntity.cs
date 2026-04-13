@@ -7,11 +7,11 @@ public class FrozenOrbSecondaryEntity : Entity
     public float Angle = 0f;
     public float Damage = 5f;
     public readonly float MaxDuration = 1.5f;
-    public override IHitbox Hitbox
-        => new RectangleHitbox((int)Position.X - 16, (int)Position.Y - 16, 32, 32);
+    public override IHitbox Hitbox =>
+        new RectangleHitbox((int)Position.X - 16, (int)Position.Y - 16, 32, 32);
 
-    private FrozenOrbSecondaryGraphicsComponent _frozenOrbSecondaryGraphicsComponent = new();
-    private FrozenOrbSecondaryBehaviorComponent _frozenOrbSecondaryBehaviorComponent = new();
+    private FrozenOrbSecondaryGraphicsComponent frozenOrbSecondaryGraphicsComponent = new();
+    private FrozenOrbSecondaryBehaviorComponent frozenOrbSecondaryBehaviorComponent = new();
 
     public FrozenOrbSecondaryEntity()
     {
@@ -21,12 +21,12 @@ public class FrozenOrbSecondaryEntity : Entity
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
-        _frozenOrbSecondaryGraphicsComponent.Draw(this, spriteBatch);
+        frozenOrbSecondaryGraphicsComponent.Draw(this, spriteBatch);
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        _frozenOrbSecondaryBehaviorComponent.Update(this, gameTime);
+        frozenOrbSecondaryBehaviorComponent.Update(this, gameTime);
     }
 }

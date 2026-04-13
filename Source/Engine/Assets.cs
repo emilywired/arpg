@@ -8,7 +8,6 @@ public record class TextureAsset
 {
     public Texture2D Texture { get; }
     public List<Rectangle> Frames { get; }
-
     public bool Looping { get; init; } = true;
 
     public TextureAsset(Texture2D texture, int frameAmount)
@@ -78,8 +77,8 @@ public static class Assets
         public static TextureAsset None_2x4 => GetTexture("items/item_none_2x4");
     }
 
-    private static Dictionary<string, SpriteFont> _fonts = [];
-    private static Dictionary<string, TextureAsset> _textures = [];
+    private static Dictionary<string, SpriteFont> fonts = [];
+    private static Dictionary<string, TextureAsset> textures = [];
 
     public static void Load(ContentManager contentManager, GraphicsDevice graphicsDevice)
     {
@@ -145,14 +144,14 @@ public static class Assets
     private static void AddFont(ContentManager contentManager, string path)
     {
         SpriteFont font = contentManager.Load<SpriteFont>("fonts/monogram_extended");
-        _fonts.Add(path, font);
+        fonts.Add(path, font);
     }
 
     private static SpriteFont GetFont(string path)
     {
         try
         {
-            SpriteFont font = _fonts[path];
+            SpriteFont font = fonts[path];
             return font;
         }
         catch (ArgumentNullException)
@@ -164,14 +163,14 @@ public static class Assets
     private static void AddTexture(ContentManager contentManager, string path, int frameAmount)
     {
         Texture2D texture = contentManager.Load<Texture2D>(path);
-        _textures.Add(path, new TextureAsset(texture, frameAmount));
+        textures.Add(path, new TextureAsset(texture, frameAmount));
     }
 
     private static TextureAsset GetTexture(string path)
     {
         try
         {
-            return _textures[path];
+            return textures[path];
         }
         catch (ArgumentNullException)
         {

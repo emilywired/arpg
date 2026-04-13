@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class FrozenOrbSecondaryGraphicsComponent
 {
-    private TextureAsset _asset = Assets.Spells.FrozenOrbSecondary;
+    private TextureAsset asset = Assets.Spells.FrozenOrbSecondary;
 
     public void Draw(FrozenOrbSecondaryEntity frozenOrbSecondary, SpriteBatch spriteBatch)
     {
@@ -30,12 +30,12 @@ public class FrozenOrbSecondaryGraphicsComponent
         }
 
         spriteBatch.Draw(
-            _asset.Texture,
+            asset.Texture,
             new((int)frozenOrbSecondary.Position.X, (int)frozenOrbSecondary.Position.Y),
-            _asset.Frames[0],
+            asset.Frames[0],
             Color.White,
             frozenOrbSecondary.Angle + MathHelper.ToRadians(90),
-            new Vector2(_asset.Texture.Width / _asset.Frames.Count / 2, _asset.Texture.Height / 2),
+            new Vector2(asset.Texture.Width / asset.Frames.Count / 2, asset.Texture.Height / 2),
             1f,
             SpriteEffects.None,
             Layer.Entity

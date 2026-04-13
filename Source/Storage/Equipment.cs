@@ -14,7 +14,7 @@ public enum EquipmentSlot
     RightRing,
 }
 
-public class Equipment(Player player)
+public class Equipment(Player _player)
 {
     public EquippableItem? MainHand { get; private set; }
     public EquippableItem? OffHand { get; private set; }
@@ -27,7 +27,7 @@ public class Equipment(Player player)
     public EquippableItem? LeftRing { get; private set; }
     public EquippableItem? RightRing { get; private set; }
 
-    private Player _player = player;
+    private Player player = _player;
 
     public void Equip(EquippableItem item)
     {
@@ -72,9 +72,11 @@ public class Equipment(Player player)
 
                 bool unequipped = Unequip(LeftRing);
                 if (!unequipped)
+                {
                     throw new Exception(
                         "Failed to unequip equipped item during equipping another."
                     );
+                }
 
                 LeftRing = item;
 
@@ -83,8 +85,8 @@ public class Equipment(Player player)
                 throw new NotImplementedException("Unhandled EquippableSlot");
         }
 
-        _ = _player.Inventory.RemoveItem(item);
-        item.Equip(_player);
+        _ = player.Inventory.RemoveItem(item);
+        item.Equip(player);
     }
 
     public bool Unequip(EquippableItem item)
@@ -92,7 +94,7 @@ public class Equipment(Player player)
         if (!ItemIsEquipped(item))
             throw new Exception("Cannot unequip unequipped item.");
 
-        bool movedToInventory = _player.Inventory.AddItem(item);
+        bool movedToInventory = player.Inventory.AddItem(item);
 
         if (!movedToInventory)
             return false;
@@ -142,7 +144,7 @@ public class Equipment(Player player)
                 throw new NotImplementedException("Unhandled EquippableSlot");
         }
 
-        item.Unequip(_player);
+        item.Unequip(player);
         return true;
     }
 

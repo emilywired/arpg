@@ -23,12 +23,12 @@ public class ActorBaseStats
     public double ColdResistance { get; set; }
     public double LightningResistance { get; set; }
 
-    private Actor _actor;
     private const double TICK_TIME = 0.1d;
-    private double _regenTimer = 0f;
+    private Actor actor;
+    private double regenTimer = 0f;
 
     public ActorBaseStats(
-        Actor actor,
+        Actor _actor,
         double speed,
         double health,
         double mana = 0,
@@ -43,7 +43,7 @@ public class ActorBaseStats
         double spirit = 10
     )
     {
-        _actor = actor;
+        actor = _actor;
         Speed = speed;
         Health.Value = MaxHealth.Value = health;
         Mana.Value = MaxMana.Value = mana;
@@ -62,15 +62,15 @@ public class ActorBaseStats
 
     public void Update(GameTime gameTime)
     {
-        _regenTimer += gameTime.ElapsedGameTime.TotalSeconds;
-        if (_regenTimer >= TICK_TIME)
+        regenTimer += gameTime.ElapsedGameTime.TotalSeconds;
+        if (regenTimer >= TICK_TIME)
         {
             double netHealthChange = (HealthRegen - HealthDegen) * TICK_TIME;
             double netManaChange = (ManaRegen - ManaDegen) * TICK_TIME;
 
             if (netHealthChange < 0)
             {
-                _actor.TakeDamage(-netHealthChange);
+                actor.TakeDamage(-netHealthChange);
             }
             else
             {
@@ -79,7 +79,7 @@ public class ActorBaseStats
 
             OffsetMana(netManaChange);
 
-            _regenTimer -= TICK_TIME;
+            regenTimer -= TICK_TIME;
         }
     }
 

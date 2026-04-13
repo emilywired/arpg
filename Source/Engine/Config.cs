@@ -7,19 +7,20 @@ public class Config
     public float ScaleX { get; private set; }
     public float ScaleY { get; private set; }
     public bool DisplayEnemyHealthBars { get; set; } = true;
-    private GraphicsDeviceManager _graphics;
-    private GraphicsDevice _device;
-    private RenderTarget2D _renderTarget;
+
+    private GraphicsDeviceManager graphics;
+    private GraphicsDevice device;
+    private RenderTarget2D renderTarget;
 
     public Config(
-        GraphicsDeviceManager graphics,
-        GraphicsDevice device,
-        RenderTarget2D renderTarget
+        GraphicsDeviceManager _graphics,
+        GraphicsDevice _device,
+        RenderTarget2D _renderTarget
     )
     {
-        _graphics = graphics;
-        _device = device;
-        _renderTarget = renderTarget;
+        graphics = _graphics;
+        device = _device;
+        renderTarget = _renderTarget;
         ChangeResolutionScale(3);
         SetFullScreen();
         ApplyChanges();
@@ -27,30 +28,30 @@ public class Config
 
     public void ChangeResolutionScale(int scale)
     {
-        _graphics.PreferredBackBufferWidth = Game1.NativeResolution.Width * scale;
-        _graphics.PreferredBackBufferHeight = Game1.NativeResolution.Height * scale;
+        graphics.PreferredBackBufferWidth = Game1.NativeResolution.Width * scale;
+        graphics.PreferredBackBufferHeight = Game1.NativeResolution.Height * scale;
         Scale = scale;
     }
 
     public void ToggleFullScreen()
     {
-        _graphics.IsFullScreen = !_graphics.IsFullScreen;
+        graphics.IsFullScreen = !graphics.IsFullScreen;
     }
 
     public void SetFullScreen()
     {
-        _graphics.IsFullScreen = true;
+        graphics.IsFullScreen = true;
     }
 
     public void SetMinimizedScreen()
     {
-        _graphics.IsFullScreen = false;
+        graphics.IsFullScreen = false;
     }
 
     public void ApplyChanges()
     {
-        _graphics.ApplyChanges();
-        ScaleX = (float)_device.Viewport.Width / _renderTarget.Width;
-        ScaleY = (float)_device.Viewport.Height / _renderTarget.Height;
+        graphics.ApplyChanges();
+        ScaleX = (float)device.Viewport.Width / renderTarget.Width;
+        ScaleY = (float)device.Viewport.Height / renderTarget.Height;
     }
 }

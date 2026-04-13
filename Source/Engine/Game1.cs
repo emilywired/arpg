@@ -17,19 +17,19 @@ public class Game1 : Game
     public static new GraphicsDevice GraphicsDevice = null!;
     public static InputManager InputManager = null!;
 
-    private GraphicsDeviceManager _graphics;
-    private RenderTarget2D _renderTarget = null!;
-    private SpriteBatch _spriteBatch = null!;
-    private Background _background = null!;
-    private LootUI _lootUI = null!;
-    private PauseMenu _pauseMenu = null!;
-    private Hud _hud = null!;
-    private GameUI _gameUI = null!;
-    private GameInputController _gameInputController = null!;
+    private GraphicsDeviceManager graphics;
+    private RenderTarget2D renderTarget = null!;
+    private SpriteBatch spriteBatch = null!;
+    private Background background = null!;
+    private LootUI lootUI = null!;
+    private PauseMenu pauseMenu = null!;
+    private Hud hud = null!;
+    private GameUI gameUI = null!;
+    private GameInputController gameInputController = null!;
 
     public Game1()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        graphics = new GraphicsDeviceManager(this);
         InputManager = new InputManager();
         Content.RootDirectory = "Content";
         Window.Title = "Path of Exile 4";
@@ -39,47 +39,47 @@ public class Game1 : Game
     protected override void Initialize()
     {
         GraphicsDevice = base.GraphicsDevice;
-        _renderTarget = new RenderTarget2D(
+        renderTarget = new RenderTarget2D(
             GraphicsDevice,
             NativeResolution.Width,
             NativeResolution.Height
         );
         Assets.Load(Content, GraphicsDevice);
-        Config = new Config(_graphics, GraphicsDevice, _renderTarget);
+        Config = new Config(graphics, GraphicsDevice, renderTarget);
 
         var player = new Player();
         World = new World(player);
         LootSystem = new LootSystem();
-        _background = new Background();
-        _lootUI = new LootUI();
-        _hud = new Hud();
-        _gameUI = new GameUI(player);
-        _pauseMenu = new PauseMenu();
+        background = new Background();
+        lootUI = new LootUI();
+        hud = new Hud();
+        gameUI = new GameUI(player);
+        pauseMenu = new PauseMenu();
 
         World.AddEntity(new TestAnimation());
 
-        _gameInputController = new GameInputController();
-        _gameInputController.RegisterOnClose(_gameUI.OnClose);
-        _gameInputController.RegisterOnClose(_pauseMenu.OnClose);
+        gameInputController = new GameInputController();
+        gameInputController.RegisterOnClose(gameUI.OnClose);
+        gameInputController.RegisterOnClose(pauseMenu.OnClose);
 
-        _gameInputController.RegisterOnLeftClick(_pauseMenu.OnLeftClick);
-        _gameInputController.RegisterOnLeftClick(_gameUI.OnLeftClick);
-        _gameInputController.RegisterOnLeftClick(World.Stash.OnLeftClick);
-        _gameInputController.RegisterOnLeftClick(World.OnLeftClick);
-        _gameInputController.RegisterOnLeftClick(World.Player.InputComponent.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(pauseMenu.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(gameUI.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(World.Stash.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(World.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(World.Player.InputComponent.OnLeftClick);
 
-        _gameInputController.RegisterOnLeftClickRelease(
+        gameInputController.RegisterOnLeftClickRelease(
             World.Player.InputComponent.OnLeftClickRelease
         );
 
-        _gameInputController.RegisterOnRightClick(_gameUI.OnRightClick);
+        gameInputController.RegisterOnRightClick(gameUI.OnRightClick);
 
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
     }
 
     protected override void Update(GameTime gameTime)
@@ -89,8 +89,8 @@ public class Game1 : Game
         if (GameState.IsRunning)
         {
             World.Update(gameTime);
-            _gameUI.Update(gameTime);
-            _hud.Update(gameTime);
+            gameUI.Update(gameTime);
+            hud.Update(gameTime);
         }
 
         Camera.Follow(World.Player);
@@ -102,19 +102,19 @@ public class Game1 : Game
     {
         // TODO: non-scaled render target
 
-        GraphicsDevice.SetRenderTarget(_renderTarget);
+        GraphicsDevice.SetRenderTarget(renderTarget);
         GraphicsDevice.Clear(Color.Black);
 
-        _spriteBatch.Begin(
+        spriteBatch.Begin(
             SpriteSortMode.BackToFront,
             samplerState: SamplerState.PointClamp,
             blendState: BlendState.AlphaBlend
         );
-        _background.Draw(_spriteBatch);
-        _spriteBatch.End();
+        background.Draw(spriteBatch);
+        spriteBatch.End();
 
         // world space rendering
-        _spriteBatch.Begin(
+        spriteBatch.Begin(
             SpriteSortMode.BackToFront,
             transformMatrix: Camera.Transform,
             samplerState: SamplerState.PointClamp,
@@ -123,34 +123,34 @@ public class Game1 : Game
 
         foreach (Entity entity in World.Entities)
         {
-            entity.Draw(_spriteBatch);
+            entity.Draw(spriteBatch);
         }
 
-        World.Stash.Draw(_spriteBatch);
+        World.Stash.Draw(spriteBatch);
 
-        _lootUI.Draw(_spriteBatch);
+        lootUI.Draw(spriteBatch);
 
-        _spriteBatch.End();
+        spriteBatch.End();
 
         // screen space rendering
-        _spriteBatch.Begin(
+        spriteBatch.Begin(
             SpriteSortMode.BackToFront,
             samplerState: SamplerState.PointClamp,
             blendState: BlendState.AlphaBlend
         );
 
-        _hud.Draw(_spriteBatch);
-        _gameUI.Draw(_spriteBatch);
-        _pauseMenu.Draw(_spriteBatch);
+        hud.Draw(spriteBatch);
+        gameUI.Draw(spriteBatch);
+        pauseMenu.Draw(spriteBatch);
 
-        _spriteBatch.End();
+        spriteBatch.End();
 
         GraphicsDevice.SetRenderTarget(null);
         GraphicsDevice.Clear(Color.White);
 
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        _spriteBatch.Draw(_renderTarget, GraphicsDevice.Viewport.Bounds, Color.White);
-        _spriteBatch.End();
+        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+        spriteBatch.Draw(renderTarget, GraphicsDevice.Viewport.Bounds, Color.White);
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }
