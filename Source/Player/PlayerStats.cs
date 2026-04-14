@@ -1,11 +1,14 @@
 public class PlayerStats : ActorBaseStats
 {
+    // private Actor actor;
+
     public PlayerLevel Level { get; }
     public int HealthOnKill { get; set; }
     public int ManaOnKill { get; set; }
     public int MagicFind { get; set; }
 
     public PlayerStats(
+        Actor _actor,
         double speed,
         double health,
         double mana = 0,
@@ -23,6 +26,7 @@ public class PlayerStats : ActorBaseStats
         int magicFind = 0
     )
         : base(
+            _actor,
             speed,
             health,
             mana,

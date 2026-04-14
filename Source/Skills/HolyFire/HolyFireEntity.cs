@@ -6,7 +6,7 @@ public class HolyFireEntity : SkillEntity
         => new CircleHitbox(Position, Radius);
 
     public double Radius = 100d;
-    public double Damage = 100d;
+    public double Damage = 50d;
     public double SelfDamage = 2d;
 
     public HolyFireEntity(Actor owner) : base(owner)

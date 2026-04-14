@@ -4,6 +4,8 @@ using System.Linq;
 
 public class ActorBaseStats : IUpdateable
 {
+    private Actor actor;
+
     public double Speed { get; set; }
     public ReactiveProperty<double> Health { get; } = new(default);
     public ReactiveProperty<double> MaxHealth { get; } = new(default);
@@ -23,6 +25,7 @@ public class ActorBaseStats : IUpdateable
     public double LightningResistance { get; set; }
 
     public ActorBaseStats(
+        Actor _actor,
         double speed,
         double health,
         double mana = 0,
@@ -37,6 +40,7 @@ public class ActorBaseStats : IUpdateable
         double spirit = 10
     )
     {
+        actor = _actor;
         Speed = speed;
         Health.Value = MaxHealth.Value = health;
         Mana.Value = MaxMana.Value = mana;
@@ -78,7 +82,6 @@ public class ActorBaseStats : IUpdateable
     {
         double netHealthChange = HealthRateSources.Values.Sum();
         double healthChange = netHealthChange * dt;
-        Console.WriteLine($"{netHealthChange}, {dt}");
-        OffsetHealth(healthChange);
+        actor.TakeDamage(-healthChange);
     }
 }

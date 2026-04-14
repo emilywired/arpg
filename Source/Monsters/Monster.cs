@@ -24,7 +24,7 @@ public class Monster : Actor
     public Monster(int level)
     {
         Level = level;
-        Stats = new(speed: 400, health: 40);
+        Stats = new(this, speed: 400, health: 40);
 
         AddDrawable(
             healthBar = new ProgressBar()
