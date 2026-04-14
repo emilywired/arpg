@@ -8,7 +8,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
     public HolyFireBehaviorComponent(HolyFireEntity parent)
         : base(parent)
     {
-        parent.Owner.Stats.AddHealthDegen(parent.SelfDamage);
+        parent.Owner.Stats.AddHealthRate(Parent, -Parent.SelfDamage);
     }
 
     public override void Update(float dt)
@@ -19,7 +19,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
         foreach (
             Actor? actor in Game1
                 .World.Entities.OfType<Actor>()
-                .Where(actor => actor != Parent.Parent)
+                .Where(actor => actor != Parent.Owner)
         )
         {
             bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
@@ -27,12 +27,12 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 
             if (!wasAlreadyIntersecting && intersects)
             {
-                actor.Stats.AddHealthDegen(Parent.Damage);
+                actor.Stats.AddHealthRate(Parent, -Parent.Damage);
                 intersectingEntities.Add(actor);
             }
             else if (wasAlreadyIntersecting && !intersects)
             {
-                actor.Stats.SubtractHealthDegen(Parent.Damage);
+                actor.Stats.RemoveHealthRate(Parent);
                 _ = intersectingEntities.Remove(actor);
             }
         }
@@ -40,7 +40,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 
     public override void Destroy()
     {
-        Parent.Owner.Stats.SubtractHealthDegen(Parent.SelfDamage);
+        Parent.Owner.Stats.RemoveHealthRate(Parent);
 
         foreach (
             Actor? actor in Game1
@@ -51,7 +51,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
             bool wasAlreadyIntersecting = intersectingEntities.Contains(actor);
             if (wasAlreadyIntersecting)
             {
-                actor.Stats.SubtractHealthDegen(Parent.Damage);
+                actor.Stats.RemoveHealthRate(Parent);
             }
         }
     }

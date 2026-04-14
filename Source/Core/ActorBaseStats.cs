@@ -1,16 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class ActorBaseStats : IUpdateable
 {
     public double Speed { get; set; }
     public ReactiveProperty<double> Health { get; } = new(default);
     public ReactiveProperty<double> MaxHealth { get; } = new(default);
-    public double HealthRegen { get; set; }
-    public double HealthDegen { get; set; }
     public ReactiveProperty<double> Mana { get; set; } = new(default);
     public ReactiveProperty<double> MaxMana { get; set; } = new(default);
-    public double ManaRegen { get; set; }
-    public double ManaDegen { get; set; }
+    public Dictionary<object, double> HealthRateSources { get; private set; } = [];
+    public Dictionary<object, double> ManaRateSources { get; private set; } = [];
     public double Evasion { get; set; }
     public double Armor { get; set; }
     public double Strength { get; set; }
@@ -22,12 +22,7 @@ public class ActorBaseStats : IUpdateable
     public double ColdResistance { get; set; }
     public double LightningResistance { get; set; }
 
-    private const double TICK_TIME = 0.1d;
-    private Actor actor;
-    private double regenTimer = 0f;
-
     public ActorBaseStats(
-        Actor _actor,
         double speed,
         double health,
         double mana = 0,
@@ -42,14 +37,9 @@ public class ActorBaseStats : IUpdateable
         double spirit = 10
     )
     {
-        actor = _actor;
         Speed = speed;
         Health.Value = MaxHealth.Value = health;
         Mana.Value = MaxMana.Value = mana;
-        HealthRegen = healthRegen;
-        ManaRegen = manaRegen;
-        HealthDegen = 0;
-        ManaDegen = 0;
         Evasion = evasion;
         Armor = armor;
         Strength = strength;
@@ -61,25 +51,7 @@ public class ActorBaseStats : IUpdateable
 
     public void Update(float dt)
     {
-        regenTimer += dt;
-        if (regenTimer >= TICK_TIME)
-        {
-            double netHealthChange = (HealthRegen - HealthDegen) * TICK_TIME;
-            double netManaChange = (ManaRegen - ManaDegen) * TICK_TIME;
-
-            if (netHealthChange < 0)
-            {
-                actor.TakeDamage(-netHealthChange);
-            }
-            else
-            {
-                OffsetHealth(netHealthChange);
-            }
-
-            OffsetMana(netManaChange);
-
-            regenTimer -= TICK_TIME;
-        }
+        ApplyTick(dt);
     }
 
     public void OffsetHealth(double amount)
@@ -92,13 +64,21 @@ public class ActorBaseStats : IUpdateable
         Mana.Value = Math.Clamp(Mana.Value + amount, 0, MaxMana.Value);
     }
 
-    public void AddHealthDegen(double damagePerSecond)
+    public void AddHealthRate(object source, double value)
     {
-        HealthDegen += damagePerSecond;
+        HealthRateSources[source] = value;
     }
 
-    public void SubtractHealthDegen(double damagePerSecond)
+    public void RemoveHealthRate(object source)
     {
-        HealthDegen -= damagePerSecond;
+        _ = HealthRateSources.Remove(source);
+    }
+
+    private void ApplyTick(float dt)
+    {
+        double netHealthChange = HealthRateSources.Values.Sum();
+        double healthChange = netHealthChange * dt;
+        Console.WriteLine($"{netHealthChange}, {dt}");
+        OffsetHealth(healthChange);
     }
 }

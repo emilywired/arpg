@@ -21,20 +21,21 @@ public class Monster : Actor
     private float corpseDespawnTime = 10f;
     private float timeSinceDeath = 0;
 
-
     public Monster(int level)
     {
         Level = level;
-        Stats = new(this, speed: 400, health: 40);
+        Stats = new(speed: 400, health: 40);
 
-        AddDrawable(healthBar = new ProgressBar()
-        {
-            MaxValue = Stats.MaxHealth.Value,
-            Size = new(32, 4),
-            Color = Colors.Health,
-            CenterHorizontally = true,
-            Position = new Vector2(0, -20),
-        });
+        AddDrawable(
+            healthBar = new ProgressBar()
+            {
+                MaxValue = Stats.MaxHealth.Value,
+                Size = new(32, 4),
+                Color = Colors.Health,
+                CenterHorizontally = true,
+                Position = new Vector2(0, -20),
+            }
+        );
 
         Stats.Health.Connect(this, value => healthBar.Value = value);
         Stats.MaxHealth.Connect(this, value => healthBar.MaxValue = value);
@@ -49,9 +50,8 @@ public class Monster : Actor
 
         Stats.Update(dt);
 
-        sprite.SpriteEffects = Facing == ActorFacing.Right
-            ? SpriteEffects.None
-            : SpriteEffects.FlipHorizontally;
+        sprite.SpriteEffects =
+            Facing == ActorFacing.Right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         healthBar.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
 
         if (!IsAlive)

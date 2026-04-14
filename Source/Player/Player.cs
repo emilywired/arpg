@@ -30,14 +30,7 @@ public class Player : Actor
     public Player()
     {
         Skills = new(this);
-        Stats = new PlayerStats(
-            this,
-            speed: 100,
-            health: 100,
-            mana: 100,
-            healthRegen: 0,
-            manaRegen: 0
-        );
+        Stats = new PlayerStats(speed: 100, health: 100, mana: 100, healthRegen: 0, manaRegen: 0);
         Equipment = new(this);
         Inventory = new();
         Gold = new();
@@ -50,15 +43,20 @@ public class Player : Actor
         InputComponent = new(this);
         AddDrawable(sprite = new());
 
-        State.Connect(this, () =>
-        {
-            sprite.SetTextureAsset(State.Value switch
+        State.Connect(
+            this,
+            () =>
             {
-                ActorState.Idling => idleAsset,
-                ActorState.Walking => walkAsset,
-                _ => throw new Exception("Unhandled ActorState"),
-            });
-        });
+                sprite.SetTextureAsset(
+                    State.Value switch
+                    {
+                        ActorState.Idling => idleAsset,
+                        ActorState.Walking => walkAsset,
+                        _ => throw new Exception("Unhandled ActorState"),
+                    }
+                );
+            }
+        );
     }
 
     public override void Update(float dt)
@@ -78,35 +76,9 @@ public class Player : Actor
 
         InputComponent.Update(dt);
 
-        sprite.SpriteEffects = Facing == ActorFacing.Right
-            ? SpriteEffects.None
-            : SpriteEffects.FlipHorizontally;
+        sprite.SpriteEffects =
+            Facing == ActorFacing.Right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
     }
-
-    /*
-
-    if (GameState.IsDebugMode)
-        {
-            if (player.Hitbox is RectangleHitbox rectangleHitbox)
-            {
-                spriteBatch.Draw(
-                    Assets.RectangleTexture,
-                    rectangleHitbox.Bounds,
-                    null,
-                    Color.Yellow,
-                    0f,
-                    Vector2.Zero,
-                    SpriteEffects.None,
-                    Layer.Hitbox
-                );
-            }
-            else
-            {
-                throw new NotImplementedException("Unhandled hitbox type");
-            }
-        }
-
-    */
 
     public void OnKill(Monster monster)
     {

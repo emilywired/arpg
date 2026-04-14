@@ -6,7 +6,6 @@ public class PlayerStats : ActorBaseStats
     public int MagicFind { get; set; }
 
     public PlayerStats(
-        Actor actor,
         double speed,
         double health,
         double mana = 0,
@@ -24,7 +23,6 @@ public class PlayerStats : ActorBaseStats
         int magicFind = 0
     )
         : base(
-            actor,
             speed,
             health,
             mana,
