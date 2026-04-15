@@ -11,7 +11,7 @@
 //     public ActorActionState ActionState { get; set; } = ActorActionState.None;
 //     public ActorFacing Facing { get; set; } = ActorFacing.Right;
 //     public Vector2 Position { get; set; } = Vector2.Zero;
-//     public ActorBaseStats Stats { get; }
+//     public ActorStats Stats { get; }
 //     public bool IsAlive => Stats.Health > 0;
 //     public bool IsLeashed = false;
 //     public IHitbox Hitbox

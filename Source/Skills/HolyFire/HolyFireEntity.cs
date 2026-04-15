@@ -7,7 +7,7 @@ public class HolyFireEntity : SkillEntity
 
     public double Radius = 100d;
     public double Damage = 50d;
-    public double SelfDamage = 2d;
+    public double SelfDamage = 3d;
 
     public HolyFireEntity(Actor owner) : base(owner)
     {

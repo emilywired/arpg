@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Monster : Actor
 {
-    public override ActorBaseStats Stats { get; }
+    public override ActorStats Stats { get; }
     public override IHitbox Hitbox =>
         new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
 
@@ -48,8 +48,6 @@ public class Monster : Actor
     {
         base.Update(dt);
 
-        Stats.Update(dt);
-
         sprite.SpriteEffects =
             Facing == ActorFacing.Right ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
         healthBar.Hidden = !Game1.Config.DisplayEnemyHealthBars || !IsAlive;
@@ -92,11 +90,11 @@ public class Monster : Actor
 
         base.TakeDamage(amount);
 
+        IsLeashed = true;
+
         if (Stats.Health.Value <= 0)
         {
             Game1.World.Player.OnKill(this);
         }
-
-        IsLeashed = true;
     }
 }

@@ -30,7 +30,14 @@ public class Player : Actor
     public Player()
     {
         Skills = new(this);
-        Stats = new PlayerStats(this, speed: 100, health: 100, mana: 100, healthRegen: 0, manaRegen: 0);
+        Stats = new PlayerStats(
+            this,
+            speed: 100,
+            health: 100,
+            mana: 100,
+            healthRegen: 1,
+            manaRegen: 1
+        );
         Equipment = new(this);
         Inventory = new();
         Gold = new();
@@ -62,7 +69,6 @@ public class Player : Actor
     public override void Update(float dt)
     {
         base.Update(dt);
-        Stats.Update(dt);
 
         var goldWithinRange = Game1
             .World.Items.Where(droppedItem => droppedItem.Item is Gold)

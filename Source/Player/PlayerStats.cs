@@ -1,7 +1,5 @@
-public class PlayerStats : ActorBaseStats
+public class PlayerStats : ActorStats
 {
-    // private Actor actor;
-
     public PlayerLevel Level { get; }
     public int HealthOnKill { get; set; }
     public int ManaOnKill { get; set; }

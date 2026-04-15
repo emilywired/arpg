@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ActorBaseStats : IUpdateable
+public class ActorStats
 {
-    private Actor actor;
-
+    public Actor Actor;
     public double Speed { get; set; }
     public ReactiveProperty<double> Health { get; } = new(default);
     public ReactiveProperty<double> MaxHealth { get; } = new(default);
-    public ReactiveProperty<double> Mana { get; set; } = new(default);
-    public ReactiveProperty<double> MaxMana { get; set; } = new(default);
+    public ReactiveProperty<double> Mana { get; } = new(default);
+    public ReactiveProperty<double> MaxMana { get; } = new(default);
     public Dictionary<object, double> HealthRateSources { get; private set; } = [];
     public Dictionary<object, double> ManaRateSources { get; private set; } = [];
     public double Evasion { get; set; }
@@ -24,13 +23,13 @@ public class ActorBaseStats : IUpdateable
     public double ColdResistance { get; set; }
     public double LightningResistance { get; set; }
 
-    public ActorBaseStats(
+    public ActorStats(
         Actor _actor,
         double speed,
         double health,
         double mana = 0,
-        double healthRegen = 0,
-        double manaRegen = 0,
+        double healthRate = 0,
+        double manaRate = 0,
         double evasion = 0,
         double armor = 0,
         double strength = 10,
@@ -40,7 +39,7 @@ public class ActorBaseStats : IUpdateable
         double spirit = 10
     )
     {
-        actor = _actor;
+        Actor = _actor;
         Speed = speed;
         Health.Value = MaxHealth.Value = health;
         Mana.Value = MaxMana.Value = mana;
@@ -51,11 +50,9 @@ public class ActorBaseStats : IUpdateable
         Intelligence = intelligence;
         Vitality = vitality;
         Spirit = spirit;
-    }
 
-    public void Update(float dt)
-    {
-        ApplyTick(dt);
+        AddHealthRate(this, healthRate);
+        AddManaRate(this, manaRate);
     }
 
     public void OffsetHealth(double amount)
@@ -78,10 +75,27 @@ public class ActorBaseStats : IUpdateable
         _ = HealthRateSources.Remove(source);
     }
 
-    private void ApplyTick(float dt)
+    public void AddManaRate(object source, double value)
+    {
+        ManaRateSources[source] = value;
+    }
+
+    public void RemoveManaRate(object source)
+    {
+        _ = ManaRateSources.Remove(source);
+    }
+
+    public double GetHealthDelta(float dt)
     {
         double netHealthChange = HealthRateSources.Values.Sum();
-        double healthChange = netHealthChange * dt;
-        actor.TakeDamage(-healthChange);
+        double healthDelta = netHealthChange * dt;
+        return healthDelta;
+    }
+
+    public double GetManaDelta(float dt)
+    {
+        double netManaChange = ManaRateSources.Values.Sum();
+        double manaChange = netManaChange * dt;
+        return manaChange;
     }
 }

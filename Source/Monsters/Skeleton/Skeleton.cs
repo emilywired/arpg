@@ -12,7 +12,7 @@ public class Skeleton : Monster
     {
         Stats.MaxHealth.Value = 50;
         Stats.Health.Value = 50;
-        Stats.Speed = 150;
+        Stats.Speed = 100;
 
         movementBehavior = new MovementFollow(this, Game1.World.Player);
         behaviors.Add(new AttackWhenNearBehavior(this));

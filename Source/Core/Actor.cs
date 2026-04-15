@@ -23,15 +23,26 @@ public abstract class Actor : Entity
     public ReactiveProperty<ActorState> State { get; } = new(ActorState.Idling);
     public ReactiveProperty<ActorActionState> ActionState { get; } = new(ActorActionState.None);
     public ActorFacing Facing { get; set; }
-    public abstract ActorBaseStats Stats { get; }
-    public bool IsAlive { get; private set; } = true;
+    public abstract ActorStats Stats { get; }
+    public bool IsAlive => Stats.Health.Value > 0;
+
+    public override void Update(float dt)
+    {
+        base.Update(dt);
+        ApplyTick(dt);
+    }
 
     public virtual void TakeDamage(double amount)
     {
+        // TODO: damage calculations
         Stats.OffsetHealth(-amount);
-        if (Stats.Health.Value <= 0)
-        {
-            IsAlive = false;
-        }
+    }
+
+    private void ApplyTick(float dt)
+    {
+        double healthDelta = Stats.GetHealthDelta(dt);
+        double manaDelta = Stats.GetManaDelta(dt);
+        Stats.OffsetHealth(healthDelta);
+        Stats.OffsetMana(manaDelta);
     }
 }
