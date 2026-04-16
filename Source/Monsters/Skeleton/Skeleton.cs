@@ -10,9 +10,11 @@ public class Skeleton : Monster
     public Skeleton(int level)
         : base(level)
     {
+        BaseDamage = new(physical: 10);
         Stats.MaxHealth.Value = 50;
         Stats.Health.Value = 50;
         Stats.Speed = 100;
+        Stats.FireResistance = 75;
 
         movementBehavior = new MovementFollow(this, Game1.World.Player);
         behaviors.Add(new AttackWhenNearBehavior(this));
@@ -23,14 +25,16 @@ public class Skeleton : Monster
 
     private void onStateChanged()
     {
-        sprite.SetTextureAsset((State.Value, ActionState.Value) switch
-        {
-            // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
-            (ActorState.Dead, _) => deathAsset,
-            (_, ActorActionState.Swinging) => attackAsset,
-            (ActorState.Idling, _) => idleAsset,
-            (ActorState.Walking, _) => walkAsset,
-            _ => throw new Exception("Unhandled ActorState"),
-        });
+        sprite.SetTextureAsset(
+            (State.Value, ActionState.Value) switch
+            {
+                // (ActorState.Walking, ActorActionState.Swinging) => _walkAttackAsset,
+                (ActorState.Dead, _) => deathAsset,
+                (_, ActorActionState.Swinging) => attackAsset,
+                (ActorState.Idling, _) => idleAsset,
+                (ActorState.Walking, _) => walkAsset,
+                _ => throw new Exception("Unhandled ActorState"),
+            }
+        );
     }
 }

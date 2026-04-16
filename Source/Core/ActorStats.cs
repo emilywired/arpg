@@ -10,7 +10,7 @@ public class ActorStats
     public ReactiveProperty<double> MaxHealth { get; } = new(default);
     public ReactiveProperty<double> Mana { get; } = new(default);
     public ReactiveProperty<double> MaxMana { get; } = new(default);
-    public Dictionary<object, double> HealthRateSources { get; private set; } = [];
+    public Dictionary<object, DamagePacket> HealthRateSources { get; private set; } = [];
     public Dictionary<object, double> ManaRateSources { get; private set; } = [];
     public double Evasion { get; set; }
     public double Armor { get; set; }
@@ -22,6 +22,9 @@ public class ActorStats
     public double FireResistance { get; set; }
     public double ColdResistance { get; set; }
     public double LightningResistance { get; set; }
+    public double MaxFireResistance { get; set; } = 75;
+    public double MaxColdResistance { get; set; } = 75;
+    public double MaxLightningResistance { get; set; } = 75;
 
     public ActorStats(
         Actor _actor,
@@ -51,8 +54,15 @@ public class ActorStats
         Vitality = vitality;
         Spirit = spirit;
 
-        AddHealthRate(this, healthRate);
-        AddManaRate(this, manaRate);
+        if (healthRate != 0)
+        {
+            AddHealthRate(this, new(unmodifiable: healthRate));
+        }
+
+        if (manaRate != 0)
+        {
+            AddManaRate(this, manaRate);
+        }
     }
 
     public void OffsetHealth(double amount)
@@ -65,9 +75,9 @@ public class ActorStats
         Mana.Value = Math.Clamp(Mana.Value + amount, 0, MaxMana.Value);
     }
 
-    public void AddHealthRate(object source, double value)
+    public void AddHealthRate(object source, DamagePacket rate)
     {
-        HealthRateSources[source] = value;
+        HealthRateSources[source] = rate;
     }
 
     public void RemoveHealthRate(object source)
@@ -85,14 +95,7 @@ public class ActorStats
         _ = ManaRateSources.Remove(source);
     }
 
-    public double GetHealthDelta(float dt)
-    {
-        double netHealthChange = HealthRateSources.Values.Sum();
-        double healthDelta = netHealthChange * dt;
-        return healthDelta;
-    }
-
-    public double GetManaDelta(float dt)
+    public double GetManaRateDelta(float dt)
     {
         double netManaChange = ManaRateSources.Values.Sum();
         double manaChange = netManaChange * dt;

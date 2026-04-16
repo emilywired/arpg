@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class FireballBehaviorComponent(FireballEntity parent) : SkillBehaviorComponent<FireballEntity>(parent)
+public class FireballBehaviorComponent(FireballEntity parent)
+    : SkillBehaviorComponent<FireballEntity>(parent)
 {
     private List<Actor> hitActors = [];
 
@@ -28,7 +29,7 @@ public class FireballBehaviorComponent(FireballEntity parent) : SkillBehaviorCom
         {
             if (!hitActors.Contains(actor) && Parent.Hitbox.Intersects(actor.Hitbox))
             {
-                actor.TakeDamage(Parent.Damage);
+                actor.TakeDamage(Parent.BaseDamage);
                 hitActors.Add(actor);
             }
         }

@@ -30,7 +30,7 @@ public class AttackWhenNearBehavior(Monster monster) : Behavior(monster)
                 if (withinAttackHitDistance && !playerWasHit)
                 {
                     // TODO: proper hitbox checking
-                    Game1.World.Player.TakeDamage(10);
+                    Game1.World.Player.TakeDamage(monster.BaseDamage);
                     playerWasHit = true;
                 }
             }
