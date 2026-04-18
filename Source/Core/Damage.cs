@@ -13,36 +13,20 @@ public enum DamageType
 
 public static class DamageCalculations
 {
-    public static void ApplyResistances(DamagePacket damage, ActorStats stats)
+    public static DamagePacket ApplyResistances(DamagePacket damage, ActorStats stats)
     {
-        foreach (DamageType type in damage.Types.Keys)
-        {
-            ApplyResistance(type, damage, stats);
-        }
-    }
+        DamagePacket copy = damage.Copy();
 
-    private static void ApplyResistance(DamageType type, DamagePacket damage, ActorStats stats)
-    {
-        double resist = 0;
+        double fireResistance = Math.Min(stats.FireResistance, stats.MaxFireResistance);
+        copy = copy.Scale(DamageType.Fire, (100 - fireResistance) / 100);
 
-        switch (type)
-        {
-            case DamageType.Physical:
-                resist = 0;
-                break;
-            case DamageType.Fire:
-                resist = Math.Min(stats.FireResistance, stats.MaxFireResistance);
-                break;
-            case DamageType.Cold:
-                resist = Math.Min(stats.ColdResistance, stats.MaxColdResistance);
-                break;
-            case DamageType.Lightning:
-                resist = Math.Min(stats.LightningResistance, stats.MaxLightningResistance);
-                break;
-        }
+        double coldResistance = Math.Min(stats.ColdResistance, stats.MaxColdResistance);
+        copy = copy.Scale(DamageType.Fire, (100 - coldResistance) / 100);
 
-        double multiplier = (100 - resist) / 100;
-        damage.Scale(type, multiplier);
+        double lightningResistance = Math.Min(stats.LightningResistance, stats.LightningResistance);
+        copy = copy.Scale(DamageType.Fire, (100 - lightningResistance) / 100);
+
+        return copy;
     }
 }
 
@@ -58,21 +42,19 @@ public class DamagePacket
         double unmodifiable = 0
     )
     {
-        if (physical != 0)
-            Types[DamageType.Physical] = physical;
-
-        if (fire != 0)
-            Types[DamageType.Fire] = fire;
-
-        if (cold != 0)
-            Types[DamageType.Cold] = cold;
-
-        if (lightning != 0)
-            Types[DamageType.Lightning] = lightning;
-
-        if (unmodifiable != 0)
-            Types[DamageType.Unmodifiable] = unmodifiable;
+        Types[DamageType.Physical] = physical;
+        Types[DamageType.Fire] = fire;
+        Types[DamageType.Cold] = cold;
+        Types[DamageType.Lightning] = lightning;
+        Types[DamageType.Unmodifiable] = unmodifiable;
     }
+
+    private DamagePacket(Dictionary<DamageType, double> types)
+    {
+        Types = new(types);
+    }
+
+    public DamagePacket Copy() => new(Types);
 
     public double Get(DamageType type) => Types.GetValueOrDefault(type);
 
@@ -88,17 +70,17 @@ public class DamagePacket
 
     public DamagePacket Scale(double multiplier)
     {
-        foreach (DamageType type in Types.Keys)
-            Scale(type, multiplier);
+        DamagePacket copy = Copy();
+        foreach (DamageType type in copy.Types.Keys)
+            copy.Types[type] *= multiplier;
 
-        return this;
+        return copy;
     }
 
-    public void Scale(DamageType type, double multiplier)
+    public DamagePacket Scale(DamageType type, double multiplier)
     {
-        if (Types.ContainsKey(type))
-        {
-            Types[type] *= multiplier;
-        }
+        DamagePacket copy = Copy();
+        copy.Types[type] *= multiplier;
+        return copy;
     }
 }

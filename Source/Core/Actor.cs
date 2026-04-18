@@ -1,5 +1,3 @@
-using System.Linq;
-
 public enum ActorState
 {
     Idling,
@@ -36,20 +34,21 @@ public abstract class Actor : Entity
 
     public virtual void TakeDamage(DamagePacket damage)
     {
-        DamageCalculations.ApplyResistances(damage, Stats);
-        Stats.OffsetHealth(-damage.Types.Values.Sum());
+        DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(damage, Stats);
+        Stats.OffsetHealth(-damageAfterResistances.Sum());
     }
 
     private void ApplyTick(float dt)
     {
         double healthRate = 0;
 
-        var damageTypes = Stats.HealthRateSources.Values.ToList();
-
-        foreach (DamagePacket damage in damageTypes)
+        foreach (DamagePacket damageSource in Stats.HealthRateSources.Values)
         {
-            DamageCalculations.ApplyResistances(damage, Stats);
-            healthRate += damage.Sum();
+            DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(
+                damageSource,
+                Stats
+            );
+            healthRate += damageAfterResistances.Sum();
         }
 
         double healthRateDelta = healthRate * dt;

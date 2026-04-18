@@ -6,18 +6,8 @@ public class HolyFireEntity : SkillEntity
 
     public double Radius = 100d;
 
-    // TODO: don't do this
     public DamagePacket Damage = new(fire: 50);
     public DamagePacket SelfDamage = new(fire: 5);
-
-    /*
-    DamagePacket
-    Scale(-1)
-    AddHealthRate()
-    ApplyTick()
-    ApplyResistances
-    OffsetHealth(final * dt)
-    */
 
     public HolyFireEntity(Actor owner)
         : base(owner)
