@@ -32,17 +32,29 @@ public abstract class Actor : Entity
         ApplyTick(dt);
     }
 
-    public virtual void TakeDamage(double amount)
+    public virtual void TakeDamage(DamagePacket damage)
     {
-        // TODO: damage calculations
-        Stats.OffsetHealth(-amount);
+        DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(damage, Stats);
+        Stats.OffsetHealth(-damageAfterResistances.Sum());
     }
 
     private void ApplyTick(float dt)
     {
-        double healthDelta = Stats.GetHealthDelta(dt);
-        double manaDelta = Stats.GetManaDelta(dt);
-        Stats.OffsetHealth(healthDelta);
-        Stats.OffsetMana(manaDelta);
+        double healthRate = 0;
+
+        foreach (DamagePacket damageSource in Stats.HealthRateSources.Values)
+        {
+            DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(
+                damageSource,
+                Stats
+            );
+            healthRate += damageAfterResistances.Sum();
+        }
+
+        double healthRateDelta = healthRate * dt;
+        Stats.OffsetHealth(healthRateDelta);
+
+        double manaRateDelta = Stats.GetManaRateDelta(dt);
+        Stats.OffsetMana(manaRateDelta);
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Monster : Actor
 {
+    public DamagePacket BaseDamage { get; set; } = new();
     public override ActorStats Stats { get; }
     public override IHitbox Hitbox =>
         new RectangleHitbox((int)Position.X - 8, (int)Position.Y - 16, 16, 32);
@@ -83,12 +84,12 @@ public class Monster : Actor
         }
     }
 
-    public override void TakeDamage(double amount)
+    public override void TakeDamage(DamagePacket damage)
     {
         if (!IsAlive)
             return;
 
-        base.TakeDamage(amount);
+        base.TakeDamage(damage);
 
         IsLeashed = true;
 

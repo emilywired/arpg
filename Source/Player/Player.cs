@@ -35,7 +35,7 @@ public class Player : Actor
             speed: 100,
             health: 100,
             mana: 100,
-            healthRegen: 1,
+            healthRegen: 0,
             manaRegen: 1
         );
         Equipment = new(this);

@@ -8,7 +8,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
     public HolyFireBehaviorComponent(HolyFireEntity parent)
         : base(parent)
     {
-        parent.Owner.Stats.AddHealthRate(Parent, -Parent.SelfDamage);
+        parent.Owner.Stats.AddHealthRate(Parent, Parent.SelfDamage.Scale(-1));
     }
 
     public override void Update(float dt)
@@ -27,7 +27,7 @@ public class HolyFireBehaviorComponent : SkillBehaviorComponent<HolyFireEntity>
 
             if (!wasAlreadyIntersecting && intersects)
             {
-                actor.Stats.AddHealthRate(Parent, -Parent.Damage);
+                actor.Stats.AddHealthRate(Parent, Parent.Damage.Scale(-1));
                 intersectingEntities.Add(actor);
             }
             else if (wasAlreadyIntersecting && !intersects)
