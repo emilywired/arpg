@@ -175,7 +175,7 @@ public class StrengthAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Strength += value;
+        player.Stats.Attributes.Values[Attribute.Strength] += value;
     }
 
     public override string ToString()
@@ -191,7 +191,7 @@ public class AgilityAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Agility += value;
+        player.Stats.Attributes.Values[Attribute.Agility] += value;
     }
 
     public override string ToString()
@@ -207,7 +207,7 @@ public class IntelligenceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Intelligence += value;
+        player.Stats.Attributes.Values[Attribute.Intelligence] += value;
     }
 
     public override string ToString()
@@ -223,7 +223,7 @@ public class VitalityAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Vitality += value;
+        player.Stats.Attributes.Values[Attribute.Intelligence] += value;
     }
 
     public override string ToString()
@@ -239,7 +239,7 @@ public class SpiritAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Spirit += value;
+        player.Stats.Attributes.Values[Attribute.Spirit] += value;
     }
 
     public override string ToString()

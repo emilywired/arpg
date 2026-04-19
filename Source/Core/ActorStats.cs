@@ -62,11 +62,6 @@ public class ActorStats
     public Dictionary<object, double> ManaRateSources { get; private set; } = [];
     public double Evasion { get; set; }
     public double Armor { get; set; }
-    public double Strength { get; set; }
-    public double Agility { get; set; }
-    public double Intelligence { get; set; }
-    public double Vitality { get; set; }
-    public double Spirit { get; set; }
     public Resistances Resistances = new();
 
     public ActorStats(
@@ -77,12 +72,7 @@ public class ActorStats
         double healthRate = 0,
         double manaRate = 0,
         double evasion = 0,
-        double armor = 0,
-        double strength = 10,
-        double agility = 10,
-        double intelligence = 10,
-        double vitality = 10,
-        double spirit = 10
+        double armor = 0
     )
     {
         Actor = _actor;
@@ -91,11 +81,6 @@ public class ActorStats
         Mana.Value = MaxMana.Value = mana;
         Evasion = evasion;
         Armor = armor;
-        Strength = strength;
-        Agility = agility;
-        Intelligence = intelligence;
-        Vitality = vitality;
-        Spirit = spirit;
 
         if (healthRate != 0)
         {
