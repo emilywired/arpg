@@ -13,8 +13,19 @@ public class Sprite(Texture2D texture) : IDrawable
     public Vector2 RelativeOrigin { get; set; } = new(0.5f);
     public bool Hidden { get; set; }
 
-    public DrawNode CreateDrawNode()
-        => new SpriteDrawNode(this);
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(
+            Texture,
+            new(this.GetDrawPosition().ToPoint(), Size.ToPoint()),
+            null,
+            Color,
+            Rotation,
+            RelativeOrigin * Size,
+            SpriteEffects.None,
+            Layer.Hitbox
+        );
+    }
 }
 
 public class CircleSprite(int radius) : Sprite(Assets.CreateCircleTexture(radius)) { }

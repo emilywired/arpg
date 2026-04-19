@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 public abstract class Entity : IDrawable, IUpdateable
 {
@@ -31,13 +32,15 @@ public abstract class Entity : IDrawable, IUpdateable
         drawable.Parent = this;
     }
 
-    protected virtual IEnumerable<DrawNode> CreateCompositeDrawNodes()
-        => drawables.Where(drawable => !drawable.Hidden).Select(drawable => drawable.CreateDrawNode());
-
-    public DrawNode CreateDrawNode()
+    public void Draw(SpriteBatch spriteBatch)
     {
-        IEnumerable<DrawNode> drawableNodes = CreateCompositeDrawNodes();
-        return new CompositeDrawNode(this, drawableNodes);
+        foreach (IDrawable drawable in drawables)
+        {
+            if (!drawable.Hidden)
+            {
+                drawable.Draw(spriteBatch);
+            }
+        }
     }
 
     public virtual void Destroy()

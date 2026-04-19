@@ -18,6 +18,8 @@ public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable, IUpd
     public Vector2 RelativeOrigin { get; set; } = new(0.5f);
     public bool Hidden { get; set; }
 
+    private Rectangle frame => Asset.Frames[CurrentFrame];
+
     public void SetTextureAsset(TextureAsset asset)
     {
         Asset = asset;
@@ -47,6 +49,18 @@ public class AnimatedSprite(TextureAsset? initialAsset = null) : IDrawable, IUpd
         elapsedTime = 0;
     }
 
-    public DrawNode CreateDrawNode()
-        => new AnimatedSpriteDrawNode(this);
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(
+            Asset.Texture,
+            new((int)this.GetDrawPosition().X, (int)this.GetDrawPosition().Y),
+            frame,
+            Color.White,
+            Rotation,
+            RelativeOrigin * frame.Size.ToVector2(),
+            1f,
+            SpriteEffects,
+            Layer.Player
+        );
+    }
 }

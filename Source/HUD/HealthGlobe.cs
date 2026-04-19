@@ -37,7 +37,6 @@ public class HealthGlobe : IHudElement
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        DrawNode node = progressBar.CreateDrawNode();
-        node.Draw(spriteBatch);
+        progressBar.Draw(spriteBatch);
     }
 };

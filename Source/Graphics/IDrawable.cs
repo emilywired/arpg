@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 public interface IDrawable
 {
@@ -6,5 +7,5 @@ public interface IDrawable
     Vector2 Position { get; }
     bool Hidden { get; }
 
-    DrawNode CreateDrawNode();
+    void Draw(SpriteBatch spriteBatch);
 }

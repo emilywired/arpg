@@ -32,8 +32,7 @@ public class World
         {
             if (!entity.Hidden)
             {
-                DrawNode node = entity.CreateDrawNode();
-                node.Draw(spriteBatch);
+                entity.Draw(spriteBatch);
             }
         }
 
