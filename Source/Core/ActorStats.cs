@@ -2,6 +2,54 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+public class Resistances(
+    double fire = 0,
+    double cold = 0,
+    double lightning = 0,
+    double physical = 0
+)
+{
+    private double ELEMENTAL_RESISTANCE_CAP = 90;
+    private double PHYSICAL_RESISTANCE_CAP = 50;
+
+    public Dictionary<DamageType, double> Values = new()
+    {
+        { DamageType.Fire, fire },
+        { DamageType.Cold, cold },
+        { DamageType.Lightning, lightning },
+        { DamageType.Physical, physical },
+        { DamageType.Static, 0 },
+    };
+
+    public Dictionary<DamageType, double> MaxValues = new()
+    {
+        { DamageType.Fire, 75 },
+        { DamageType.Cold, 75 },
+        { DamageType.Lightning, 75 },
+        { DamageType.Physical, 50 },
+        { DamageType.Static, 0 },
+    };
+
+    public double GetCappedResistance(DamageType damageType)
+    {
+        double maxResistance = 0;
+
+        switch (damageType)
+        {
+            case DamageType.Physical:
+                maxResistance = Math.Min(MaxValues[damageType], PHYSICAL_RESISTANCE_CAP);
+                break;
+            case DamageType.Static:
+                break;
+            default:
+                maxResistance = Math.Min(MaxValues[damageType], ELEMENTAL_RESISTANCE_CAP);
+                break;
+        }
+
+        return Math.Min(Values[damageType], maxResistance);
+    }
+}
+
 public class ActorStats
 {
     public Actor Actor;
@@ -19,12 +67,7 @@ public class ActorStats
     public double Intelligence { get; set; }
     public double Vitality { get; set; }
     public double Spirit { get; set; }
-    public double FireResistance { get; set; }
-    public double ColdResistance { get; set; }
-    public double LightningResistance { get; set; }
-    public double MaxFireResistance { get; set; } = 75;
-    public double MaxColdResistance { get; set; } = 75;
-    public double MaxLightningResistance { get; set; } = 75;
+    public Resistances Resistances = new();
 
     public ActorStats(
         Actor _actor,
@@ -56,7 +99,7 @@ public class ActorStats
 
         if (healthRate != 0)
         {
-            AddHealthRate(this, new(unmodifiable: healthRate));
+            AddHealthRate(this, new(@static: healthRate));
         }
 
         if (manaRate != 0)

@@ -127,7 +127,7 @@ public class FireResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.FireResistance += value;
+        player.Stats.Resistances.Values[DamageType.Fire] += value;
     }
 
     public override string ToString()
@@ -143,7 +143,7 @@ public class ColdResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.ColdResistance += value;
+        player.Stats.Resistances.Values[DamageType.Cold] += value;
     }
 
     public override string ToString()
@@ -159,7 +159,7 @@ public class LightningResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.LightningResistance += value;
+        player.Stats.Resistances.Values[DamageType.Lightning] += value;
     }
 
     public override string ToString()

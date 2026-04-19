@@ -14,7 +14,7 @@ public class Skeleton : Monster
         Stats.MaxHealth.Value = 50;
         Stats.Health.Value = 50;
         Stats.Speed = 100;
-        Stats.FireResistance = 75;
+        Stats.Resistances.Values[DamageType.Fire] = -75;
 
         movementBehavior = new MovementFollow(this, Game1.World.Player);
         behaviors.Add(new AttackWhenNearBehavior(this));
