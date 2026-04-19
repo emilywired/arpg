@@ -10,8 +10,8 @@ public class Hud
     {
         elements.Add(new HealthGlobe());
         elements.Add(new ManaGlobe());
-        elements.Add(new DebugScreen());
         elements.Add(new XpBar());
+        elements.Add(new DebugScreen());
     }
 
     public void Update(GameTime gameTime)

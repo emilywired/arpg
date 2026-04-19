@@ -21,8 +21,6 @@ public class Game1 : Game
     private RenderTarget2D renderTarget = null!;
     private SpriteBatch spriteBatch = null!;
     private Background background = null!;
-    private LootUI lootUI = null!;
-    private PauseMenu pauseMenu = null!;
     private Hud hud = null!;
     private GameUI gameUI = null!;
     private GameInputController gameInputController = null!;
@@ -51,18 +49,16 @@ public class Game1 : Game
         World = new World(player);
         LootSystem = new LootSystem();
         background = new Background();
-        lootUI = new LootUI();
         hud = new Hud();
         gameUI = new GameUI(player);
-        pauseMenu = new PauseMenu();
 
         World.AddEntity(new TestAnimation());
 
         gameInputController = new GameInputController();
         gameInputController.RegisterOnClose(gameUI.OnClose);
-        gameInputController.RegisterOnClose(pauseMenu.OnClose);
+        gameInputController.RegisterOnClose(gameUI.pauseMenu.OnClose);
 
-        gameInputController.RegisterOnLeftClick(pauseMenu.OnLeftClick);
+        gameInputController.RegisterOnLeftClick(gameUI.pauseMenu.OnLeftClick);
         gameInputController.RegisterOnLeftClick(gameUI.OnLeftClick);
         gameInputController.RegisterOnLeftClick(World.Stash.OnLeftClick);
         gameInputController.RegisterOnLeftClick(World.OnLeftClick);
@@ -89,8 +85,8 @@ public class Game1 : Game
         if (GameState.IsRunning)
         {
             World.Update(gameTime);
-            gameUI.Update(gameTime);
             hud.Update(gameTime);
+            gameUI.Update(gameTime);
         }
 
         Camera.Follow(World.Player);
@@ -121,18 +117,7 @@ public class Game1 : Game
             blendState: BlendState.AlphaBlend
         );
 
-        foreach (Entity entity in World.Entities)
-        {
-            if (!entity.Hidden)
-            {
-                DrawNode node = entity.CreateDrawNode();
-                node.Draw(spriteBatch);
-            }
-        }
-
-        World.Stash.Draw(spriteBatch);
-
-        lootUI.Draw(spriteBatch);
+        World.Draw(spriteBatch);
 
         spriteBatch.End();
 
@@ -145,7 +130,6 @@ public class Game1 : Game
 
         hud.Draw(spriteBatch);
         gameUI.Draw(spriteBatch);
-        pauseMenu.Draw(spriteBatch);
 
         spriteBatch.End();
 

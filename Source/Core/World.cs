@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 public class World
 {
@@ -12,6 +13,7 @@ public class World
     public IEnumerable<Entity> Entities => entities;
 
     public Stash Stash { get; } = new(new(30, 30));
+    private LootPlates lootPlates = new();
 
     private MonsterSpawner monsterSpawner;
 
@@ -20,6 +22,22 @@ public class World
         Player = player;
         monsterSpawner = new MonsterSpawner(Player, 0.75d, offscreenDistance: 80);
         entities.Add(Player);
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        lootPlates.Draw(spriteBatch);
+
+        foreach (Entity entity in Entities)
+        {
+            if (!entity.Hidden)
+            {
+                DrawNode node = entity.CreateDrawNode();
+                node.Draw(spriteBatch);
+            }
+        }
+
+        Stash.Draw(spriteBatch);
     }
 
     public void Update(GameTime gameTime)

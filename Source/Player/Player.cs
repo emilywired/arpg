@@ -99,4 +99,6 @@ public class Player : Actor
             Game1.World.Items.Add(droppedItem);
         }
     }
+
+    public override void OnDeath() { }
 }

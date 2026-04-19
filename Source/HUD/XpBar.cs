@@ -9,7 +9,7 @@ public class XpBar : IHudElement
 
     public void Update(GameTime gameTime)
     {
-        var playerStats = (PlayerStats)Game1.World.Player.Stats;
+        PlayerStats playerStats = Game1.World.Player.Stats;
         Level = playerStats.Level.Current;
         CurrentXP = playerStats.Level.CurrentXP;
         RequiredXP = playerStats.Level.RequiredXP;
