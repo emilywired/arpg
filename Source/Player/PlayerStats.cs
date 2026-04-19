@@ -1,9 +1,39 @@
+using System.Collections.Generic;
+
+public enum Attribute
+{
+    Strength,
+    Agility,
+    Intelligence,
+    Vitality,
+    Spirit,
+}
+
+public class Attributes(
+    double strength = 0,
+    double agility = 0,
+    double intelligence = 0,
+    double vitality = 0,
+    double spirit = 0
+)
+{
+    public Dictionary<Attribute, double> Values = new()
+    {
+        { Attribute.Strength, strength },
+        { Attribute.Agility, agility },
+        { Attribute.Intelligence, intelligence },
+        { Attribute.Vitality, vitality },
+        { Attribute.Spirit, spirit },
+    };
+}
+
 public class PlayerStats : ActorStats
 {
     public PlayerLevel Level { get; }
     public int HealthOnKill { get; set; }
     public int ManaOnKill { get; set; }
     public int MagicFind { get; set; }
+    public Attributes Attributes;
 
     public PlayerStats(
         Actor _actor,
@@ -23,25 +53,12 @@ public class PlayerStats : ActorStats
         double spirit = 10,
         int magicFind = 0
     )
-        : base(
-            _actor,
-            speed,
-            health,
-            mana,
-            healthRegen,
-            manaRegen,
-            evasion,
-            armor,
-            strength,
-            agility,
-            intelligence,
-            vitality,
-            spirit
-        )
+        : base(_actor, speed, health, mana, healthRegen, manaRegen, evasion, armor)
     {
         Level = new();
         HealthOnKill = healthOnKill;
         ManaOnKill = manaOnKill;
         MagicFind = magicFind;
+        Attributes = new(strength, agility, intelligence, vitality, spirit);
     }
 }

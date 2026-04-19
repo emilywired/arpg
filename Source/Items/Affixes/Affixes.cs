@@ -127,7 +127,7 @@ public class FireResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.FireResistance += value;
+        player.Stats.Resistances.Values[DamageType.Fire] += value;
     }
 
     public override string ToString()
@@ -143,7 +143,7 @@ public class ColdResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.ColdResistance += value;
+        player.Stats.Resistances.Values[DamageType.Cold] += value;
     }
 
     public override string ToString()
@@ -159,7 +159,7 @@ public class LightningResistanceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.LightningResistance += value;
+        player.Stats.Resistances.Values[DamageType.Lightning] += value;
     }
 
     public override string ToString()
@@ -175,7 +175,7 @@ public class StrengthAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Strength += value;
+        player.Stats.Attributes.Values[Attribute.Strength] += value;
     }
 
     public override string ToString()
@@ -191,7 +191,7 @@ public class AgilityAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Agility += value;
+        player.Stats.Attributes.Values[Attribute.Agility] += value;
     }
 
     public override string ToString()
@@ -207,7 +207,7 @@ public class IntelligenceAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Intelligence += value;
+        player.Stats.Attributes.Values[Attribute.Intelligence] += value;
     }
 
     public override string ToString()
@@ -223,7 +223,7 @@ public class VitalityAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Vitality += value;
+        player.Stats.Attributes.Values[Attribute.Intelligence] += value;
     }
 
     public override string ToString()
@@ -239,7 +239,7 @@ public class SpiritAffix : Affix
 
     public override void Apply(Player player, int value)
     {
-        player.Stats.Spirit += value;
+        player.Stats.Attributes.Values[Attribute.Spirit] += value;
     }
 
     public override string ToString()

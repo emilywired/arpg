@@ -34,7 +34,7 @@ public abstract class Actor : Entity
 
     public virtual void TakeDamage(DamagePacket damage)
     {
-        DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(damage, Stats);
+        DamagePacket damageAfterResistances = DamageCalculations.WithResistances(damage, Stats);
         Stats.OffsetHealth(-damageAfterResistances.Sum());
     }
 
@@ -44,7 +44,7 @@ public abstract class Actor : Entity
 
         foreach (DamagePacket damageSource in Stats.HealthRateSources.Values)
         {
-            DamagePacket damageAfterResistances = DamageCalculations.ApplyResistances(
+            DamagePacket damageAfterResistances = DamageCalculations.WithResistances(
                 damageSource,
                 Stats
             );

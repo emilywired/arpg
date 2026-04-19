@@ -8,25 +8,21 @@ public enum DamageType
     Fire,
     Cold,
     Lightning,
-    Unmodifiable,
+    Static,
 }
 
 public static class DamageCalculations
 {
-    public static DamagePacket ApplyResistances(DamagePacket damage, ActorStats stats)
+    public static DamagePacket WithResistances(DamagePacket damage, ActorStats stats)
     {
-        DamagePacket copy = damage.Copy();
+        foreach (DamageType damageType in Enum.GetValues<DamageType>())
+        {
+            double cappedResistance = stats.Resistances.GetCappedResistance(damageType);
+            double resistanceReduction = (100 - cappedResistance) / 100;
+            damage = damage.Scale(damageType, resistanceReduction);
+        }
 
-        double fireResistance = Math.Min(stats.FireResistance, stats.MaxFireResistance);
-        copy = copy.Scale(DamageType.Fire, (100 - fireResistance) / 100);
-
-        double coldResistance = Math.Min(stats.ColdResistance, stats.MaxColdResistance);
-        copy = copy.Scale(DamageType.Fire, (100 - coldResistance) / 100);
-
-        double lightningResistance = Math.Min(stats.LightningResistance, stats.LightningResistance);
-        copy = copy.Scale(DamageType.Fire, (100 - lightningResistance) / 100);
-
-        return copy;
+        return damage;
     }
 }
 
@@ -39,14 +35,14 @@ public class DamagePacket
         double fire = 0,
         double cold = 0,
         double lightning = 0,
-        double unmodifiable = 0
+        double @static = 0
     )
     {
         Types[DamageType.Physical] = physical;
         Types[DamageType.Fire] = fire;
         Types[DamageType.Cold] = cold;
         Types[DamageType.Lightning] = lightning;
-        Types[DamageType.Unmodifiable] = unmodifiable;
+        Types[DamageType.Static] = @static;
     }
 
     private DamagePacket(Dictionary<DamageType, double> types)
