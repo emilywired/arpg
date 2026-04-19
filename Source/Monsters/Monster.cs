@@ -86,16 +86,12 @@ public class Monster : Actor
 
     public override void TakeDamage(DamagePacket damage)
     {
-        if (!IsAlive)
-            return;
-
         base.TakeDamage(damage);
-
         IsLeashed = true;
+    }
 
-        if (Stats.Health.Value <= 0)
-        {
-            Game1.World.Player.OnKill(this);
-        }
+    public override void OnDeath()
+    {
+        Game1.World.Player.OnKill(this);
     }
 }

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
-public class LootUI
+public class LootPlates
 {
     public bool ShowLoot = true;
 

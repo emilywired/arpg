@@ -13,7 +13,7 @@ public class World
     public IEnumerable<Entity> Entities => entities;
 
     public Stash Stash { get; } = new(new(30, 30));
-    private LootUI lootUI = new();
+    private LootPlates lootPlates = new();
 
     private MonsterSpawner monsterSpawner;
 
@@ -26,6 +26,8 @@ public class World
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        lootPlates.Draw(spriteBatch);
+
         foreach (Entity entity in Entities)
         {
             if (!entity.Hidden)
@@ -36,8 +38,6 @@ public class World
         }
 
         Stash.Draw(spriteBatch);
-
-        lootUI.Draw(spriteBatch);
     }
 
     public void Update(GameTime gameTime)
