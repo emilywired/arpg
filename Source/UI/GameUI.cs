@@ -1,9 +1,9 @@
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class GameUI
 {
+    public PauseMenu pauseMenu = new();
     private InventoryUI inventoryUI;
 
     public GameUI(Player player)
@@ -19,6 +19,7 @@ public class GameUI
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        pauseMenu.Draw(spriteBatch);
         inventoryUI.Draw(spriteBatch);
     }
 
