@@ -1,4 +1,6 @@
 [*.cs]
+dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0305.severity = none
 dotnet_analyzer_diagnostic.category-Style.severity = warning
 
 # CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -38,3 +40,14 @@ dotnet_naming_symbols.private_properties.applicable_kinds = property
 dotnet_naming_symbols.private_properties.applicable_accessibilities = private
 
 dotnet_naming_style.camel_case.capitalization = camel_case
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = silent
+
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none

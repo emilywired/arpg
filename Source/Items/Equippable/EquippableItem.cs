@@ -63,8 +63,8 @@ public class EquippableItem : Item, IEquippable, ICorruptable
 
     public EquippableItem ToMagic()
     {
-        Prefixes = RollAffixGroup(GlobalAffixes.Prefixes[Slot], Random.Shared.Next(1, 3));
-        Suffixes = RollAffixGroup(GlobalAffixes.Suffixes[Slot], Random.Shared.Next(1, 3));
+        Prefixes = RollAffixGroup(GlobalAffixes.Prefixes[Slot], 1);
+        Suffixes = RollAffixGroup(GlobalAffixes.Suffixes[Slot], 1);
         Rarity = Rarity.Magic;
         return this;
     }

@@ -61,12 +61,12 @@
 /processorParam:TextureFormat=Color
 /build:environment/cobblestone_3.png
 
-#begin fonts/monogram_extended.spritefont
+#begin fonts/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:fonts/monogram_extended.spritefont
+/build:fonts/File.spritefont;fonts/monogram_extended.spritefont
 
 #begin items/item_none_1x1.png
 /importer:TextureImporter

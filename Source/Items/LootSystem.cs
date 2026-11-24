@@ -5,12 +5,15 @@ public class LootSystem
 {
     private Dictionary<Func<Item>, int> lootPool = new()
     {
-        { () => new OrbOfCorruption(), 100000 },
-        { () => new AugmentingCore(), 50000 },
-        { () => new Hood(), 5000 },
-        { () => new Sandals(), 5000 },
-        { () => new RubyRing(), 2000 },
-        { () => new SapphireRing(), 2000 },
+        { () => new AlterationShard(), 20000 },
+        { () => new TransmutationShard(), 10000 },
+        { () => new AugmentationShard(), 1000 },
+        { () => new CorruptingOrb(), 1000 },
+        { () => new FatedOrb(), 10 },
+        { () => new Hood(), 1000 },
+        { () => new Sandals(), 1000 },
+        { () => new RubyRing(), 1000 },
+        { () => new SapphireRing(), 1000 },
     };
 
     private Dictionary<int, int> dropCountWeights = new()
@@ -23,11 +26,10 @@ public class LootSystem
 
     private Dictionary<Rarity, int> rarityWeights = new()
     {
-        { Rarity.Unique, 0 },
-        { Rarity.Set, 0 },
         { Rarity.Magic, 3000 },
         { Rarity.Rare, 3000 },
-        { Rarity.Normal, 3000 },
+        { Rarity.Set, 0 },
+        { Rarity.Unique, 0 },
     };
 
     public List<Item> GenerateLoot(Monster monster, Player player)

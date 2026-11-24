@@ -1,13 +1,13 @@
-public class OrbOfCorruption : MaterialItem, IUsableOnItem
+public class CorruptingOrb : MaterialItem, IUsableOnItem
 {
-    public OrbOfCorruption(int quantity = 1)
+    public CorruptingOrb(int quantity = 1)
         : base(
-            name: "Orb of Corruption",
-            rarity: Rarity.Magic,
+            name: "Corrupting Orb",
+            rarity: Rarity.Rare,
             width: 1,
             height: 1,
             asset: Assets.Items.None_1x1,
-            description: "Unpredictably modifies an item.",
+            description: "Unpredictably modifies an item",
             maxStackQuantity: 20,
             stackQuantity: quantity
         )
